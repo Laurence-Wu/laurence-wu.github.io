@@ -1,0 +1,79 @@
+/* SmithChartVisualization.css */
+
+.smith-chart-container {
+    flex-direction: column;
+    background-color: hsl(25, 59%, 81%);
+    margin: 10px auto;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .chart-content {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    min-height: 500px;
+  }
+  .main-svg {
+    align-self: top;
+    height: 500px; /* Adjust the height as needed */
+    width: 700px;; /* Maintain aspect ratio */
+  }
+  .chart-description {
+    margin-top: 15px;
+    padding: 10px 15px;
+    background-color: #edb994;
+    border-radius: 5px;
+    border-left: 4px solid #3498db;
+  }
+  
+  .chart-description h4 {
+    color: #8A9A7E; /* Changed color */
+    margin-bottom: 10px;
+  }
+  
+  
+  .chart-description p {
+    margin-bottom: 8px;
+    line-height: 1.5;
+    color: #8A9A7E; /* Changed color */
+  }
+
+  .chart-content js-plotly-plot {
+    width: 70%;
+  }
+  .formulas-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+
+  .formulas-section {
+    gap: 60px !important;
+  }
+
+  .chart-content.js-plotly-plot {
+    width: 70% !important;
+  }
+
+  .plot-container.plotly{
+    height: 80% !important;
+  }
+
+/* Target the SVG container */
+.user-select-none.svg-container { /* Remove space between classes */
+  user-select: auto !important; /* Needs !important to override Plotly's inline style */
+  position: relative;
+  top: 0px;
+  left: -105px;
+  width: 700px !important; /* Must use !important to override inline styles */
+  height: 400px !important; /* Must use !important to override inline styles */
+  margin: 0 auto !important; /* Center horizontally */
+}
+
+
+
+

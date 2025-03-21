@@ -1,0 +1,7 @@
+/* General styles */
+body {
+  margin: 0;
+  font-family: 'Montserrat', sans-serif;
+  background-color: #F4E9D8; /* Warm neutral for coziness */
+  color: #2E3A59; /* Deep navy for clarity */
+}

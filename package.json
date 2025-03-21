@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "react-pdf": "^9.2.1",
+    "typed.js": "^2.1.0"
+  }
+}

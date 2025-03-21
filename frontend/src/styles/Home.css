@@ -1,0 +1,435 @@
+/* Home.css - Premium Luxury Edition */
+
+/* 
+* Premium color system and foundational variables
+* Designed for elegance and sophisticated user experience
+*/
+:root {
+  /* Color system */
+  --color-dark: #0f172a; /* Deep navy blue for primary text and accents */
+  --color-gold: #d4af37; /* Classic gold for premium accents */
+  --color-gold-light: #e6c55a; /* Lighter gold for hover states */
+  --color-ivory: #f8f1e3; /* Warm ivory for subtle backgrounds */
+  --color-text: #1e293b; /* Deep slate for primary text */
+  --color-text-light: #64748b; /* Lighter text for secondary content */
+  --color-background: #f8fafc; /* Light background with subtle warmth */
+  --color-card-bg: #ffffff; /* Pure white for card elements */
+  --color-border: rgba(15, 23, 42, 0.06); /* Subtle border color */
+  
+  /* Shadow system */
+  --shadow-soft: 0 10px 30px rgba(15, 23, 42, 0.04), 0 1px 2px rgba(15, 23, 42, 0.02);
+  --shadow-medium: 0 20px 40px rgba(15, 23, 42, 0.06), 0 4px 6px rgba(15, 23, 42, 0.04);
+  --shadow-dark: 0 25px 50px rgba(15, 23, 42, 0.08), 0 8px 16px rgba(15, 23, 42, 0.06);
+  
+  /* Layout and spacing */
+  --border-radius-sm: 4px;
+  --border-radius: 40px;
+  --border-radius-lg: 16px;
+  --content-max-width: 1400px;
+  --section-spacing: 4rem;
+  --card-padding: 2.5rem;
+  
+  /* Typography */
+  --font-heading: 'Playfair Display', serif;
+  --font-body: 'Cormorant Garamond', serif;
+  --font-accent: 'Montserrat', sans-serif;
+  
+  /* Transitions */
+  --transition-standard: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-bounce: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  --transition-decelerate: all 0.5s cubic-bezier(0, 0, 0.2, 1);
+}
+/* Header section with elegant styling */
+.home-header {
+  grid-area: header;
+  padding-bottom: 3rem;
+  position: relative;
+  text-align: left;
+}
+
+/* Sophisticated header bottom border with gradient */
+.home-header::after {
+  background: linear-gradient(to right, 
+    transparent, 
+    rgba(212, 175, 55, 0.3) 15%, 
+    rgba(212, 175, 55, 0.6) 50%,
+    rgba(212, 175, 55, 0.3) 85%, 
+    transparent);
+  bottom: 0;
+  content: '';
+  height: 1px;
+  left: 0;
+  position: absolute;
+  width: 100%;
+}
+
+/* Primary heading with luxury styling */
+.home h1 {
+  color: var(--color-dark);
+  display: inline-block;
+  font-family: var(--font-heading);
+  font-size: 4.2rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+  margin-bottom: 1.2rem;
+  position: relative;
+  text-rendering: optimizeLegibility;
+}
+
+/* Elegant heading underline */
+.home h1::after {
+  background: linear-gradient(to right, var(--color-gold), var(--color-gold-light));
+  bottom: -10px;
+  content: '';
+  height: 15px;
+  left: 0;
+  position: absolute;
+  width: 300px;
+}
+/* Main content area with sophisticated positioning */
+.home-main {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  grid-area: main;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+  height: 251px ;
+}
+
+/* Secondary heading with premium typography */
+.home h2 {
+  color: #d4af37;
+  font-family: var(--font-accent);
+  font-size: 2rem;
+  font-weight: 900;
+  letter-spacing: 0.01em;
+  line-height: 1.5;
+  margin: 0 0 2.2rem 0;
+  max-width: 90%;
+  position: relative;
+  text-align: left;
+  transition: color 0.5s ease-in-out, font-size 0.5s ease-in-out, font-family 0.5s ease-in-out;
+}
+
+.home h2:hover {
+  color: #ff0101;
+  font-family: 'Yellowtail', cursive;
+  font-size: 2.5rem;
+  font-weight: 900;
+  letter-spacing: 0.01em;
+  transition: transform 0.5s ease-out, font-size 0.5s ease-in-out, font-family 0.5s ease-in-out;
+}
+
+/* Sidebar with balanced composition */
+.home-sidebar {
+  color: #e6c55a;
+  align-items: flex-end;
+  display: flex;
+  flex-direction: column;
+  grid-area: sidebar;
+  justify-content: center;
+  position: relative;
+  text-align: right;
+}
+
+/* Elegant decorative element */
+.home-sidebar::after {
+  background: linear-gradient(to bottom, transparent, var(--color-gold), transparent);
+  content: '';
+  height: 140px;
+  opacity: 0.5;
+  position: absolute;
+  right: -60px;
+  top: 20%;
+  width: 3px;
+}
+
+/* Typewriter container with premium styling */
+.typewriter-container {
+  align-self: flex-start;
+  background-color: var(--color-card-bg);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-soft);
+  margin: 1.5rem 0;
+  max-width: 90%;
+  overflow: hidden;
+  padding: 2.8rem;
+  position: relative;
+  transition: var(--transition-standard);
+}
+
+/* Refined hover effect for depth */
+.typewriter-container:hover {
+  box-shadow: var(--shadow-medium);
+  transform: translateY(-5px);
+}
+
+/* Elegant side accent */
+.typewriter-container::before {
+  content: '';
+  background: conic-gradient(
+    from 180deg at 50% 50%, 
+    #ff4500, 
+    #ff8c00, 
+    #ffd700, 
+    #ff4500
+  );
+  transition: all 0.6s ease;
+  opacity: 0;
+  height: 100%;
+  width: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+}
+
+.typewriter-container:hover::before {
+  opacity: 0.7;
+  transform: scale(2);
+}
+
+/* Typewriter text with premium font */
+.typewriter-text {
+  color: var(--color-dark);
+  display: inline-block;
+  font-family: 'Rose Fang', cursive;
+  font-size: 2.6rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  line-height: 1.6;
+  font-weight: bold;
+  position: relative;
+  min-width: 20px;
+}
+
+/* Elegant cursor styling */
+.typed-cursor {
+  animation: blink 0.7s infinite;
+  color: var(--color-gold);
+  font-size: 1.7rem;
+  font-weight: 500;
+  opacity: 1;
+}
+/* Feature section with premium grid layout */
+.home-features {
+  display: grid;
+  gap: 2.8rem;
+  grid-area: features;
+  grid-template-columns: repeat(3, 1fr);
+  margin-top: 3.5rem;
+  padding-bottom: 100px;
+}
+
+/* Feature cards with luxury styling */
+.feature-card {
+  background-color: #ffdd8e;
+  border: 10px solid #cdba7d;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-soft);
+  overflow: hidden;
+  padding: var(--card-padding);
+  position: relative;
+  transition: var(--transition-standard);
+}
+
+.feature-card .face {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color:  linear-gradient(to right, #f8b50b, #dde384);
+  transition: transform 0.5s ease-out;
+  z-index: 2;
+}
+
+.feature-card:hover .face {
+  transform: translateX(-100%);
+}
+
+.feature-card p {
+  opacity: 0;
+  transition: opacity 0.5s ease-out;
+}
+
+.feature-card:hover p {
+  opacity: 1;
+}
+
+/* Elegant top border accent */
+.feature-card::before {
+  background: linear-gradient(to right, #f8b50b, #dde384);
+  content: '';
+  color: var(--color-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  font-weight: bold;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  transition: height 0.5s ease-out;
+  width: 100%;
+  z-index: 2;
+}
+
+/* Sophisticated hover effect */
+.feature-card:hover {
+  box-shadow: var(--shadow-medium);
+  transform: translateY(-20px);
+}
+
+.feature-card:hover::before {
+  height: 10px;
+  font-size: 1rem;
+  justify-content: flex-end;
+  padding-bottom: 5px;
+}
+
+/* Card headings with premium typography */
+.feature-card h3 {
+  color: var(--color-dark);
+  font-family: var(--font-heading);
+  font-size: 2.2rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  margin-bottom: 1.5rem;
+  margin-top: 0;
+  padding-bottom: 0.8rem;
+  position: relative;
+  text-align: left;
+}
+
+/* Elegant heading underline */
+.feature-card h3::after {
+  background-color: var(--color-gold);
+  bottom: 0;
+  content: '';
+  height: 5px;
+  left: 0;
+  position: absolute;
+  width: 40px;
+}
+
+.feature-card p {
+  color: #39647c;
+  font-family: var(--font-body);
+  font-size: 1.4rem;
+  font-weight: bold;
+  line-height: 1.6;
+  margin: 0;
+  text-align: center;
+}
+/* Subtle blinking animation for cursor */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* Responsive adaptations with premium feel at all sizes */
+@media (max-width: 1024px) {
+  .home {
+    gap: 3rem;
+    padding: 3rem 5%;
+  }
+  
+  .home h1 {
+    font-size: 3.8rem;
+  }
+  
+  .feature-card {
+    padding: 2.2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .home {
+    gap: 2.5rem;
+    grid-template-areas:
+      "header"
+      "main"
+      "sidebar"
+      "features";
+    grid-template-columns: 1fr;
+    padding: 2.5rem 5%;
+  }
+  
+  .home-features {
+    grid-template-columns: 1fr;
+  }
+  
+  .home-sidebar {
+    align-items: flex-start;
+    text-align: center;
+  }
+  
+  .home-sidebar::after {
+    left: -30px;
+    right: auto;
+  }
+  
+  .home h1 {
+    font-size: 3.2rem;
+  }
+  
+  .home h2 {
+    font-size: 1.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --section-spacing: 2.5rem;
+    --card-padding: 2rem;
+  }
+  
+  .home {
+    padding: 2rem 1.5rem;
+  }
+  
+  .home h1 {
+    font-size: 2.8rem;
+  }
+  
+  .home h2 {
+    font-size: 1.6rem;
+  }
+  
+  .typewriter-container {
+    padding: 2rem;
+    min-height: 20px;
+  }
+}
+
+.home {
+  background-image: url('../assets/HomeImage.jpg');
+  background-size: cover;
+  background-position: center;
+  position: relative; /* Ensure the overlay is positioned correctly */
+  /* ...existing styles... */
+}
+
+.home::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.2); /* Adjust the transparency here */
+  z-index: 0; /* Ensure the overlay is behind other content */
+}
+
+.home > * {
+  position: relative;
+  z-index: 1; /* Ensure other content is above the overlay */
+}
+
