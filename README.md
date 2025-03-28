@@ -1,70 +1,118 @@
-# Getting Started with Create React App
+# Personal Website Project
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This repository contains the source code for a personal website project. It is a full-stack application with a **frontend** built using React and a **backend** built using Python (Flask). The project also includes various assets and utilities for functionality and styling.
 
-## Available Scripts
+## Table of Contents
 
-In the project directory, you can run:
+- [Personal Website Project](#personal-website-project)
+  - [Table of Contents](#table-of-contents)
+  - [Project Structure](#project-structure)
+    - [Backend](#backend)
+    - [Frontend](#frontend)
+    - [Assets](#assets)
+  - [Features](#features)
+  - [Setup Instructions](#setup-instructions)
+    - [Prerequisites](#prerequisites)
+    - [Backend Setup](#backend-setup)
+    - [Frontend Setup](#frontend-setup)
+  - [Usage](#usage)
+  - [Contributing](#contributing)
 
-### `npm start`
+---
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Project Structure
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Backend
+- **`backend/`**: Contains the Python Flask backend.
+  - **`app.py`**: Main entry point for the Flask application.
+  - **`config.py`**: Configuration settings for the backend.
+  - **`routes.py`**: Defines API routes.
+  - **`blogProcessing/`**: Handles DOCX file processing.
+  - **`OveralTablesOperation/`**: Manages table operations and includes images for reference.
+  - **`requirements.txt`**: Lists Python dependencies.
 
-### `npm test`
+### Frontend
+- **`frontend/`**: Contains the React frontend.
+  - **`src/`**: Source code for the React application.
+    - **`components/`**: Reusable React components.
+    - **`styles/`**: CSS files for styling.
+    - **`utils/`**: Utility functions for various features.
+  - **`public/`**: Static assets like `index.html` and images.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Assets
+- **`backend/Assets/`**: Includes DOCX files for processing.
+- **`frontend/src/assets/`**: Contains images, PDFs, and global CSS.
 
-### `npm run build`
+---
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Features
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- **Frontend**:
+  - Responsive design with React components.
+  - Dynamic blog listing and post pages.
+  - Navigation bar and additional information sections.
+- **Backend**:
+  - API endpoints for handling blog processing and table operations.
+  - DOCX file extraction and storage.
+  - Table creation and deletion utilities.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+---
 
-### `npm run eject`
+## Setup Instructions
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Prerequisites
+- **Node.js** (for the frontend)
+- **Python 3.8+** (for the backend)
+- **pip** (Python package manager)
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Backend Setup
+1. Navigate to the `backend/` directory:
+   ```bash
+   cd backend
+   ```
+2. Create a virtual environment:
+   ```bash
+   python3 -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   ```
+3. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+4. Create a `.env` file for environment variables (if required).
+5. Run the backend server:
+   ```bash
+   python app.py
+   ```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Frontend Setup
+1. Navigate to the `frontend/` directory:
+   ```bash
+   cd frontend
+   ```
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Start the development server:
+   ```bash
+   npm start
+   ```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+---
 
-## Learn More
+## Usage
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+1. Start the backend server as described in the [Backend Setup](#backend-setup) section.
+2. Start the frontend server as described in the [Frontend Setup](#frontend-setup) section.
+3. Open your browser and navigate to `http://localhost:3000` to view the website.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+---
 
-### Code Splitting
+## Contributing
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Contributions are welcome! Please follow these steps:
+1. Fork the repository.
+2. Create a new branch for your feature or bug fix.
+3. Commit your changes and push them to your fork.
+4. Submit a pull request.
