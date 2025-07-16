@@ -1,0 +1,87 @@
+---
+export interface Props {
+  math: string;
+  block?: boolean;
+  class?: string;
+}
+
+const { math, block = false, class: className = '' } = Astro.props;
+const elementType = block ? 'div' : 'span';
+---
+
+<Fragment>
+  {block ? (
+    <div class={`math-block ${className}`} data-math={math}></div>
+  ) : (
+    <span class={`math-inline ${className}`} data-math={math}></span>
+  )}
+</Fragment>
+
+<style>
+  .math-block {
+    display: block;
+    text-align: center;
+    margin: 1rem 0;
+    overflow-x: auto;
+  }
+  
+  .math-inline {
+    display: inline;
+  }
+  
+  /* KaTeX styles will be loaded via CDN */
+  .math-block .katex-display,
+  .math-inline .katex {
+    font-size: 1.1em;
+  }
+</style>
+
+<script>
+  // Load KaTeX dynamically
+  if (typeof window !== 'undefined') {
+    const loadKaTeX = async () => {
+      if (!window.katex) {
+        // Load KaTeX CSS
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = 'https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css';
+        document.head.appendChild(link);
+        
+        // Load KaTeX JS
+        const script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js';
+        script.onload = () => renderMath();
+        document.head.appendChild(script);
+      } else {
+        renderMath();
+      }
+    };
+    
+    const renderMath = () => {
+      const mathElements = document.querySelectorAll('[data-math]');
+      mathElements.forEach(element => {
+        const math = element.getAttribute('data-math');
+        const isBlock = element.classList.contains('math-block');
+        
+        try {
+          window.katex.render(math, element, {
+            displayMode: isBlock,
+            throwOnError: false,
+            errorColor: '#cc0000',
+            strict: 'warn'
+          });
+        } catch (error) {
+          console.error('KaTeX rendering error:', error);
+          element.textContent = math;
+        }
+      });
+    };
+    
+    // Initialize when DOM is loaded
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', loadKaTeX);
+    } else {
+      loadKaTeX();
+    }
+  }
+</script> 

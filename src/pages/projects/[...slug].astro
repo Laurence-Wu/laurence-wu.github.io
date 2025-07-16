@@ -1,0 +1,251 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../components/Layout.astro';
+import TableOfContents from '../../components/TableOfContents.astro';
+
+export async function getStaticPaths() {
+  const projectEntries = await getCollection('projects');
+  return projectEntries.map(entry => ({
+    params: { slug: entry.slug }, props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+
+// Helper function to get proper URL with base path
+const baseUrl = import.meta.env.BASE_URL;
+function getUrl(path: string): string {
+  const cleanBaseUrl = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
+  const cleanPath = path.startsWith('/') ? path : `/${path}`;
+  return `${cleanBaseUrl}${cleanPath}`;
+}
+---
+
+<Layout
+  title={`${entry.data.title} - Projects`}
+  description={entry.data.description}
+  image={entry.data.image}
+>
+  <TableOfContents />
+  
+  <article class="project-detail">
+    <header class="project-header">
+      <div class="container">
+        <h1>{entry.data.title}</h1>
+        <p class="project-description">{entry.data.description}</p>
+        
+        <div class="project-meta">
+          <div class="project-dates">
+            <time datetime={entry.data.pubDate.toISOString()}>
+              {entry.data.pubDate.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long'
+              })}
+            </time>
+          </div>
+        </div>
+        
+        {entry.data.tags && entry.data.tags.length > 0 && (
+          <div class="project-technologies">
+            <h3>Technologies Used</h3>
+            <div class="tech-tags">
+              {entry.data.tags.map((tag: string) => (
+                <span class="tech-tag">{tag}</span>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    </header>
+    
+    <main class="project-content">
+      <div class="container">
+        <Content />
+      </div>
+    </main>
+    
+    <footer class="project-footer">
+      <div class="container">
+        <a href={getUrl("/projects/")} class="back-link">← Back to Projects</a>
+      </div>
+    </footer>
+  </article>
+</Layout>
+
+<style>
+  .project-detail {
+    padding-top: 2rem;
+  }
+  
+  .project-header {
+    background: linear-gradient(135deg, #8A9A7E 0%, #39647c 50%, #2E3A59 100%);
+    color: white;
+    padding: 4rem 0;
+  }
+  
+  .project-header h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+  }
+  
+  .project-description {
+    font-size: 1.25rem;
+    margin-bottom: 2rem;
+    opacity: 0.9;
+    line-height: 1.6;
+  }
+  
+  .project-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  
+  .project-dates {
+    font-size: 1.1rem;
+    opacity: 0.9;
+  }
+  
+  .project-links {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  
+  .project-link {
+    background: white;
+    color: #39647c;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+  }
+  
+  .project-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .project-link.demo {
+    background: transparent;
+    color: white;
+    border: 2px solid white;
+  }
+  
+  .project-link.demo:hover {
+    background: white;
+    color: #39647c;
+  }
+  
+  .project-technologies {
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    padding-top: 2rem;
+  }
+  
+  .project-technologies h3 {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+    opacity: 0.9;
+  }
+  
+  .tech-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  
+  .tech-tag {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+  
+  .project-content {
+    padding: 4rem 0;
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: #F4E8D1;
+  }
+  
+  /* Adjust layout for TOC on larger screens */
+  @media (min-width: 1201px) {
+    .project-content {
+      margin-left: 320px;
+      margin-right: auto;
+    }
+    
+    .project-footer .container {
+      margin-left: 320px;
+      margin-right: auto;
+    }
+  }
+  
+  .project-content :global(h1),
+  .project-content :global(h2),
+  .project-content :global(h3),
+  .project-content :global(h4),
+  .project-content :global(h5),
+  .project-content :global(h6) {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+  }
+  
+  .project-content :global(p) {
+    margin-bottom: 1rem;
+    line-height: 1.7;
+  }
+  
+  .project-content :global(img) {
+    margin: 2rem 0;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .project-footer {
+    background: #f8f9fa;
+    padding: 2rem 0;
+    border-top: 1px solid #e0e0e0;
+  }
+  
+  .back-link {
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .back-link:hover {
+    text-decoration: underline;
+  }
+  
+  @media (max-width: 768px) {
+    .project-header h1 {
+      font-size: 2rem;
+    }
+    
+    .project-description {
+      font-size: 1.1rem;
+    }
+    
+    .project-meta {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    
+    .project-links {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+</style> 

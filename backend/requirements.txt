@@ -1,6 +1,0 @@
-python-docx
-pillow
-pymysql
-python-dotenv
-flask
-flask-cors

@@ -1,0 +1,185 @@
+---
+export interface Props {
+  title?: string;
+  code: string;
+}
+
+const { title = "", code } = Astro.props;
+---
+
+<script>
+  import mermaid from "mermaid";
+  
+  // Initialize mermaid with configuration
+  mermaid.initialize({ 
+    startOnLoad: false,
+    theme: 'neutral',
+    themeVariables: {
+      // Use website's color scheme
+      primaryColor: '#8A9A7E',           // sage green
+      primaryTextColor: '#2E3A59',       // deep navy
+      primaryBorderColor: '#39647c',     // terracotta
+      lineColor: '#2E3A59',              // deep navy
+      secondaryColor: '#F4E9D8',         // warm neutral
+      tertiaryColor: '#A87C5D',          // warm brown
+      background: '#ffffff',             // white background
+      mainBkg: '#ffffff',                // main background
+      secondaryBkg: '#F4E9D8',           // warm neutral background
+      tertiaryBkg: '#8A9A7E',           // sage green background
+      textColor: '#2E3A59',              // deep navy text
+      fontSize: '16px',
+      fontFamily: 'Montserrat, sans-serif'
+    },
+    securityLevel: 'loose'
+  });
+
+  function renderMermaidDiagrams() {
+    // Find all mermaid components
+    const mermaidElements = document.querySelectorAll("figure.mermaid-diagram");
+    
+    mermaidElements.forEach(async (element, index) => {
+      const codeElement = element.querySelector(".mermaid-code");
+      const containerElement = element.querySelector(".mermaid-container");
+      
+      if (!codeElement || !containerElement) return;
+      
+      const code = codeElement.textContent?.trim();
+      if (!code) return;
+      
+      try {
+        // Generate unique ID for each diagram
+        const id = `mermaid-diagram-${index}`;
+        
+        // Render the mermaid diagram
+        const { svg } = await mermaid.render(id, code);
+        
+        // Replace loading text with the rendered SVG
+        containerElement.innerHTML = svg;
+      } catch (error) {
+        console.error('Error rendering mermaid diagram:', error);
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        containerElement.innerHTML = `<div style="color: #ff6b6b; padding: 1rem; border: 1px solid #ff6b6b; border-radius: 4px;">
+          Error rendering diagram: ${errorMessage}
+        </div>`;
+      }
+    });
+  }
+
+  // Wait for DOM to be loaded and then render diagrams
+  document.addEventListener("DOMContentLoaded", renderMermaidDiagrams);
+</script>
+
+<figure class="mermaid-diagram">
+  {title && <figcaption class="mermaid-title">{title}</figcaption>}
+  
+  <div class="mermaid-container">
+    Loading diagram...
+  </div>
+  
+  <details class="mermaid-source">
+    <summary>Source</summary>
+    <pre class="mermaid-code"><code>{code}</code></pre>
+  </details>
+</figure>
+
+<style>
+  .mermaid-diagram {
+    margin: 2rem 0;
+    border: 2px solid var(--sage-green);
+    border-radius: 12px;
+    overflow: hidden;
+    background: #ffffff;
+    box-shadow: var(--shadow-soft);
+  }
+  
+  .mermaid-title {
+    padding: 1rem 1.5rem;
+    margin: 0;
+    background: var(--sage-green);
+    color: #ffffff;
+    font-weight: 600;
+    font-family: var(--font-heading);
+    font-size: 1.25rem;
+    border-bottom: none;
+  }
+  
+  .mermaid-container {
+    padding: 2rem;
+    text-align: center;
+    min-height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+    color: var(--deep-navy);
+    font-family: var(--font-body);
+  }
+  
+  .mermaid-container svg {
+    max-width: 100%;
+    height: auto;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+  }
+  
+  /* Ensure text in SVG is readable */
+  .mermaid-container svg text {
+    fill: var(--deep-navy) !important;
+    font-family: var(--font-body) !important;
+    font-weight: 500 !important;
+  }
+  
+  /* Style diagram nodes */
+  .mermaid-container svg rect,
+  .mermaid-container svg circle,
+  .mermaid-container svg polygon {
+    fill: #ffffff !important;
+    stroke: var(--sage-green) !important;
+    stroke-width: 2px !important;
+  }
+  
+  /* Style diagram lines/paths */
+  .mermaid-container svg path,
+  .mermaid-container svg line {
+    stroke: var(--deep-navy) !important;
+    stroke-width: 2px !important;
+  }
+  
+  .mermaid-source {
+    border-top: 1px solid var(--sage-green);
+  }
+  
+  .mermaid-source summary {
+    padding: 0.75rem 1.5rem;
+    background: var(--warm-neutral);
+    color: var(--deep-navy);
+    cursor: pointer;
+    user-select: none;
+    font-weight: 500;
+    font-family: var(--font-body);
+    transition: var(--transition-standard);
+  }
+  
+  .mermaid-source summary:hover {
+    background: var(--light-sage);
+    color: #ffffff;
+  }
+  
+  .mermaid-code {
+    margin: 0;
+    padding: 1.5rem;
+    background: var(--warm-neutral);
+    color: var(--deep-navy);
+    overflow-x: auto;
+    font-family: var(--font-code);
+    font-size: 0.875rem;
+    line-height: 1.6;
+    border: none;
+  }
+  
+  .mermaid-code code {
+    background: none;
+    padding: 0;
+    color: inherit;
+    font-family: inherit;
+  }
+</style> 

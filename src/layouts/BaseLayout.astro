@@ -1,0 +1,264 @@
+---
+// BaseLayout.astro - Preserved Design System Base Layout
+export interface Props {
+  title: string;
+  description?: string;
+  image?: string;
+  type?: 'website' | 'article';
+}
+
+const { 
+  title, 
+  description = "Xiaoyou Wu - Computer Engineering Student at Georgia Tech specializing in soft robotics, avionics, and embedded systems",
+  image = "/assets/profile-image.jpg",
+  type = "website"
+} = Astro.props;
+
+import Navigation from '../components/Navigation.astro';
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{title}</title>
+  <meta name="description" content={description}>
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content={type}>
+  <meta property="og:url" content={Astro.url}>
+  <meta property="og:title" content={title}>
+  <meta property="og:description" content={description}>
+  <meta property="og:image" content={image}>
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content={Astro.url}>
+  <meta property="twitter:title" content={title}>
+  <meta property="twitter:description" content={description}>
+  <meta property="twitter:image" content={image}>
+
+  <!-- KaTeX CSS for Math Rendering -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css" integrity="sha384-GvrOXuhMATgEsSwCs4smul74iXGOixntILdUW9XmUC6+HX0sLNAK3q71HotJqlAn" crossorigin="anonymous">
+  
+  <!-- Google Fonts - Preserved Typography System -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&family=Cormorant+Garamond:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Fira Code for code blocks -->
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  
+  <!-- Global CSS Import -->
+  <style is:global>
+    @import '../styles/global.css';
+  </style>
+</head>
+<body>
+  <Navigation />
+  
+  <main class="main-content">
+    <slot />
+  </main>
+  
+  <footer class="site-footer">
+    <div class="footer-content">
+      <p>&copy; 2025 Xiaoyou Wu. All rights reserved.</p>
+      <div class="footer-links">
+        <a href="https://github.com/yourusername" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="https://linkedin.com/in/yourprofile" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a href="/resume.pdf" target="_blank" rel="noopener noreferrer">Resume</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- KaTeX JavaScript for Math Rendering -->
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js" integrity="sha384-cpW21h6RZv/phavutF+AuVYrr+dA8xD9zs6FwLpaCct6O9ctzYFfFr4dgmgccOTx" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous" onload="renderMathInDocument()"></script>
+  <script is:inline>
+    function renderMathInDocument() {
+      if (typeof window.renderMathInElement !== 'undefined') {
+        window.renderMathInElement(document.body, {
+          delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false},
+            {left: '\\(', right: '\\)', display: false},
+            {left: '\\[', right: '\\]', display: true}
+          ],
+          throwOnError: false
+        });
+      }
+    }
+    
+    document.addEventListener("DOMContentLoaded", renderMathInDocument);
+  </script>
+</body>
+</html>
+
+<style>
+  @keyframes floatingWave {
+    0%, 100% {
+      transform: translateX(0) translateY(0) scale(1);
+      background-position: 0% 0%, 100% 100%, 50% 50%;
+    }
+    25% {
+      transform: translateX(10px) translateY(-15px) scale(1.02);
+      background-position: 10% 10%, 90% 90%, 60% 40%;
+    }
+    50% {
+      transform: translateX(-5px) translateY(10px) scale(0.98);
+      background-position: 20% 30%, 80% 70%, 30% 70%;
+    }
+    75% {
+      transform: translateX(-15px) translateY(-5px) scale(1.01);
+      background-position: 30% 20%, 70% 80%, 40% 60%;
+    }
+  }
+
+  @keyframes gridWave {
+    0%, 100% {
+      transform: translateX(0) translateY(0) rotate(0deg);
+      opacity: 0.6;
+    }
+    33% {
+      transform: translateX(20px) translateY(-10px) rotate(0.5deg);
+      opacity: 0.4;
+    }
+    66% {
+      transform: translateX(-10px) translateY(15px) rotate(-0.3deg);
+      opacity: 0.8;
+    }
+  }
+
+  /* Preserved global styling from legacy frontend */
+  body {
+    margin: 0;
+    font-family: var(--font-body);
+    background-color: var(--warm-neutral); /* #F4E9D8 - restored original background */
+    color: var(--deep-navy); /* #2E3A59 - preserved */
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  .main-content {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: calc(100vh - 200px); /* Account for navbar and footer */
+    padding: var(--section-spacing) 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .main-content > * {
+    position: relative;
+    z-index: 2;
+  }
+
+  .main-content::before {
+    content: '';
+    position: fixed;
+    top: 80px; /* Start below navbar */
+    left: 0;
+    right: 0;
+    bottom: 160px; /* End above footer */
+    background: 
+      radial-gradient(circle at 20% 20%, rgba(138, 154, 126, 0.15) 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(212, 175, 55, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 40% 60%, rgba(138, 154, 126, 0.08) 0%, transparent 50%);
+    background-color: #F4E8D1;
+    background-size: 100px 100px, 150px 150px, 200px 200px;
+    animation: floatingWave 20s ease-in-out infinite;
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  .main-content::after {
+    content: '';
+    position: fixed;
+    top: 80px; /* Start below navbar */
+    left: 0;
+    right: 0;
+    bottom: 160px; /* End above footer */
+    background-image: 
+      linear-gradient(rgba(138, 154, 126, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(138, 154, 126, 0.05) 1px, transparent 1px),
+      linear-gradient(rgba(212, 175, 55, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(212, 175, 55, 0.03) 1px, transparent 1px);
+    background-size: 50px 50px, 50px 50px, 80px 80px, 80px 80px;
+    animation: gridWave 20s ease-in-out infinite;
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  .site-footer {
+    background-color: var(--sage-green); /* Preserved sage green */
+    color: rgb(255, 255, 255);
+    padding: 2rem 0;
+    text-align: center;
+    margin-top: 4rem;
+    font-family: var(--font-body);
+  }
+
+  .footer-content {
+    max-width: var(--content-max-width);
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  .footer-content p {
+    color: white;
+    font-family: var(--font-body);
+    margin-bottom: 1rem;
+  }
+
+  .footer-links {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+  }
+
+  .footer-links a {
+    color: white;
+    text-decoration: none;
+    transition: var(--transition-standard);
+    font-family: var(--font-body);
+    font-weight: 500;
+  }
+
+  .footer-links a:hover {
+    color: var(--gold-accent);
+    transform: translateY(-2px);
+  }
+
+  .footer-links a::after {
+    display: none; /* Remove the underline effect for footer links */
+  }
+
+  /* Responsive design */
+  @media (max-width: 768px) {
+    .main-content {
+      padding: 2rem 0;
+    }
+    
+    .footer-links {
+      flex-direction: column;
+      gap: 1rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .main-content {
+      padding: 1.5rem 0;
+    }
+    
+    .footer-content {
+      padding: 0 1rem;
+    }
+  }
+</style> 

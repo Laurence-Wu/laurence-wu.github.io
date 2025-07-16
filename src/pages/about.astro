@@ -1,0 +1,257 @@
+---
+// About Page - Preserved Legacy Frontend Design
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="About - Xiaoyou Wu" description="Learn about Xiaoyou Wu's journey in computer engineering, passion projects, and vision for the future of technology.">
+  <div class="about">
+    <div class="container">
+      <h1>About Me</h1>
+      
+      <div class="about-content">
+        <p>
+          Welcome to my corner of the digital world! I'm Xiaoyou Wu, a Computer Engineering student at Georgia Tech 
+          with a deep passion for bridging the gap between theoretical knowledge and practical innovation. My journey 
+          in engineering is driven by curiosity about how things work and a desire to create solutions that make a 
+          meaningful impact.
+        </p>
+        
+        <p>
+          My fascination with technology began early, but it was during my studies at Georgia Tech that I discovered 
+          my love for the intersection of hardware and software. From designing PCBs for flight computers to exploring 
+          the delicate world of soft robotics, I'm constantly amazed by the possibilities that emerge when creativity 
+          meets engineering rigor.
+        </p>
+        
+        <h2>What Drives Me</h2>
+        <p>
+          I believe that the most exciting innovations happen at the boundaries between disciplines. Whether it's 
+          developing bio-inspired robotic systems or creating avionics solutions for aerospace applications, I'm 
+          drawn to projects that require both technical depth and creative problem-solving.
+        </p>
+        
+        <p>
+          My work in soft robotics particularly excites me because it represents a paradigm shift from rigid, 
+          precise machines to adaptive, compliant systems that can work safely alongside humans and navigate 
+          unpredictable environments.
+        </p>
+        
+        <h2>Beyond Engineering</h2>
+        <p>
+          When I'm not immersed in circuits and code, you might find me exploring new technologies, reading about 
+          the latest developments in robotics and AI, or working on personal projects that challenge me to learn 
+          new skills. I'm also passionate about sharing knowledge and helping others discover the joy of engineering.
+        </p>
+        
+        <p>
+          This website serves as both a portfolio of my work and a platform for sharing insights from my engineering 
+          journey. I hope you'll find something here that inspires or helps you in your own pursuits.
+        </p>
+        
+        <h2>Looking Forward</h2>
+        <p>
+          As I continue my studies and prepare for the next phase of my career, I'm excited about the opportunities 
+          to contribute to cutting-edge research and development. Whether in academia or industry, I'm committed to 
+          pushing the boundaries of what's possible in engineering and technology.
+        </p>
+        
+        <p>
+          Thank you for taking the time to learn about my story. I'd love to connect with fellow engineers, 
+          researchers, and anyone passionate about technology and innovation.
+        </p>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  /* About Page Styles - Preserved from Legacy Frontend */
+  .about {
+    background-color: #F4E8D1;
+    color: var(--color-text);
+    font-family: var(--font-body);
+    padding: var(--section-spacing) 0;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Premium heading with luxury styling - Preserved */
+  .about h1 {
+    color: var(--color-dark);
+    display: inline-block;
+    font-family: var(--font-heading);
+    font-size: 3.5rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    line-height: 1.2;
+    margin-bottom: 2rem;
+    position: relative;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Elegant heading underline - Preserved */
+  .about h1::after {
+    background: linear-gradient(to right, var(--color-gold), var(--color-gold-light));
+    bottom: -10px;
+    content: '';
+    height: 3px;
+    left: 50%;
+    position: absolute;
+    transform: translateX(-50%);
+    width: 80px;
+  }
+
+  /* Decorative elements - Preserved */
+  .about::before {
+    background: linear-gradient(to bottom, var(--color-gold), transparent);
+    content: '';
+    height: 120px;
+    left: 20px;
+    opacity: 0.7;
+    position: absolute;
+    top: 0;
+    width: 3px;
+  }
+
+  .about::after {
+    background: linear-gradient(to bottom, transparent, var(--color-gold));
+    content: '';
+    height: 120px;
+    right: 20px;
+    opacity: 0.7;
+    position: absolute;
+    bottom: 0;
+    width: 3px;
+  }
+
+  /* Content container with premium styling - Preserved */
+  .about-content {
+    background-color: var(--color-card-bg);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-soft);
+    margin: 2rem auto;
+    max-width: 850px;
+    padding: var(--card-padding);
+    position: relative;
+    transition: var(--transition-standard);
+  }
+
+  .about-content:hover {
+    box-shadow: var(--shadow-medium);
+  }
+
+  /* Elegant side accent - Preserved */
+  .about-content::before {
+    background: linear-gradient(to bottom, var(--color-gold), var(--color-gold-light));
+    content: '';
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 4px;
+    border-radius: var(--border-radius-lg) 0 0 var(--border-radius-lg);
+  }
+
+  .about h2 {
+    color: var(--color-gold);
+    font-family: var(--font-heading);
+    font-size: 2.2rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    margin-top: 2.5rem;
+    margin-bottom: 1.5rem;
+    text-align: left;
+    position: relative;
+  }
+
+  .about h2::after {
+    background-color: var(--color-gold);
+    bottom: -5px;
+    content: '';
+    height: 2px;
+    left: 0;
+    position: absolute;
+    width: 60px;
+  }
+
+  .about p {
+    color: var(--color-text);
+    font-family: var(--font-accent);
+    font-size: 1.2rem;
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+    text-align: left;
+  }
+
+  .about a {
+    color: var(--color-gold);
+    font-family: var(--font-accent);
+    font-weight: 500;
+    position: relative;
+    text-decoration: none;
+    transition: var(--transition-standard);
+  }
+
+  .about a:hover {
+    color: var(--color-gold-light);
+  }
+
+  .about a::after {
+    background-color: var(--color-gold);
+    bottom: -2px;
+    content: '';
+    height: 1px;
+    left: 0;
+    position: absolute;
+    transition: var(--transition-standard);
+    width: 100%;
+  }
+
+  .about a:hover::after {
+    background-color: var(--color-gold-light);
+  }
+
+  /* Responsive adaptations - Preserved */
+  @media (max-width: 768px) {
+    .about {
+      padding: 2.5rem 0;
+    }
+    
+    .about h1 {
+      font-size: 2.8rem;
+    }
+    
+    .about h2 {
+      font-size: 1.9rem;
+    }
+    
+    .about-content {
+      padding: 2rem;
+      margin: 1.5rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .about {
+      padding: 2rem 0;
+    }
+    
+    .about h1 {
+      font-size: 2.4rem;
+    }
+    
+    .about h2 {
+      font-size: 1.6rem;
+    }
+    
+    .about p {
+      font-size: 1.1rem;
+    }
+    
+    .about-content {
+      padding: 1.8rem;
+      margin: 1rem;
+    }
+  }
+</style> 

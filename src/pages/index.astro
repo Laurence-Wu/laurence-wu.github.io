@@ -1,0 +1,463 @@
+---
+// Home Page - Preserved Legacy Frontend Design
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Xiaoyou Wu - Computer Engineering">
+  <div class="home">
+    <div class="home-header">
+      <h1>Xiaoyou Wu</h1>
+    </div>
+    
+    <div class="home-main">
+      <h2>Computer Engineering at Georgia Tech</h2>
+      <div class="typewriter-container">
+        <span class="typewriter-text" id="typewriter-text">Welcome to my engineering journey...</span>
+      </div>
+    </div>
+    
+    <div class="home-sidebar">
+      <p>Specializing in soft robotics, avionics, and embedded systems</p>
+    </div>
+    
+    <div class="home-features">
+      <div class="feature-card">
+        <div class="face">Why Avionics</div>
+        <h3>Flight PCB Design</h3>
+        <p>Creatures that can fly live a different life than that can only walk</p>
+      </div>
+      
+      <div class="feature-card">
+        <div class="face">Why Web</div>
+        <h3>Full Stack development</h3>
+        <p>AI can never replace an excellent web architect</p>
+      </div>
+      
+      <div class="feature-card">
+        <div class="face">Why ML</div>
+        <h3>positional encoding research</h3>
+        <p>Incredible Architecture fused the hardware and software</p>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  /* Home Page Styles - Preserved from Legacy Frontend */
+  .home {
+    display: grid;
+    grid-template-areas:
+      "header header header"
+      "main main sidebar"
+      "features features features";
+    grid-template-columns: 1fr 1fr 0.8fr;
+    gap: var(--section-spacing);
+    max-width: var(--content-max-width);
+    margin: 0 auto;
+    padding: var(--section-spacing) 5%;
+    position: relative;
+    
+    /* Preserved background styling */
+    background-image: url('/PersonalWebsite//HomeImage.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+  }
+
+  .home::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.1); /* Subtle overlay */
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .home > * {
+    position: relative;
+    z-index: 1; /* Ensure content is above overlay */
+  }
+
+  /* Header section with elegant styling - Preserved */
+  .home-header {
+    grid-area: header;
+    padding-bottom: 3rem;
+    position: relative;
+    text-align: left;
+  }
+
+  /* Sophisticated header bottom border with gradient - Preserved */
+  .home-header::after {
+    background: linear-gradient(to right, 
+      transparent, 
+      rgba(212, 175, 55, 0.3) 15%, 
+      rgba(212, 175, 55, 0.6) 50%,
+      rgba(212, 175, 55, 0.3) 85%, 
+      transparent);
+    bottom: 0;
+    content: '';
+    height: 1px;
+    left: 0;
+    position: absolute;
+    width: 100%;
+  }
+
+  /* Primary heading with luxury styling - Preserved */
+  .home h1 {
+    color: var(--color-dark);
+    display: inline-block;
+    font-family: var(--font-heading);
+    font-size: 4.2rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    line-height: 1.2;
+    margin-bottom: 1.2rem;
+    position: relative;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Elegant heading underline - Preserved */
+  .home h1::after {
+    background: linear-gradient(to right, var(--color-gold), var(--color-gold-light));
+    bottom: -10px;
+    content: '';
+    height: 15px;
+    left: 0;
+    position: absolute;
+    width: 300px;
+  }
+
+  /* Main content area with sophisticated positioning - Preserved */
+  .home-main {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    grid-area: main;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+    min-height: 251px;
+  }
+
+  /* Secondary heading with premium typography - Preserved */
+  .home h2 {
+    color: #0e3d2f;
+    font-family: var(--font-accent);
+    font-size: 2rem;
+    font-weight: 900;
+    letter-spacing: 0.01em;
+    line-height: 1.5;
+    margin: 0 0 2.2rem 0;
+    max-width: 90%;
+    position: relative;
+    text-align: left;
+    transition: color 0.5s ease-in-out, font-size 0.5s ease-in-out, font-family 0.5s ease-in-out;
+  }
+
+  .home h2:hover {
+    color: #ff0101;
+    font-family: 'Yellowtail', cursive;
+    font-size: 2.5rem;
+    font-weight: 900;
+    letter-spacing: 0.01em;
+    transition: transform 0.5s ease-out, font-size 0.5s ease-in-out, font-family 0.5s ease-in-out;
+  }
+
+  /* Sidebar with balanced composition - Preserved */
+  .home-sidebar {
+    color: #0e3d2f;
+    align-items: flex-end;
+    display: flex;
+    flex-direction: column;
+    grid-area: sidebar;
+    justify-content: center;
+    position: relative;
+    text-align: right;
+  }
+
+  /* Elegant decorative element - Preserved */
+  .home-sidebar::after {
+    background: linear-gradient(to bottom, transparent, var(--color-gold), transparent);
+    content: '';
+    height: 140px;
+    opacity: 0.5;
+    position: absolute;
+    right: -60px;
+    top: 20%;
+    width: 3px;
+  }
+
+  .home-sidebar p {
+    font-family: var(--font-accent);
+    font-size: 1.4rem;
+    line-height: 1.6;
+    color: var(--terracotta);
+    font-weight: bold;
+  }
+
+  /* Typewriter container with premium styling - Preserved */
+  .typewriter-container {
+    align-self: flex-start;
+    background-color: var(--color-card-bg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-soft);
+    margin: 1.5rem 0;
+    max-width: 90%;
+    overflow: hidden;
+    padding: 2.8rem;
+    position: relative;
+    transition: var(--transition-standard);
+  }
+
+  /* Refined hover effect for depth - Preserved */
+  .typewriter-container:hover {
+    box-shadow: var(--shadow-medium);
+    transform: translateY(-5px);
+  }
+
+  /* Elegant side accent - Preserved */
+  .typewriter-container::before {
+    content: '';
+    background: conic-gradient(
+      from 180deg at 50% 50%, 
+      #ff4500, 
+      #ff8c00, 
+      #ffd700, 
+      #ff4500
+    );
+    transition: all 0.6s ease;
+    opacity: 0;
+    height: 100%;
+    width: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+  }
+
+  .typewriter-container:hover::before {
+    opacity: 0.7;
+    transform: scale(2);
+  }
+
+  /* Typewriter text with premium font - Preserved */
+  .typewriter-text {
+    color: var(--color-dark);
+    display: inline-block;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.6rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    line-height: 1.6;
+    font-weight: bold;
+    position: relative;
+    min-width: 20px;
+  }
+
+  /* Feature section with premium grid layout - Preserved */
+  .home-features {
+    display: grid;
+    gap: 2rem;
+    grid-area: features;
+    grid-template-columns: repeat(3, 1fr);
+    margin-top: 3.5rem;
+    padding-bottom: 100px;
+  }
+
+  /* Feature cards with luxury styling - Preserved */
+  .feature-card {
+    background-color: var(--premium-bg); /* #ffdd8e */
+    border: 6px solid var(--card-border); /* #cdba7d */
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-soft);
+    overflow: hidden;
+    padding: 1.8rem;
+    position: relative;
+    transition: var(--transition-standard);
+  }
+
+  .feature-card .face {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(to right, #f8b50b, #dde384);
+    transition: transform 0.5s ease-out;
+    z-index: 2;
+    font-size: 2.5rem;
+  }
+
+  .feature-card:hover .face {
+    transform: translateX(-100%);
+  }
+
+  .feature-card p {
+    opacity: 0;
+    transition: opacity 0.5s ease-out;
+  }
+
+  .feature-card:hover p {
+    opacity: 1;
+  }
+
+  /* Elegant top border accent - Preserved */
+  .feature-card::before {
+    background: linear-gradient(to right, #f8b50b, #dde384);
+    content: '';
+    color: var(--color-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    font-weight: bold;
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    transition: height 0.5s ease-out;
+    width: 100%;
+    z-index: 2;
+  }
+
+  /* Sophisticated hover effect - Preserved */
+  .feature-card:hover {
+    box-shadow: var(--shadow-medium);
+    transform: translateY(-15px);
+  }
+
+  .feature-card:hover::before {
+    height: 10px;
+    font-size: 1rem;
+    justify-content: flex-end;
+    padding-bottom: 5px;
+  }
+
+  /* Card headings with premium typography - Preserved */
+  .feature-card h3 {
+    color: var(--color-dark);
+    font-family: var(--font-heading);
+    font-size: 1.8rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    margin-bottom: 1.2rem;
+    margin-top: 0;
+    padding-bottom: 0.6rem;
+    position: relative;
+    text-align: left;
+  }
+
+  /* Elegant heading underline - Preserved */
+  .feature-card h3::after {
+    background-color: var(--color-gold);
+    bottom: 0;
+    content: '';
+    height: 5px;
+    left: 0;
+    position: absolute;
+    width: 40px;
+  }
+
+  .feature-card p {
+    color: var(--terracotta); /* #39647c */
+    font-family: var(--font-accent);
+    font-size: 1.2rem;
+    font-weight: bold;
+    line-height: 1.6;
+    margin: 0;
+    text-align: center;
+  }
+
+  /* Responsive adaptations with premium feel at all sizes - Preserved */
+  @media (max-width: 1024px) {
+    .home {
+      gap: 3rem;
+      padding: 3rem 5%;
+    }
+    
+    .home h1 {
+      font-size: 3.8rem;
+    }
+    
+    .feature-card {
+      padding: 1.6rem;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .home {
+      gap: 2.5rem;
+      grid-template-areas:
+        "header"
+        "main"
+        "sidebar"
+        "features";
+      grid-template-columns: 1fr;
+      padding: 2.5rem 5%;
+    }
+    
+    .home-features {
+      grid-template-columns: 1fr;
+    }
+    
+    .home-sidebar {
+      align-items: flex-start;
+      text-align: center;
+    }
+    
+    .home-sidebar::after {
+      left: -30px;
+      right: auto;
+    }
+    
+    .home h1 {
+      font-size: 3.2rem;
+    }
+    
+    .home h2 {
+      font-size: 1.8rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .home {
+      padding: 2rem 1.5rem;
+    }
+    
+    .home h1 {
+      font-size: 2.8rem;
+    }
+    
+    .home h2 {
+      font-size: 1.6rem;
+    }
+    
+    .typewriter-container {
+      padding: 2rem;
+      min-height: 20px;
+    }
+  }
+</style>
+
+<script>
+  // Simple typewriter effect - Preserved from legacy
+  const text = "Passionate about engineering innovation, from flight computers to soft robotics...";
+  const typewriterElement = document.getElementById("typewriter-text");
+  let i = 0;
+  
+  function typeWriter() {
+    if (typewriterElement && i < text.length) {
+      typewriterElement.textContent = text.slice(0, i + 1);
+      i++;
+      setTimeout(typeWriter, 50);
+    }
+  }
+  
+  // Start typewriter effect when page loads
+  setTimeout(typeWriter, 1000);
+</script>

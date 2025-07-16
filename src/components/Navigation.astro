@@ -1,0 +1,143 @@
+---
+// Navigation.astro - Preserved Legacy Frontend Styling
+export interface Props {
+  currentPath?: string;
+}
+
+const { currentPath = Astro.url.pathname } = Astro.props;
+const baseUrl = import.meta.env.BASE_URL;
+
+// Helper function to check if a path is active
+function isActive(linkPath: string, currentPath: string): boolean {
+  const fullLinkPath = getUrl(linkPath);
+  if (linkPath === '/') {
+    return currentPath === baseUrl || currentPath === '/' || currentPath === baseUrl.slice(0, -1);
+  }
+  return currentPath.includes(linkPath) || currentPath.includes(fullLinkPath);
+}
+
+// Helper function to get proper URL
+function getUrl(path: string): string {
+  if (path === '/') {
+    return baseUrl;
+  }
+  // Remove trailing slash from baseUrl and leading slash from path to avoid double slashes
+  const cleanBaseUrl = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
+  const cleanPath = path.startsWith('/') ? path : `/${path}`;
+  return `${cleanBaseUrl}${cleanPath}`;
+}
+---
+
+<nav class="navbar">
+  <div class="navbar-brand">Xiaoyou Wu</div>
+  
+  <a href={getUrl('/')} class={`navbar-link ${isActive('/', currentPath) ? 'active' : ''}`}>
+    Home
+  </a>
+  
+  <a href={getUrl('/blog')} class={`navbar-link ${isActive('/blog', currentPath) ? 'active' : ''}`}>
+    Blog
+  </a>
+  
+  <a href={getUrl('/profile')} class={`navbar-link ${isActive('/profile', currentPath) ? 'active' : ''}`}>
+    Profile
+  </a>
+  
+  <a href={getUrl('/projects')} class={`navbar-link ${isActive('/projects', currentPath) ? 'active' : ''}`}>
+    Projects
+  </a>
+  
+  <a href={getUrl('/about')} class={`navbar-link ${isActive('/about', currentPath) ? 'active' : ''}`}>
+    About
+  </a>
+  
+  <a href={getUrl('/contact')} class={`navbar-link ${isActive('/contact', currentPath) ? 'active' : ''}`}>
+    Contact
+  </a>
+</nav>
+
+<style>
+  /* Navbar styles - Exactly Preserved from Legacy Frontend */
+  .navbar {
+    font-family: var(--font-body); /* Montserrat - preserved */
+    background-color: var(--sage-green); /* #8A9A7E - preserved */
+    overflow: hidden; /* Prevent content overflow - preserved */
+    display: flex; /* Use flexbox for layout - preserved */
+    justify-content: space-around; /* Distribute items evenly with space around them - preserved */
+    text-align: center;
+    align-items: center; /* Center items vertically - preserved */
+    padding: 15px 0; /* Add vertical padding - preserved */
+    box-shadow: var(--shadow-navbar); /* 0 4px 8px rgba(0, 0, 0, 0.1) - preserved */
+    height: 100px; /* Preserved height */
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    transition: var(--transition-standard);
+  }
+
+  .navbar-brand {
+    font-family: var(--font-heading); /* Playfair Display - preserved */
+    font-size: 20px; /* Preserved font size */
+    color: var(--deep-navy); /* #2E3A59 - preserved */
+    text-transform: uppercase; /* Preserved */
+    font-weight: 700; /* Preserved bold weight */
+    padding: 0 25px; /* Preserved horizontal padding */
+  }
+
+  .navbar-link {
+    color: var(--terracotta); /* #39647c - preserved */
+    text-decoration: none; /* Remove underline from links - preserved */
+    transition: var(--transition-standard); /* Smooth transition for all properties - preserved */
+    font-size: 16px; /* Ensure all links have the same font size - preserved */
+    letter-spacing: 1px; /* Add spacing between letters - preserved */
+    text-transform: uppercase; /* Convert text to uppercase - preserved */
+    font-weight: 700; /* Bold font weight - preserved */
+    padding: 12px 25px; /* Add padding around links - preserved */
+    border-bottom: 2px solid transparent; /* Add border for dynamic effect - preserved */
+    position: relative;
+  }
+
+  .navbar-link:hover,
+  .navbar-link.active {
+    color: var(--gold-accent); /* #FFD700 - preserved */
+    border-bottom: 2px solid var(--gold-accent); /* Preserved border change */
+    transform: scale(1.1); /* Slightly increase size on hover - preserved */
+    background-color: #444444; /* Darker background on hover - preserved */
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition - preserved */
+  }
+
+  /* Responsive design - Preserved */
+  @media (max-width: 768px) {
+    .navbar {
+      flex-direction: column;
+      height: auto;
+      padding: 10px 0;
+    }
+    
+    .navbar-link {
+      margin: 5px 0;
+      padding: 8px 15px;
+    }
+    
+    .navbar-brand {
+      margin-bottom: 10px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .navbar {
+      padding: 8px 0;
+    }
+    
+    .navbar-brand {
+      font-size: 18px;
+      padding: 0 15px;
+    }
+    
+    .navbar-link {
+      font-size: 14px;
+      padding: 6px 12px;
+      letter-spacing: 0.5px;
+    }
+  }
+</style> 

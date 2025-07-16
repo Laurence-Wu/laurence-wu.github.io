@@ -1,0 +1,277 @@
+---
+import Layout from '../../components/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const allProjects = await getCollection('projects');
+const sortedProjects = allProjects.sort((a, b) => 
+  b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+// Since we removed 'featured' field, just show all projects
+const featuredProjects = sortedProjects.slice(0, 1); // Show first project as featured
+const otherProjects = sortedProjects.slice(1); // Rest as other projects
+
+// Helper function to get proper URL with base path
+const baseUrl = import.meta.env.BASE_URL;
+function getUrl(path: string): string {
+  const cleanBaseUrl = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
+  const cleanPath = path.startsWith('/') ? path : `/${path}`;
+  return `${cleanBaseUrl}${cleanPath}`;
+}
+---
+
+<Layout title="Projects - Laurence" description="Explore my engineering and software development projects.">
+  <div class="projects-header">
+    <div class="container">
+      <h1>Projects</h1>
+      <p>Engineering and software development work</p>
+    </div>
+  </div>
+
+  <section class="projects-content">
+    <div class="container">
+      {featuredProjects.length > 0 && (
+        <div class="featured-section">
+          <h2>Featured Projects</h2>
+          <div class="projects-grid featured">
+            {featuredProjects.map(project => (
+              <article class="project-card featured-card">
+                <header class="project-header">
+                  <h3>
+                    <a href={getUrl(`/projects/${project.slug}/`)}>{project.data.title}</a>
+                  </h3>
+                  <div class="project-meta">
+                    <time datetime={project.data.pubDate.toISOString()}>
+                      {project.data.pubDate.toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'short'
+                      })}
+                    </time>
+                  </div>
+                </header>
+                
+                <p class="project-description">{project.data.description}</p>
+                
+                <div class="project-technologies">
+                  {project.data.tags && project.data.tags.slice(0, 4).map((tag: string) => (
+                    <span class="tech-tag">{tag}</span>
+                  ))}
+                  {project.data.tags && project.data.tags.length > 4 && (
+                    <span class="tech-tag">+{project.data.tags.length - 4}</span>
+                  )}
+                </div>
+                
+                <div class="project-links">
+                  <a href={getUrl(`/projects/${project.slug}/`)} class="project-link">
+                    <span>Details</span>
+                  </a>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {otherProjects.length > 0 && (
+        <div class="other-projects-section">
+          <h2>Other Projects</h2>
+          <div class="projects-grid">
+            {otherProjects.map(project => (
+              <article class="project-card">
+                <header class="project-header">
+                  <h3>
+                    <a href={getUrl(`/projects/${project.slug}/`)}>{project.data.title}</a>
+                  </h3>
+                  <div class="project-meta">
+                    <time datetime={project.data.pubDate.toISOString()}>
+                      {project.data.pubDate.toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'short'
+                      })}
+                    </time>
+                  </div>
+                </header>
+                
+                <p class="project-description">{project.data.description}</p>
+                
+                <div class="project-technologies">
+                  {project.data.tags && project.data.tags.slice(0, 3).map((tag: string) => (
+                    <span class="tech-tag">{tag}</span>
+                  ))}
+                  {project.data.tags && project.data.tags.length > 3 && (
+                    <span class="tech-tag">+{project.data.tags.length - 3}</span>
+                  )}
+                </div>
+                
+                <div class="project-links">
+                  <a href={getUrl(`/projects/${project.slug}/`)} class="project-link">
+                    Details
+                  </a>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .projects-header {
+    background: linear-gradient(135deg, #8A9A7E 0%, #39647c 50%, #2E3A59 100%);
+    color: white;
+    padding: 4rem 0 3rem;
+    text-align: center;
+  }
+  
+  .projects-header h1 {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+  }
+
+  
+  .projects-header p {
+    font-size: 1.5rem;
+    font-weight: 600;
+    opacity: 0.9;
+    margin: 0;
+    color: #d7ad7d;
+    
+  }
+  
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+  
+  .projects-content {
+    padding: 4rem 0;
+  }
+  
+  .featured-section {
+    margin-bottom: 4rem;
+  }
+  
+  .featured-section h2,
+  .other-projects-section h2 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    color: #2d3748;
+  }
+  
+  .projects-grid {
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+  
+  .projects-grid.featured {
+    grid-template-columns: 1fr;
+    max-width: 800px;
+  }
+  
+  .project-card {
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: 1px solid #e2e8f0;
+  }
+  
+  .project-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  }
+  
+  .featured-card {
+    background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+    border: 2px solid #8A9A7E;
+  }
+  
+  .project-header h3 {
+    margin: 0 0 0.5rem 0;
+  }
+  
+  .project-header h3 a {
+    color: #2d3748;
+    text-decoration: none;
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+  
+  .project-header h3 a:hover {
+    color: #8A9A7E;
+  }
+  
+  .project-meta {
+    color: #718096;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+  }
+  
+  .project-description {
+    color: #2d3748;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+  }
+  
+  .project-technologies {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .tech-tag {
+    background: #edf2f7;
+    color: #4a5568;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+  }
+  
+  .project-links {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  
+  .project-link {
+    color: #8A9A7E;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border: 1px solid #8A9A7E;
+    border-radius: 6px;
+    transition: all 0.2s;
+    font-size: 0.9rem;
+  }
+  
+  .project-link:hover {
+    background: #8A9A7E;
+    color: white;
+  }
+  
+  @media (max-width: 768px) {
+    .projects-header h1 {
+      font-size: 2.5rem;
+    }
+    
+    .projects-header p {
+      font-size: 1.1rem;
+    }
+    
+    .project-card {
+      padding: 1.5rem;
+    }
+    
+    .projects-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style> 

@@ -1,0 +1,120 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import TableOfContents from '../components/TableOfContents.astro';
+import { formatDate } from '../utils/date';
+
+export interface Props {
+  title: string;
+  description?: string;
+  pubDate: Date;
+  updatedDate?: Date;
+  author?: string;
+  image?: string;
+  tags?: string[];
+}
+
+const { title, description, pubDate, updatedDate, author = 'Laurence', image, tags = [] } = Astro.props;
+---
+
+<BaseLayout title={title} description={description} image={image}>
+  <TableOfContents />
+  
+  <main class="blog-post">
+    <article>
+      <header class="post-header">
+        <h1>{title}</h1>
+        <div class="post-meta">
+          <time datetime={pubDate.toISOString()}>
+            {formatDate(pubDate)}
+          </time>
+          {author && <span class="author">by {author}</span>}
+          {updatedDate && (
+            <span class="updated">
+              (Updated: <time datetime={updatedDate.toISOString()}>
+                {formatDate(updatedDate)}
+              </time>)
+            </span>
+          )}
+        </div>
+        {tags.length > 0 && (
+          <div class="tags">
+            {tags.map(tag => (
+              <span class="tag">{tag}</span>
+            ))}
+          </div>
+        )}
+      </header>
+      
+      <div class="post-content">
+        <slot />
+      </div>
+    </article>
+  </main>
+</BaseLayout>
+
+<style>
+  .blog-post {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    background-color: #F4E8D1;
+  }
+  
+  /* Adjust layout for TOC on larger screens */
+  @media (min-width: 1201px) {
+    .blog-post {
+      margin-left: 320px;
+      margin-right: auto;
+    }
+  }
+  
+  .post-header {
+    margin-bottom: 2rem;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 1rem;
+  }
+  
+  .post-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    line-height: 1.2;
+  }
+  
+  .post-meta {
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+  }
+  
+  .post-meta time {
+    font-weight: 500;
+  }
+  
+  .author {
+    margin-left: 1rem;
+  }
+  
+  .updated {
+    margin-left: 1rem;
+    font-style: italic;
+  }
+  
+  .tags {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  
+  .tag {
+    background: #f0f0f0;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.8rem;
+    color: #333;
+  }
+  
+  .post-content {
+    line-height: 1.7;
+    color:#F4E8D1
+  }
+</style> 

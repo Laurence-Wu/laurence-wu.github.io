@@ -1,0 +1,101 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+export interface Props {
+  title: string;
+  description?: string;
+  image?: string;
+}
+
+const { title, description, image } = Astro.props;
+---
+
+<BaseLayout title={title} description={description} image={image}>
+  <main class="main-content">
+    <slot />
+  </main>
+</BaseLayout>
+
+<style>
+  @keyframes floatingWave {
+    0%, 100% {
+      transform: translateX(0) translateY(0) scale(1);
+      background-position: 0% 0%, 100% 100%, 50% 50%;
+    }
+    25% {
+      transform: translateX(10px) translateY(-15px) scale(1.02);
+      background-position: 10% 10%, 90% 90%, 60% 40%;
+    }
+    50% {
+      transform: translateX(-5px) translateY(10px) scale(0.98);
+      background-position: 20% 30%, 80% 70%, 30% 70%;
+    }
+    75% {
+      transform: translateX(-15px) translateY(-5px) scale(1.01);
+      background-position: 30% 20%, 70% 80%, 40% 60%;
+    }
+  }
+
+  @keyframes gridWave {
+    0%, 100% {
+      transform: translateX(0) translateY(0) rotate(0deg);
+      opacity: 0.6;
+    }
+    33% {
+      transform: translateX(20px) translateY(-10px) rotate(0.5deg);
+      opacity: 0.4;
+    }
+    66% {
+      transform: translateX(-10px) translateY(15px) rotate(-0.3deg);
+      opacity: 0.8;
+    }
+  }
+
+  .main-content {
+    margin-top: 0; /* No gap with navbar */
+    min-height: calc(100vh - 80px); /* Account for navbar only */
+    position: relative;
+    z-index: 1;
+  }
+
+  .main-content > * {
+    position: relative;
+    z-index: 2;
+  }
+
+  .main-content::before {
+    content: '';
+    position: fixed;
+    top: 80px; /* Start below navbar */
+    left: 0;
+    right: 0;
+    bottom: 0; /* No footer in Layout.astro, go to bottom */
+    background: 
+      radial-gradient(circle at 20% 20%, rgba(138, 154, 126, 0.15) 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(212, 175, 55, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 40% 60%, rgba(138, 154, 126, 0.08) 0%, transparent 50%);
+    background-color: #F4E8D1;
+    background-size: 100px 100px, 150px 150px, 200px 200px;
+    animation: floatingWave 20s ease-in-out infinite;
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  .main-content::after {
+    content: '';
+    position: fixed;
+    top: 80px; /* Start below navbar */
+    left: 0;
+    right: 0;
+    bottom: 0; /* No footer in Layout.astro, go to bottom */
+    background-image: 
+      linear-gradient(rgba(138, 154, 126, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(138, 154, 126, 0.05) 1px, transparent 1px),
+      linear-gradient(rgba(212, 175, 55, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(212, 175, 55, 0.03) 1px, transparent 1px);
+    background-size: 50px 50px, 50px 50px, 80px 80px, 80px 80px;
+    animation: gridWave 20s ease-in-out infinite;
+    z-index: -1;
+    pointer-events: none;
+  }
+</style> 
