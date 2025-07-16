@@ -9,7 +9,7 @@ import remarkGfm from 'remark-gfm';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://laurence-wu.github.io', // Your GitHub Pages root domain
-  base: '/personalWebsite/',
+  base: '/',
   outDir: './docs',
   
   integrations: [
