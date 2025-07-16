@@ -440,6 +440,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       font-size: 2.8rem;
     }
     
+    .home h1::after {
+      width: 200px; /* Smaller underline for mobile */
+      height: 12px;
+    }
+    
     .home h2 {
       font-size: 1.6rem;
     }
@@ -447,6 +452,59 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     .typewriter-container {
       padding: 2rem;
       min-height: 20px;
+    }
+  }
+
+  /* Enhanced mobile responsiveness for very small phones */
+  @media (max-width: 360px) {
+    .home {
+      padding: 1.5rem 1rem;
+    }
+    
+    .home h1 {
+      font-size: 2.2rem; /* Much smaller for narrow screens */
+      margin-bottom: 1rem;
+    }
+    
+    .home h1::after {
+      width: 150px; /* Even smaller underline */
+      height: 10px;
+    }
+    
+    .home h2 {
+      font-size: 1.4rem;
+      margin-bottom: 1.8rem;
+    }
+    
+    .typewriter-container {
+      padding: 1.5rem;
+    }
+  }
+
+  /* Extra small phones (very narrow screens) */
+  @media (max-width: 320px) {
+    .home {
+      padding: 1rem 0.75rem;
+    }
+    
+    .home h1 {
+      font-size: 1.8rem; /* Very compact for smallest screens */
+      margin-bottom: 0.8rem;
+      letter-spacing: 0.01em; /* Tighter letter spacing */
+    }
+    
+    .home h1::after {
+      width: 120px; /* Proportionally smaller underline */
+      height: 8px;
+    }
+    
+    .home h2 {
+      font-size: 1.2rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .typewriter-container {
+      padding: 1rem;
     }
   }
 </style>

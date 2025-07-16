@@ -106,38 +106,83 @@ function getUrl(path: string): string {
     transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition - preserved */
   }
 
-  /* Responsive design - Preserved */
+  /* Enhanced Responsive design for mobile flexibility */
   @media (max-width: 768px) {
     .navbar {
-      flex-direction: column;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr); /* 3 columns layout */
+      grid-template-rows: repeat(2, 1fr); /* 2 rows for 6 links */
+      gap: 8px;
       height: auto;
-      padding: 10px 0;
-    }
-    
-    .navbar-link {
-      margin: 5px 0;
-      padding: 8px 15px;
+      padding: 15px 10px;
+      justify-items: center;
+      align-items: center;
     }
     
     .navbar-brand {
-      margin-bottom: 10px;
+      display: none; /* Hide the name when window shrinks */
+    }
+    
+    .navbar-link {
+      margin: 0;
+      padding: 12px 8px;
+      width: 100%;
+      text-align: center;
+      border-radius: 6px;
+      transition: all 0.3s ease;
     }
   }
 
   @media (max-width: 480px) {
     .navbar {
-      padding: 8px 0;
+      padding: 12px 8px;
+      gap: 6px;
     }
     
     .navbar-brand {
-      font-size: 18px;
-      padding: 0 15px;
+      display: none; /* Keep hidden on phones */
     }
     
     .navbar-link {
       font-size: 14px;
-      padding: 6px 12px;
+      padding: 10px 6px;
       letter-spacing: 0.5px;
+    }
+  }
+
+  /* Very small phones and narrow screens */
+  @media (max-width: 360px) {
+    .navbar {
+      padding: 10px 6px;
+      gap: 4px;
+    }
+    
+    .navbar-brand {
+      display: none; /* Keep hidden on narrow screens */
+    }
+    
+    .navbar-link {
+      font-size: 13px;
+      padding: 8px 4px;
+      letter-spacing: 0.3px;
+    }
+  }
+
+  /* Extra small screens (very narrow phones) */
+  @media (max-width: 320px) {
+    .navbar {
+      padding: 8px 4px;
+      gap: 3px;
+    }
+    
+    .navbar-brand {
+      display: none; /* Keep hidden on very narrow screens */
+    }
+    
+    .navbar-link {
+      font-size: 12px;
+      padding: 6px 3px;
+      letter-spacing: 0.2px;
     }
   }
 </style> 
