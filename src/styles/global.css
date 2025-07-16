@@ -338,11 +338,11 @@ pre code {
 /* ===== MATHEMATICAL FORMULA STYLES (KaTeX) ===== */
 /* Override KaTeX default colors */
 .katex {
-  color: #667eea !important; /* Purple-blue color matching your theme */
+  color: #15009c !important; /* Purple-blue color matching your theme */
 }
 
 .katex-display {
-  color: #667eea !important; /* Same color for display math */
+  color: #15009c !important; /* Same color for display math */
 }
 
 /* Style specific KaTeX elements */
@@ -353,7 +353,7 @@ pre code {
 .katex .mclose,
 .katex .mpunct,
 .katex .mbin {
-  color: #667eea !important;
+  color: #15009c !important;
 }
 
 /* Alternative color options - uncomment to try different colors */

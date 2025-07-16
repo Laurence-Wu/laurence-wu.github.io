@@ -27,8 +27,6 @@ function getUrl(path: string): string {
   description={entry.data.description}
   image={entry.data.image}
 >
-  <TableOfContents />
-  
   <article class="project-detail">
     <header class="project-header">
       <div class="container">
@@ -58,6 +56,8 @@ function getUrl(path: string): string {
         )}
       </div>
     </header>
+    
+    <TableOfContents />
     
     <main class="project-content">
       <div class="container">

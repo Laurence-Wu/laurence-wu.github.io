@@ -62,6 +62,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
+    
+    /* Rounded corners with gentle transition */
+    border-radius: 25px;
+    box-shadow: 
+      0 0 30px rgba(0, 0, 0, 0.15),
+      0 0 60px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
   }
 
   .home::before {
@@ -446,7 +453,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 <script>
   // Simple typewriter effect - Preserved from legacy
-  const text = "Passionate about engineering innovation, from flight computers to soft robotics...";
+  const text = "Fire in Engineering";
   const typewriterElement = document.getElementById("typewriter-text");
   let i = 0;
   

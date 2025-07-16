@@ -17,8 +17,6 @@ const { title, description, pubDate, updatedDate, author = 'Laurence', image, ta
 ---
 
 <BaseLayout title={title} description={description} image={image}>
-  <TableOfContents />
-  
   <main class="blog-post">
     <article>
       <header class="post-header">
@@ -45,6 +43,17 @@ const { title, description, pubDate, updatedDate, author = 'Laurence', image, ta
         )}
       </header>
       
+      <div class="back-to-blog">
+        <a href="/personalWebsite/blog" class="back-button">
+          <svg class="back-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M19 12H5M12 19L5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Back to Blog
+        </a>
+      </div>
+      
+      <TableOfContents />
+      
       <div class="post-content">
         <slot />
       </div>
@@ -68,10 +77,72 @@ const { title, description, pubDate, updatedDate, author = 'Laurence', image, ta
     }
   }
   
+  /* Mobile responsive for back button */
+  @media (max-width: 768px) {
+    .back-button {
+      padding: 0.65rem 1rem;
+      font-size: 0.9rem;
+    }
+    
+    .back-icon {
+      width: 16px;
+      height: 16px;
+    }
+  }
+  
   .post-header {
     margin-bottom: 2rem;
     border-bottom: 1px solid #eee;
     padding-bottom: 1rem;
+  }
+  
+  .back-to-blog {
+    margin-bottom: 2rem;
+  }
+  
+  .back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+    color: white;
+    text-decoration: none;
+    border-radius: 10px;
+    font-weight: 500;
+    font-size: 0.95rem;
+    letter-spacing: -0.01em;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    box-shadow: 
+      0 4px 12px rgba(99, 102, 241, 0.25),
+      0 2px 6px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(8px);
+  }
+  
+  .back-button:hover {
+    transform: translateY(-2px) translateX(-2px);
+    background: linear-gradient(135deg, #7c3aed 0%, #6366f1 100%);
+    box-shadow: 
+      0 8px 20px rgba(99, 102, 241, 0.35),
+      0 4px 12px rgba(0, 0, 0, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
+  }
+  
+  .back-button:active {
+    transform: translateY(-1px) translateX(-1px);
+    transition: all 0.1s ease;
+  }
+  
+  .back-icon {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    transition: transform 0.3s ease;
+  }
+  
+  .back-button:hover .back-icon {
+    transform: translateX(-2px);
   }
   
   .post-header h1 {
