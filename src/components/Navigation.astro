@@ -39,12 +39,12 @@ function getUrl(path: string): string {
     Blog
   </a>
   
-  <a href={getUrl('/profile')} class={`navbar-link ${isActive('/profile', currentPath) ? 'active' : ''}`}>
-    Profile
-  </a>
-  
   <a href={getUrl('/projects')} class={`navbar-link ${isActive('/projects', currentPath) ? 'active' : ''}`}>
     Projects
+  </a>
+
+  <a href={getUrl('/profile')} class={`navbar-link ${isActive('/profile', currentPath) ? 'active' : ''}`}>
+    Profile
   </a>
   
   <a href={getUrl('/about')} class={`navbar-link ${isActive('/about', currentPath) ? 'active' : ''}`}>

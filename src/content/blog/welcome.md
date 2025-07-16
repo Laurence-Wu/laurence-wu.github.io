@@ -38,4 +38,4 @@ This redesigned website includes:
 
 I'm excited to continue sharing my thoughts on technology, engineering projects, and other interests through this new platform. The improved structure will make it easier to organize content and add new features as needed.
 
-Stay tuned for more content, and feel free to explore the [projects section](/PersonalWebsite/projects/) to see what I've been working on! 
+Stay tuned for more content, and feel free to explore the [projects section](/projects/) to see what I've been working on! 

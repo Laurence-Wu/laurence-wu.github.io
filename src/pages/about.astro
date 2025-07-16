@@ -9,53 +9,40 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <h1>About Me</h1>
       
       <div class="about-content">
-        <p>
-          Welcome to my corner of the digital world! I'm Xiaoyou Wu, a Computer Engineering student at Georgia Tech 
-          with a deep passion for bridging the gap between theoretical knowledge and practical innovation. My journey 
-          in engineering is driven by curiosity about how things work and a desire to create solutions that make a 
-          meaningful impact.
-        </p>
+        <a class="question">
+          <p>
+            Why on earth we have both profile tab and about me tab?
+          </p>
+        </a>
+        <a class="answer">
+          <p> 
+            This one is about the non-academic part of me ~
+          </p>
+        </a>
+        <a class="quote">
+          <p>
+            It is my good fortune to have been born of the coast, and to have known since childhood that so much of this world is consumed by a ceaseless, reciprocal devouring. Some of this feasting is soundless, as it is with the day and the night. Not a whimper escapes their lips, yet their eternal clash bleeds out across the sky as the crimson blush of dawn and dusk. But other conflicts cannot conceal their choked cries and lamentations—so it is with the ocean and the land. Where the sea and the earth meet, there is ever an overwhelming, sorrowful chorus that fills all space.
+          </p>
+        </a>
         
-        <p>
-          My fascination with technology began early, but it was during my studies at Georgia Tech that I discovered 
-          my love for the intersection of hardware and software. From designing PCBs for flight computers to exploring 
-          the delicate world of soft robotics, I'm constantly amazed by the possibilities that emerge when creativity 
-          meets engineering rigor.
-        </p>
-        
-        <h2>What Drives Me</h2>
-        <p>
-          I believe that the most exciting innovations happen at the boundaries between disciplines. Whether it's 
-          developing bio-inspired robotic systems or creating avionics solutions for aerospace applications, I'm 
-          drawn to projects that require both technical depth and creative problem-solving.
-        </p>
-        
-        <p>
-          My work in soft robotics particularly excites me because it represents a paradigm shift from rigid, 
-          precise machines to adaptive, compliant systems that can work safely alongside humans and navigate 
-          unpredictable environments.
-        </p>
-        
-        <h2>Beyond Engineering</h2>
-        <p>
-          When I'm not immersed in circuits and code, you might find me exploring new technologies, reading about 
-          the latest developments in robotics and AI, or working on personal projects that challenge me to learn 
-          new skills. I'm also passionate about sharing knowledge and helping others discover the joy of engineering.
-        </p>
-        
-        <p>
-          This website serves as both a portfolio of my work and a platform for sharing insights from my engineering 
-          journey. I hope you'll find something here that inspires or helps you in your own pursuits.
-        </p>
-        
-        <h2>Looking Forward</h2>
-        <p>
-          As I continue my studies and prepare for the next phase of my career, I'm excited about the opportunities 
-          to contribute to cutting-edge research and development. Whether in academia or industry, I'm committed to 
-          pushing the boundaries of what's possible in engineering and technology.
-        </p>
-        
-        <p>
+        <h2 class="difference-section">What makes me different ?
+          <p class="difference-content">
+            I was born with a defect that after meeting a person or even knowing a person a fairly long time, I can't perfectly reconstruct their face. But I can still recognize them in a crowd. 
+            This structural difference enable me to appreciate the beauty of blurriness. By blurriness, I mean I get to awe at something without digging into the details. 
+            For engineers, the beauty originated from the understanding of the minutiae, the enlightenment that happens when the details are revealed. But, for me, the beauty can also lay on the fact of not revealing the details, just let the incredible engineering work stay there and I get to appreciate it all day.
+            Therefore, I'm more interested in architectural designs and systems, and able to generate unique perspectives towards architectures.
+          </p>
+        </h2>
+
+        <h2 class="passion-section">Passion I have ?
+          <p class="passion-content">
+              Raps ~
+              Writing magic realistic short stories in Chinese ~
+              Studying philosophy and psychology ~
+          </p>
+        </h2>
+
+        <p class="closing-message">
           Thank you for taking the time to learn about my story. I'd love to connect with fellow engineers, 
           researchers, and anyone passionate about technology and innovation.
         </p>
@@ -88,6 +75,18 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     margin-bottom: 2rem;
     position: relative;
     text-rendering: optimizeLegibility;
+    animation: titleReveal 1.2s ease-out;
+  }
+
+  @keyframes titleReveal {
+    0% {
+      opacity: 0;
+      transform: translateY(-30px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   /* Elegant heading underline - Preserved */
@@ -98,8 +97,18 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     height: 3px;
     left: 50%;
     position: absolute;
-    transform: translateX(-50%);
+    transform: translateX(-50%) scaleX(0);
     width: 80px;
+    animation: underlineGrow 0.8s ease-out 0.6s forwards;
+  }
+
+  @keyframes underlineGrow {
+    0% {
+      transform: translateX(-50%) scaleX(0);
+    }
+    100% {
+      transform: translateX(-50%) scaleX(1);
+    }
   }
 
   /* Decorative elements - Preserved */
@@ -112,6 +121,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     position: absolute;
     top: 0;
     width: 3px;
+    animation: slideDown 1.5s ease-out;
   }
 
   .about::after {
@@ -123,6 +133,25 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     position: absolute;
     bottom: 0;
     width: 3px;
+    animation: slideUp 1.5s ease-out;
+  }
+
+  @keyframes slideDown {
+    0% {
+      height: 0;
+    }
+    100% {
+      height: 120px;
+    }
+  }
+
+  @keyframes slideUp {
+    0% {
+      height: 0;
+    }
+    100% {
+      height: 120px;
+    }
   }
 
   /* Content container with premium styling - Preserved */
@@ -135,6 +164,18 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     padding: var(--card-padding);
     position: relative;
     transition: var(--transition-standard);
+    animation: contentFadeIn 1s ease-out 0.3s both;
+  }
+
+  @keyframes contentFadeIn {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   .about-content:hover {
@@ -151,6 +192,353 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     top: 0;
     width: 4px;
     border-radius: var(--border-radius-lg) 0 0 var(--border-radius-lg);
+    animation: accentGrow 1.2s ease-out 0.8s both;
+  }
+
+  @keyframes accentGrow {
+    0% {
+      height: 0;
+    }
+    100% {
+      height: 100%;
+    }
+  }
+
+  /* Question styling - curious and inquisitive */
+  .question {
+    display: block;
+    background: linear-gradient(135deg, #e8f4fd, #f0f9ff);
+    border-left: 4px solid #3b82f6;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    animation: questionPulse 2s infinite;
+  }
+
+  .question::before {
+    content: "?";
+    position: absolute;
+    top: -10px;
+    right: 15px;
+    font-size: 2rem;
+    color: #3b82f6;
+    font-weight: bold;
+    animation: questionMark 1.5s ease-in-out infinite;
+  }
+
+  .question:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.15);
+    background: linear-gradient(135deg, #dbeafe, #eff6ff);
+  }
+
+  .question p {
+    color: #1e40af;
+    font-style: italic;
+    font-weight: 900;
+    margin: 0;
+    text-align: center;
+  }
+
+  @keyframes questionPulse {
+    0%, 100% {
+      box-shadow: 0 4px 15px rgba(59, 130, 246, 0.1);
+    }
+    50% {
+      box-shadow: 0 4px 20px rgba(59, 130, 246, 0.2);
+    }
+  }
+
+  @keyframes questionMark {
+    0%, 100% {
+      transform: scale(1) rotate(0deg);
+    }
+    25% {
+      transform: scale(1.1) rotate(-5deg);
+    }
+    75% {
+      transform: scale(1.1) rotate(5deg);
+    }
+  }
+
+  /* Answer styling - gentle and revealing */
+  .answer {
+    display: block;
+    background: linear-gradient(135deg, #f0fdf4, #f7fee7);
+    border-left: 4px solid #22c55e;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    font-weight: 900;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    animation: answerReveal 0.8s ease-out 0.5s both;
+  }
+
+  .answer::before {
+    content: "✓";
+    position: absolute;
+    top: -8px;
+    right: 15px;
+    font-size: 1.8rem;
+    color: #22c55e;
+    font-weight: bold;
+    animation: checkMark 1s ease-out 1s both;
+  }
+
+  .answer:hover {
+    transform: translateX(8px);
+    background: linear-gradient(135deg, #dcfce7, #f0fdf4);
+    box-shadow: 0 6px 20px rgba(34, 197, 94, 0.15);
+  }
+
+  .answer p {
+    color: #15803d;
+    font-weight: 500;
+    margin: 0;
+    text-align: center;
+  }
+
+  @keyframes answerReveal {
+    0% {
+      opacity: 0;
+      transform: translateX(-30px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes checkMark {
+    0% {
+      opacity: 0;
+      transform: scale(0);
+    }
+    50% {
+      transform: scale(1.2);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  /* Quote styling - literary and flowing */
+  .quote {
+    display: block;
+    background: linear-gradient(135deg, #fdf4ff, #faf5ff);
+    border: 2px solid #a855f7;
+    border-radius: 16px;
+    padding: 2rem;
+    margin: 2rem 0;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.5s ease;
+    animation: quoteFadeIn 1s ease-out 1s both;
+  }
+
+  .quote::before {
+    content: "Quote from me";
+    position: absolute;
+    top: -20px;
+    left: 20px;
+    font-size: 4rem;
+    color: #a855f7;
+    font-family: Georgia, serif;
+    line-height: 1;
+    animation: quoteFloat 3s ease-in-out infinite;
+  }
+
+  .quote::after {
+    content: "Quote from me";
+    position: absolute;
+    bottom: -20px;
+    right: 20px;
+    font-size: 4rem;
+    color: #a855f7;
+    font-family: Georgia, serif;
+    line-height: 1;
+    animation: quoteFloat 3s ease-in-out infinite reverse;
+  }
+
+  .quote:hover {
+    transform: scale(1.02);
+    background: linear-gradient(135deg, #f3e8ff, #faf5ff);
+    box-shadow: 0 10px 30px rgba(168, 85, 247, 0.15);
+  }
+
+  .quote p {
+    color: #7c3aed;
+    font-family: Georgia, serif;
+    font-style: italic;
+    line-height: 1.8;
+    text-align: justify;
+    margin: 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  @keyframes quoteFadeIn {
+    0% {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes quoteFloat {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-5px);
+    }
+  }
+
+  /* Difference section - unique and blurred effect */
+  .difference-section {
+    color: var(--color-gold);
+    font-family: var(--font-heading);
+    font-size: 2.2rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    margin-top: 2.5rem;
+    margin-bottom: 1.5rem;
+    text-align: left;
+    position: relative;
+    transition: all 0.3s ease;
+    animation: sectionSlideIn 0.8s ease-out 1.5s both;
+  }
+
+  .difference-section:hover {
+    transform: translateX(10px);
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+  }
+
+  .difference-content {
+    background: linear-gradient(135deg, #fff7ed, #ffedd5);
+    border-left: 4px solid #f59e0b;
+    border-radius: 12px;
+    padding: 1.5rem;
+    position: relative;
+    transition: all 0.4s ease;
+    animation: contentBlur 0.8s ease-out 2s both;
+  }
+
+  .difference-content:hover {
+    background: linear-gradient(135deg, #fef3c7, #fff7ed);
+    box-shadow: 0 8px 25px rgba(245, 158, 11, 0.15);
+    transform: translateY(-2px);
+  }
+
+  @keyframes contentBlur {
+    0% {
+      filter: blur(2px);
+      opacity: 0.7;
+    }
+    100% {
+      filter: blur(0px);
+      opacity: 1;
+    }
+  }
+
+  /* Passion section - energetic and vibrant */
+  .passion-section {
+    color: var(--color-gold);
+    font-family: var(--font-heading);
+    font-size: 2.2rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    margin-top: 2.5rem;
+    margin-bottom: 1.5rem;
+    text-align: left;
+    position: relative;
+    animation: passionPulse 2.5s ease-in-out infinite;
+  }
+
+  .passion-content {
+    background: linear-gradient(135deg, #fef2f2, #fce7e7);
+    border-left: 4px solid #ef4444;
+    border-radius: 12px;
+    padding: 1.5rem;
+    position: relative;
+    transition: all 0.3s ease;
+    animation: passionGlow 1s ease-out 2.5s both;
+  }
+
+  .passion-content:hover {
+    background: linear-gradient(135deg, #fee2e2, #fef2f2);
+    box-shadow: 0 0 20px rgba(239, 68, 68, 0.2);
+    transform: scale(1.02);
+  }
+
+  @keyframes passionPulse {
+    0%, 100% {
+      text-shadow: 0 0 5px rgba(239, 68, 68, 0.3);
+    }
+    50% {
+      text-shadow: 0 0 15px rgba(239, 68, 68, 0.5);
+    }
+  }
+
+  @keyframes passionGlow {
+    0% {
+      opacity: 0;
+      box-shadow: 0 0 0px rgba(239, 68, 68, 0);
+    }
+    100% {
+      opacity: 1;
+      box-shadow: 0 4px 15px rgba(239, 68, 68, 0.1);
+    }
+  }
+
+  /* Closing message - warm and inviting */
+  .closing-message {
+    background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+    border: 2px solid #64748b;
+    border-radius: 12px;
+    padding: 2rem;
+    margin-top: 2rem;
+    text-align: center;
+    position: relative;
+    transition: all 0.4s ease;
+    animation: messageWave 1s ease-out 3s both;
+  }
+
+  .closing-message:hover {
+    background: linear-gradient(135deg, #e2e8f0, #f8fafc);
+    box-shadow: 0 8px 25px rgba(100, 116, 139, 0.15);
+    transform: translateY(-3px);
+  }
+
+  @keyframes messageWave {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes sectionSlideIn {
+    0% {
+      opacity: 0;
+      transform: translateX(-50px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
   }
 
   .about h2 {
@@ -173,6 +561,16 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     left: 0;
     position: absolute;
     width: 60px;
+    animation: underlineSlide 0.6s ease-out 0.3s both;
+  }
+
+  @keyframes underlineSlide {
+    0% {
+      width: 0;
+    }
+    100% {
+      width: 60px;
+    }
   }
 
   .about p {
@@ -230,6 +628,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       padding: 2rem;
       margin: 1.5rem;
     }
+
+    .quote::before,
+    .quote::after {
+      font-size: 3rem;
+    }
   }
 
   @media (max-width: 480px) {
@@ -252,6 +655,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     .about-content {
       padding: 1.8rem;
       margin: 1rem;
+    }
+
+    .quote::before,
+    .quote::after {
+      font-size: 2.5rem;
     }
   }
 </style> 

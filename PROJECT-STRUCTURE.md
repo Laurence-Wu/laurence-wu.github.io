@@ -350,8 +350,8 @@ git push origin main
 ### `astro.config.mjs`
 ```javascript
 export default defineConfig({
-  site: 'https://username.github.io/PersonalWebsite',
-  base: '/PersonalWebsite/',
+  site: 'https://username.github.io',
+  base: '/',
   outDir: './docs',
   
   integrations: [

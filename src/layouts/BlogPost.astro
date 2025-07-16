@@ -43,15 +43,6 @@ const { title, description, pubDate, updatedDate, author = 'Laurence', image, ta
         )}
       </header>
       
-      <div class="back-to-blog">
-        <a href="/personalWebsite/blog" class="back-button">
-          <svg class="back-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M19 12H5M12 19L5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          Back to Blog
-        </a>
-      </div>
-      
       <TableOfContents />
       
       <div class="post-content">
@@ -59,6 +50,11 @@ const { title, description, pubDate, updatedDate, author = 'Laurence', image, ta
       </div>
     </article>
   </main>
+  <footer class="blog-footer">
+    <div class="container">
+      <a href="/blog" class="back-link">← Back to Blog</a>
+    </div>
+  </footer>
 </BaseLayout>
 
 <style>
@@ -75,18 +71,10 @@ const { title, description, pubDate, updatedDate, author = 'Laurence', image, ta
       margin-left: 320px;
       margin-right: auto;
     }
-  }
-  
-  /* Mobile responsive for back button */
-  @media (max-width: 768px) {
-    .back-button {
-      padding: 0.65rem 1rem;
-      font-size: 0.9rem;
-    }
     
-    .back-icon {
-      width: 16px;
-      height: 16px;
+    .blog-footer .container {
+      margin-left: 320px;
+      margin-right: auto;
     }
   }
   
@@ -96,53 +84,30 @@ const { title, description, pubDate, updatedDate, author = 'Laurence', image, ta
     padding-bottom: 1rem;
   }
   
-  .back-to-blog {
+  .blog-footer {
+    background: #f8f9fa;
+    padding: 2rem 0;
+    border-top: 1px solid #e0e0e0;
     margin-bottom: 2rem;
   }
   
-  .back-button {
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+  
+  .back-link {
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 500;
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    padding: 0.75rem 1.25rem;
-    background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
-    color: white;
-    text-decoration: none;
-    border-radius: 10px;
-    font-weight: 500;
-    font-size: 0.95rem;
-    letter-spacing: -0.01em;
-    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    box-shadow: 
-      0 4px 12px rgba(99, 102, 241, 0.25),
-      0 2px 6px rgba(0, 0, 0, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(8px);
   }
   
-  .back-button:hover {
-    transform: translateY(-2px) translateX(-2px);
-    background: linear-gradient(135deg, #7c3aed 0%, #6366f1 100%);
-    box-shadow: 
-      0 8px 20px rgba(99, 102, 241, 0.35),
-      0 4px 12px rgba(0, 0, 0, 0.15);
-    border-color: rgba(255, 255, 255, 0.3);
-  }
-  
-  .back-button:active {
-    transform: translateY(-1px) translateX(-1px);
-    transition: all 0.1s ease;
-  }
-  
-  .back-icon {
-    width: 18px;
-    height: 18px;
-    flex-shrink: 0;
-    transition: transform 0.3s ease;
-  }
-  
-  .back-button:hover .back-icon {
-    transform: translateX(-2px);
+  .back-link:hover {
+    text-decoration: underline;
   }
   
   .post-header h1 {

@@ -9,11 +9,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <h1>Profile</h1>
       <div class="profile-content">
         <div class="profile-text">
-          <h2>About Me</h2>
+          <h2> Introduction</h2>
           <p>
-            I'm a Computer Engineering student at Georgia Tech with a 4.0 GPA, passionate about the intersection of hardware and software. 
-            My interests span soft robotics, avionics systems, and embedded programming, with hands-on experience in PCB design 
-            and flight computer development.
+            I'm a Computer Engineering student at Georgia Tech, passionate about the intersection of hardware and software. 
+            My interests span machine learning, avionics systems, and web development.
           </p>
           
           <h3>Education</h3>
@@ -38,11 +37,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
             <div class="skill-category">
               <h4>Hardware & Design</h4>
               <ul>
-                <li>PCB Design</li>
-                <li>Circuit Analysis</li>
-                <li>SOLIDWORKS</li>
+                <li>Altrium / KiCad</li>
                 <li>Embedded Systems</li>
-                <li>Signal Processing</li>
+                <li>SOLIDWORKS</li>
               </ul>
             </div>
             <div class="skill-category">
@@ -51,24 +48,20 @@ import BaseLayout from '../layouts/BaseLayout.astro';
                 <li>React</li>
                 <li>MySQL</li>
                 <li>Git</li>
-                <li>Linux</li>
-                <li>Astro</li>
               </ul>
             </div>
           </div>
           
           <h3>Research Interests</h3>
           <p>
-            My research focuses on bio-inspired robotics and adaptive control systems. I'm particularly interested in 
-            developing compliant mechanisms that can adapt to dynamic environments, drawing inspiration from natural 
-            systems to create more robust and efficient robotic solutions.
+            My research focuses on improving the efficiency of machine learning models with low level programming.
           </p>
         </div>
         
         <div class="resume-section">
           <h3>Resume</h3>
           <p>Download my complete resume to learn more about my experience and achievements.</p>
-          <a href="/resume.pdf" class="resume-download" target="_blank" rel="noopener noreferrer">
+          <a href={`${import.meta.env.BASE_URL}resume.pdf`} class="resume-download" target="_blank" rel="noopener noreferrer">
             Download Resume (PDF)
           </a>
         </div>
