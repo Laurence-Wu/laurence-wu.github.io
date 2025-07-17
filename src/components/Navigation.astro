@@ -43,146 +43,205 @@ function getUrl(path: string): string {
     Projects
   </a>
 
-  <a href={getUrl('/profile')} class={`navbar-link ${isActive('/profile', currentPath) ? 'active' : ''}`}>
-    Profile
-  </a>
-  
   <a href={getUrl('/about')} class={`navbar-link ${isActive('/about', currentPath) ? 'active' : ''}`}>
     About
-  </a>
-  
-  <a href={getUrl('/contact')} class={`navbar-link ${isActive('/contact', currentPath) ? 'active' : ''}`}>
-    Contact
   </a>
 </nav>
 
 <style>
-  /* Navbar styles - Exactly Preserved from Legacy Frontend */
+  /* Compact Floating Navbar - Modernized for floating design */
   .navbar {
-    font-family: var(--font-body); /* Montserrat - preserved */
-    background-color: var(--sage-green); /* #8A9A7E - preserved */
-    overflow: hidden; /* Prevent content overflow - preserved */
-    display: flex; /* Use flexbox for layout - preserved */
-    justify-content: space-around; /* Distribute items evenly with space around them - preserved */
+    font-family: var(--font-body);
+    background: rgba(138, 154, 126, 0.95); /* Semi-transparent sage green */
+    backdrop-filter: blur(20px); /* Modern glass effect */
+    -webkit-backdrop-filter: blur(20px); /* Safari support */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+    display: flex;
+    justify-content: space-around;
     text-align: center;
-    align-items: center; /* Center items vertically - preserved */
-    padding: 15px 0; /* Add vertical padding - preserved */
-    box-shadow: var(--shadow-navbar); /* 0 4px 8px rgba(0, 0, 0, 0.1) - preserved */
-    height: 100px; /* Preserved height */
-    position: sticky;
+    align-items: center;
+    padding: 8px 0; /* Reduced from 15px to 8px for compactness */
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.15), 0 1px 4px rgba(0, 0, 0, 0.1); /* Enhanced floating shadow */
+    height: 60px; /* Reduced from 100px to 60px for compactness */
+    
+    /* Fixed positioning for true floating effect */
+    position: fixed;
     top: 0;
-    z-index: 100;
-    transition: var(--transition-standard);
+    left: 0;
+    right: 0;
+    width: 100%;
+    z-index: 1000; /* Higher z-index to ensure it stays on top */
+    
+    /* Prevent dragging and selection */
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    pointer-events: auto; /* Allow clicking but prevent dragging */
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
+    user-drag: none;
+    
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Prevent text selection on all navbar elements */
+  .navbar * {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-user-drag: none;
+    user-drag: none;
   }
 
   .navbar-brand {
-    font-family: var(--font-heading); /* Playfair Display - preserved */
-    font-size: 20px; /* Preserved font size */
-    color: var(--deep-navy); /* #2E3A59 - preserved */
-    text-transform: uppercase; /* Preserved */
-    font-weight: 700; /* Preserved bold weight */
-    padding: 0 25px; /* Preserved horizontal padding */
+    font-family: var(--font-heading);
+    font-size: 18px; /* Slightly reduced from 20px */
+    color: var(--deep-navy);
+    text-transform: uppercase;
+    font-weight: 700;
+    padding: 0 20px; /* Slightly reduced from 25px */
+    white-space: nowrap; /* Prevent text wrapping */
   }
 
   .navbar-link {
-    color: var(--terracotta); /* #39647c - preserved */
-    text-decoration: none; /* Remove underline from links - preserved */
-    transition: var(--transition-standard); /* Smooth transition for all properties - preserved */
-    font-size: 16px; /* Ensure all links have the same font size - preserved */
-    letter-spacing: 1px; /* Add spacing between letters - preserved */
-    text-transform: uppercase; /* Convert text to uppercase - preserved */
-    font-weight: 700; /* Bold font weight - preserved */
-    padding: 12px 25px; /* Add padding around links - preserved */
-    border-bottom: 2px solid transparent; /* Add border for dynamic effect - preserved */
+    color: var(--terracotta);
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-size: 14px; /* Reduced from 16px for compactness */
+    letter-spacing: 0.8px; /* Slightly reduced from 1px */
+    text-transform: uppercase;
+    font-weight: 700;
+    padding: 8px 16px; /* Reduced padding for compactness */
+    border-bottom: 2px solid transparent;
+    border-radius: 6px; /* Added subtle border radius */
     position: relative;
+    white-space: nowrap; /* Prevent text wrapping */
+    
+    /* Prevent dragging */
+    -webkit-user-drag: none;
+    user-drag: none;
   }
 
   .navbar-link:hover,
   .navbar-link.active {
-    color: var(--gold-accent); /* #FFD700 - preserved */
-    border-bottom: 2px solid var(--gold-accent); /* Preserved border change */
-    transform: scale(1.1); /* Slightly increase size on hover - preserved */
-    background-color: #444444; /* Darker background on hover - preserved */
-    transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition - preserved */
+    color: var(--gold-accent);
+    border-bottom: 2px solid var(--gold-accent);
+    transform: translateY(-1px); /* Subtle lift effect instead of scale */
+    background-color: rgba(68, 68, 68, 0.8); /* Semi-transparent dark background */
+    backdrop-filter: blur(10px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Add a subtle scroll effect */
+  .navbar.scrolled {
+    background: rgba(138, 154, 126, 0.98);
+    backdrop-filter: blur(25px);
+    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.2), 0 2px 8px rgba(0, 0, 0, 0.15);
   }
 
   /* Enhanced Responsive design for mobile flexibility */
   @media (max-width: 768px) {
     .navbar {
       display: grid;
-      grid-template-columns: repeat(3, 1fr); /* 3 columns layout */
-      grid-template-rows: repeat(2, 1fr); /* 2 rows for 6 links */
-      gap: 8px;
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      gap: 4px; /* Reduced gap */
       height: auto;
-      padding: 15px 10px;
+      min-height: 50px; /* Minimum height for mobile */
+      padding: 8px 6px; /* Reduced padding */
       justify-items: center;
       align-items: center;
     }
     
     .navbar-brand {
-      display: none; /* Hide the name when window shrinks */
+      display: none;
     }
     
     .navbar-link {
       margin: 0;
-      padding: 12px 8px;
+      padding: 8px 6px; /* Reduced padding */
       width: 100%;
       text-align: center;
-      border-radius: 6px;
+      border-radius: 4px;
+      font-size: 13px; /* Slightly smaller on mobile */
       transition: all 0.3s ease;
     }
   }
 
   @media (max-width: 480px) {
     .navbar {
-      padding: 12px 8px;
-      gap: 6px;
-    }
-    
-    .navbar-brand {
-      display: none; /* Keep hidden on phones */
+      padding: 6px 4px; /* Further reduced padding */
+      gap: 3px;
+      min-height: 45px;
     }
     
     .navbar-link {
-      font-size: 14px;
-      padding: 10px 6px;
+      font-size: 12px; /* Smaller font on small screens */
+      padding: 6px 4px;
       letter-spacing: 0.5px;
     }
   }
 
-  /* Very small phones and narrow screens */
   @media (max-width: 360px) {
     .navbar {
-      padding: 10px 6px;
-      gap: 4px;
-    }
-    
-    .navbar-brand {
-      display: none; /* Keep hidden on narrow screens */
+      padding: 5px 3px;
+      gap: 2px;
+      min-height: 40px;
     }
     
     .navbar-link {
-      font-size: 13px;
-      padding: 8px 4px;
+      font-size: 11px;
+      padding: 5px 3px;
       letter-spacing: 0.3px;
     }
   }
 
-  /* Extra small screens (very narrow phones) */
   @media (max-width: 320px) {
     .navbar {
-      padding: 8px 4px;
-      gap: 3px;
-    }
-    
-    .navbar-brand {
-      display: none; /* Keep hidden on very narrow screens */
+      padding: 4px 2px;
+      gap: 2px;
+      min-height: 38px;
     }
     
     .navbar-link {
-      font-size: 12px;
-      padding: 6px 3px;
+      font-size: 10px;
+      padding: 4px 2px;
       letter-spacing: 0.2px;
     }
   }
-</style> 
+
+  /* Smooth scrolling for the whole document */
+  html {
+    scroll-behavior: smooth;
+  }
+</style>
+
+<script>
+  // Add scroll effect to navbar
+  function handleNavbarScroll() {
+    const navbar = document.querySelector('.navbar');
+    if (window.scrollY > 50) {
+      navbar?.classList.add('scrolled');
+    } else {
+      navbar?.classList.remove('scrolled');
+    }
+  }
+
+  // Add event listener for scroll
+  window.addEventListener('scroll', handleNavbarScroll);
+  
+  // Prevent context menu on navbar to enhance undraggable experience
+  document.querySelector('.navbar')?.addEventListener('contextmenu', (e) => {
+    e.preventDefault();
+  });
+  
+  // Prevent drag start on all navbar elements
+  document.querySelector('.navbar')?.addEventListener('dragstart', (e) => {
+    e.preventDefault();
+  });
+</script> 

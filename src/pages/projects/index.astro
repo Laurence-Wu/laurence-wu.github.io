@@ -1,5 +1,6 @@
 ---
 import Layout from '../../components/Layout.astro';
+import ProjectTimeline from '../../components/ProjectTimeline.astro';
 import { getCollection } from 'astro:content';
 
 const allProjects = await getCollection('projects');
@@ -21,6 +22,8 @@ function getUrl(path: string): string {
 ---
 
 <Layout title="Projects - Laurence" description="Explore my engineering and software development projects.">
+  <ProjectTimeline allProjects={sortedProjects} />
+  
   <div class="projects-header">
     <div class="container">
       <h1>Projects</h1>
@@ -169,6 +172,26 @@ function getUrl(path: string): string {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 1rem;
+  }
+  
+  /* Adjust layout for timeline on tablet and larger screens */
+  @media (min-width: 769px) and (max-width: 1200px) {
+    .projects-header .container,
+    .projects-content .container {
+      margin-left: 320px; /* Space for smaller timeline */
+      margin-right: auto;
+      max-width: calc(100vw - 360px);
+    }
+  }
+  
+  /* Layout for large screens */
+  @media (min-width: 1201px) {
+    .projects-header .container,
+    .projects-content .container {
+      margin-left: 360px; /* Space for full-size timeline */
+      margin-right: auto;
+      max-width: calc(100vw - 400px);
+    }
   }
   
   .projects-content {

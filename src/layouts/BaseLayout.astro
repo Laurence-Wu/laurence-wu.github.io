@@ -55,6 +55,7 @@ import Navigation from '../components/Navigation.astro';
   <!-- Global CSS Import -->
   <style is:global>
     @import '../styles/global.css';
+    @import '../styles/custom-overrides.css';
   </style>
 </head>
 <body>
@@ -150,6 +151,7 @@ import Navigation from '../components/Navigation.astro';
     background-repeat: no-repeat;
     min-height: calc(100vh - 200px); /* Account for navbar and footer */
     padding: var(--section-spacing) 0;
+    padding-top: 60px; /* Account for fixed navbar height */
     position: relative;
     z-index: 1;
   }
@@ -162,7 +164,7 @@ import Navigation from '../components/Navigation.astro';
   .main-content::before {
     content: '';
     position: fixed;
-    top: 80px; /* Start below navbar */
+    top: 60px; /* Start below fixed navbar */
     left: 0;
     right: 0;
     bottom: 160px; /* End above footer */
@@ -180,7 +182,7 @@ import Navigation from '../components/Navigation.astro';
   .main-content::after {
     content: '';
     position: fixed;
-    top: 80px; /* Start below navbar */
+    top: 60px; /* Start below fixed navbar */
     left: 0;
     right: 0;
     bottom: 160px; /* End above footer */
@@ -202,6 +204,8 @@ import Navigation from '../components/Navigation.astro';
     text-align: center;
     margin-top: 4rem;
     font-family: var(--font-body);
+    position: relative;
+    z-index: 10; /* Ensure footer appears above moving grid background */
   }
 
   .footer-content {
@@ -244,6 +248,12 @@ import Navigation from '../components/Navigation.astro';
   @media (max-width: 768px) {
     .main-content {
       padding: 2rem 0;
+      padding-top: 60px; /* Account for mobile navbar height */
+    }
+    
+    .main-content::before,
+    .main-content::after {
+      top: 60px; /* Adjust background layers for mobile navbar */
     }
     
     .footer-links {
@@ -255,10 +265,27 @@ import Navigation from '../components/Navigation.astro';
   @media (max-width: 480px) {
     .main-content {
       padding: 1.5rem 0;
+      padding-top: 55px; /* Account for smaller mobile navbar */
+    }
+    
+    .main-content::before,
+    .main-content::after {
+      top: 55px; /* Adjust background layers for smaller mobile navbar */
     }
     
     .footer-content {
       padding: 0 1rem;
+    }
+  }
+
+  @media (max-width: 360px) {
+    .main-content {
+      padding-top: 50px; /* Account for even smaller navbar */
+    }
+    
+    .main-content::before,
+    .main-content::after {
+      top: 50px;
     }
   }
 </style> 

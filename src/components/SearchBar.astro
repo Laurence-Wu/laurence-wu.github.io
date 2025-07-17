@@ -1,0 +1,655 @@
+---
+interface Props {
+  allBlogPosts: any[];
+  allProjects: any[];
+}
+
+const { allBlogPosts, allProjects } = Astro.props;
+
+// Helper function to get proper URL with base path
+const baseUrl = import.meta.env.BASE_URL;
+function getUrl(path: string): string {
+  const cleanBaseUrl = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
+  const cleanPath = path.startsWith('/') ? path : `/${path}`;
+  return `${cleanBaseUrl}${cleanPath}`;
+}
+---
+
+<div class="search-container">
+  <div class="search-input-wrapper">
+    <input 
+      type="text" 
+      id="search-input" 
+      placeholder="Search blogs & projects..." 
+      autocomplete="off"
+    />
+    <button id="search-icon" class="search-icon" type="button" aria-label="Search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="8"></circle>
+        <path d="m21 21-4.35-4.35"></path>
+      </svg>
+    </button>
+  </div>
+  
+  <div id="search-results" class="search-results hidden">
+    <div class="results-header">
+      <span id="results-count">0 results</span>
+      <button id="clear-search" class="clear-btn">×</button>
+    </div>
+    <div id="results-list" class="results-list"></div>
+  </div>
+</div>
+
+<style>
+  .search-container {
+    position: relative;
+    margin-bottom: 1.5rem;
+  }
+  
+  .search-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  
+  #search-input {
+    width: 100%;
+    padding: 0.75rem 3rem 0.75rem 1rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 0.5rem;
+    font-size: 0.9rem;
+    background: white;
+    transition: all 0.3s ease;
+    outline: none;
+  }
+  
+  #search-input:focus {
+    border-color: #39647c;
+    box-shadow: 0 0 0 3px rgba(57, 100, 124, 0.1);
+  }
+  
+  .search-icon {
+    position: absolute;
+    right: 0.5rem;
+    width: 2rem;
+    height: 2rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #718096;
+    border-radius: 0.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+  }
+  
+  .search-icon:hover {
+    background: #f7fafc;
+    color: #39647c;
+  }
+  
+  .search-icon:active {
+    background: #edf2f7;
+    transform: scale(0.95);
+  }
+  
+  .search-icon svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+  
+  .search-results {
+    position: fixed;
+    top: auto;
+    left: auto;
+    right: auto;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.5rem;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    max-height: 300px;
+    overflow: hidden;
+    margin-top: 0.25rem;
+    width: 100%;
+    max-width: 300px;
+  }
+  
+  .search-results.hidden {
+    display: none;
+  }
+  
+  .results-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #e2e8f0;
+    background: #f8fafc;
+    font-size: 0.8rem;
+    color: #64748b;
+  }
+  
+  .clear-btn {
+    background: none;
+    border: none;
+    font-size: 1.25rem;
+    color: #94a3b8;
+    cursor: pointer;
+    width: 1.5rem;
+    height: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.25rem;
+    transition: all 0.2s ease;
+  }
+  
+  .clear-btn:hover {
+    background: #e2e8f0;
+    color: #475569;
+  }
+  
+  .results-list {
+    max-height: 240px;
+    overflow-y: auto;
+  }
+  
+  .result-item {
+    display: block;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #f1f5f9;
+    text-decoration: none;
+    color: inherit;
+    transition: background-color 0.2s ease;
+  }
+  
+  .result-item:hover {
+    background: #f8fafc;
+  }
+  
+  .result-item:last-child {
+    border-bottom: none;
+  }
+  
+  .result-title {
+    font-weight: 600;
+    color: #2d3748;
+    margin-bottom: 0.25rem;
+    font-size: 0.9rem;
+    line-height: 1.3;
+  }
+  
+  .result-description {
+    color: #64748b;
+    font-size: 0.8rem;
+    line-height: 1.4;
+    margin-bottom: 0.5rem;
+  }
+  
+  .result-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.75rem;
+    color: #94a3b8;
+  }
+  
+  .result-type {
+    background: linear-gradient(135deg, #39647c, #8A9A7E);
+    color: white;
+    padding: 0.125rem 0.5rem;
+    border-radius: 0.25rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+  }
+  
+  .result-date {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+  
+  .no-results {
+    padding: 2.5rem 1.5rem;
+    text-align: center;
+    color: #64748b;
+    font-size: 0.9rem;
+    background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+    border-radius: 0.5rem;
+    margin: 0.5rem;
+    border: 1px solid #e2e8f0;
+    transition: all 0.3s ease;
+  }
+  
+  .no-results:hover {
+    background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+  
+  .no-results-icon {
+    font-size: 2.5rem;
+    margin-bottom: 0.75rem;
+    opacity: 0.6;
+    filter: grayscale(20%);
+    transition: all 0.3s ease;
+  }
+  
+  .no-results:hover .no-results-icon {
+    opacity: 0.8;
+    transform: scale(1.05);
+    filter: grayscale(0%);
+  }
+  
+  .no-results-message {
+    font-weight: 500;
+    color: #475569;
+    line-height: 1.5;
+    margin-top: 0.5rem;
+  }
+  
+  .no-results-hint {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    margin-top: 0.75rem;
+    font-style: italic;
+  }
+</style>
+
+<!-- GLOBAL STYLES TO OVERRIDE ASTRO SCOPING -->
+<style is:global>
+  /* Force search results styles globally */
+  #search-results .result-item {
+    display: block !important;
+    padding: 1rem !important;
+    border-bottom: 1px solid #e5e7eb !important;
+    text-decoration: none !important;
+    color: #374151 !important;
+    transition: all 0.3s ease !important;
+    background: white !important;
+    margin: 0.25rem !important;
+    border-radius: 0.5rem !important;
+    border: 1px solid #f3f4f6 !important;
+  }
+  
+  #search-results .result-item:hover {
+    background: linear-gradient(135deg, #f8fafc, #e2e8f0) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+    border-color: #39647c !important;
+  }
+  
+  #search-results .result-title {
+    font-weight: 700 !important;
+    color: #1f2937 !important;
+    margin-bottom: 0.5rem !important;
+    font-size: 1rem !important;
+    line-height: 1.4 !important;
+  }
+  
+  #search-results .result-description {
+    color: #6b7280 !important;
+    font-size: 0.875rem !important;
+    line-height: 1.5 !important;
+    margin-bottom: 0.75rem !important;
+  }
+  
+  #search-results .result-meta {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.75rem !important;
+    font-size: 0.75rem !important;
+    color: #9ca3af !important;
+  }
+  
+  #search-results .result-type {
+    background: linear-gradient(135deg, #6366f1, #8b5cf6) !important;
+    color: white !important;
+    padding: 0.25rem 0.75rem !important;
+    border-radius: 1rem !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+    font-size: 0.7rem !important;
+  }
+  
+  #search-results .result-date {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.25rem !important;
+    font-size: 0.75rem !important;
+    color: #9ca3af !important;
+  }
+  
+  /* Highlight text styling */
+  #search-results mark {
+    background: linear-gradient(135deg, rgba(234, 179, 8, 0.3), rgba(16, 185, 129, 0.3)) !important;
+    padding: 0.1em 0.3em !important;
+    border-radius: 0.25em !important;
+    color: inherit !important;
+    font-weight: 600 !important;
+  }
+  
+  /* Custom scrollbar for results */
+  #search-results .results-list::-webkit-scrollbar {
+    width: 6px !important;
+  }
+  
+  #search-results .results-list::-webkit-scrollbar-track {
+    background: #f1f5f9 !important;
+    border-radius: 3px !important;
+  }
+  
+  #search-results .results-list::-webkit-scrollbar-thumb {
+    background: #cbd5e1 !important;
+    border-radius: 3px !important;
+  }
+  
+  #search-results .results-list::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8 !important;
+  }
+</style>
+
+<script type="module" define:vars={{ allBlogPosts, allProjects, getUrl }}>
+  // Dynamic import for MiniSearch to handle browser compatibility
+  async function loadMiniSearch() {
+    try {
+      const { default: MiniSearch } = await import('minisearch');
+      return MiniSearch;
+    } catch (error) {
+      console.error('Failed to load MiniSearch:', error);
+      return null;
+    }
+  }
+  
+  class SearchManager {
+    constructor() {
+      this.miniSearch = null;
+      this.searchInput = document.getElementById('search-input');
+      this.searchIcon = document.getElementById('search-icon');
+      this.searchResults = document.getElementById('search-results');
+      this.resultsList = document.getElementById('results-list');
+      this.resultsCount = document.getElementById('results-count');
+      this.clearBtn = document.getElementById('clear-search');
+      
+      this.init();
+    }
+    
+    async init() {
+      const MiniSearch = await loadMiniSearch();
+      if (!MiniSearch) {
+        console.error('MiniSearch could not be loaded');
+        this.setupFallbackSearch();
+        return;
+      }
+      
+      this.miniSearch = new MiniSearch({
+        fields: ['title', 'description', 'tags', 'content'],
+        storeFields: ['title', 'description', 'pubDate', 'type', 'slug', 'tags'],
+        searchOptions: {
+          boost: { title: 2, description: 1.5 },
+          fuzzy: 0.2,
+          prefix: true
+        }
+      });
+      
+      this.initializeData();
+      this.bindEvents();
+    }
+    
+    setupFallbackSearch() {
+      // Fallback search without MiniSearch
+      this.documents = this.prepareDocuments();
+      this.bindEvents();
+    }
+    
+    prepareDocuments() {
+      const documents = [];
+      
+      // Add blog posts
+      allBlogPosts.forEach(post => {
+        documents.push({
+          id: `blog-${post.slug}`,
+          title: post.data.title,
+          description: post.data.description,
+          pubDate: post.data.pubDate,
+          type: 'blog',
+          slug: post.slug,
+          tags: (post.data.tags || []).join(' '),
+          content: `${post.data.title} ${post.data.description} ${(post.data.tags || []).join(' ')}`
+        });
+      });
+      
+      // Add projects
+      allProjects.forEach(project => {
+        documents.push({
+          id: `project-${project.slug}`,
+          title: project.data.title,
+          description: project.data.description,
+          pubDate: project.data.pubDate,
+          type: 'project',
+          slug: project.slug,
+          tags: (project.data.tags || []).join(' '),
+          content: `${project.data.title} ${project.data.description} ${(project.data.tags || []).join(' ')}`
+        });
+      });
+      
+      return documents;
+    }
+    
+    initializeData() {
+      const documents = this.prepareDocuments();
+      this.miniSearch.addAll(documents);
+    }
+    
+    bindEvents() {
+      // Real-time search on input
+      this.searchInput.addEventListener('input', this.handleRealtimeSearch.bind(this));
+      
+      // Search on Enter key press
+      this.searchInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          this.performSearch();
+        } else if (e.key === 'Escape') {
+          this.clearSearch();
+        }
+      });
+      
+      // Search on icon button click
+      this.searchIcon.addEventListener('click', this.performSearch.bind(this));
+      
+      // Clear search
+      this.clearBtn.addEventListener('click', this.clearSearch.bind(this));
+      
+      // Close results when clicking outside
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('.search-container')) {
+          this.hideResults();
+        }
+      });
+      
+      // Reposition results on window resize
+      window.addEventListener('resize', () => {
+        if (!this.searchResults.classList.contains('hidden')) {
+          this.positionResults();
+        }
+      });
+      
+      // Reposition results on scroll
+      window.addEventListener('scroll', () => {
+        if (!this.searchResults.classList.contains('hidden')) {
+          this.positionResults();
+        }
+      });
+    }
+    
+    handleRealtimeSearch(e) {
+      const query = e.target.value.trim();
+      
+      // Only show real-time results for queries of 3+ characters
+      if (query.length >= 3) {
+        const results = this.search(query, 8);
+        this.displayResults(results, query);
+      } else {
+        this.hideResults();
+      }
+    }
+    
+    performSearch() {
+      const query = this.searchInput.value.trim();
+      
+      if (query.length < 2) {
+        // Show message for short queries
+        this.displayNoResults('Please enter at least 2 characters to search');
+        return;
+      }
+      
+      const results = this.search(query, 8);
+      this.displayResults(results, query);
+    }
+    
+    search(query, limit = 8) {
+      if (this.miniSearch) {
+        return this.miniSearch.search(query, { limit });
+      } else {
+        // Fallback search
+        return this.fallbackSearch(query, limit);
+      }
+    }
+    
+    fallbackSearch(query, limit) {
+      const queryLower = query.toLowerCase();
+      const results = [];
+      
+      for (const doc of this.documents) {
+        let score = 0;
+        const titleMatch = doc.title.toLowerCase().includes(queryLower);
+        const descMatch = doc.description.toLowerCase().includes(queryLower);
+        const tagsMatch = doc.tags.toLowerCase().includes(queryLower);
+        
+        if (titleMatch) score += 2;
+        if (descMatch) score += 1.5;
+        if (tagsMatch) score += 1;
+        
+        if (score > 0) {
+          results.push({ ...doc, score });
+        }
+      }
+      
+      return results
+        .sort((a, b) => b.score - a.score)
+        .slice(0, limit);
+    }
+    
+    displayResults(results, query) {
+      this.resultsCount.textContent = `${results.length} result${results.length !== 1 ? 's' : ''}`;
+      
+      if (results.length === 0) {
+        this.displayNoResults(`No results found for "${query}"`);
+      } else {
+        this.resultsList.innerHTML = results.map(result => {
+          const date = new Date(result.pubDate).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short'
+          });
+          
+          const url = result.type === 'blog' 
+            ? `/blog/${result.slug}/`
+            : `/projects/${result.slug}/`;
+          
+          return `
+            <a href="${url}" class="result-item">
+              <div class="result-title">${this.highlightText(result.title, query)}</div>
+              <div class="result-description">${this.highlightText(result.description, query)}</div>
+              <div class="result-meta">
+                <span class="result-type">${result.type}</span>
+                <span class="result-date">📅 ${date}</span>
+              </div>
+            </a>
+          `;
+        }).join('');
+      }
+      
+      this.showResults();
+    }
+    
+    displayNoResults(message) {
+      this.resultsCount.textContent = '0 results';
+      this.resultsList.innerHTML = `
+        <div class="no-results">
+          <div class="no-results-icon">🔍</div>
+          <div class="no-results-message">${message}</div>
+          <div class="no-results-hint">Try using different keywords or check your spelling</div>
+        </div>
+      `;
+      this.showResults();
+    }
+    
+    highlightText(text, query) {
+      if (!query || !text) return text;
+      
+      const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+      return text.replace(regex, '<mark>$1</mark>');
+    }
+    
+    showResults() {
+      this.searchResults.classList.remove('hidden');
+      this.positionResults();
+    }
+    
+    positionResults() {
+      const searchContainer = this.searchInput.closest('.search-container');
+      const rect = searchContainer.getBoundingClientRect();
+      const viewport = {
+        height: window.innerHeight,
+        width: window.innerWidth
+      };
+      
+      // Calculate available space below and above
+      const spaceBelow = viewport.height - rect.bottom;
+      const spaceAbove = rect.top;
+      
+      // Position the results dropdown
+      if (spaceBelow >= 300 || spaceBelow >= spaceAbove) {
+        // Show below if there's enough space or more space below than above
+        this.searchResults.style.top = `${rect.bottom + 4}px`;
+        this.searchResults.style.maxHeight = `${Math.min(300, spaceBelow - 20)}px`;
+      } else {
+        // Show above if more space above
+        this.searchResults.style.top = `${rect.top - Math.min(300, spaceAbove - 20) - 4}px`;
+        this.searchResults.style.maxHeight = `${Math.min(300, spaceAbove - 20)}px`;
+      }
+      
+      this.searchResults.style.left = `${rect.left}px`;
+      this.searchResults.style.width = `${rect.width}px`;
+    }
+    
+    hideResults() {
+      this.searchResults.classList.add('hidden');
+    }
+    
+    clearSearch() {
+      this.searchInput.value = '';
+      this.hideResults();
+      this.searchInput.focus();
+    }
+  }
+  
+  // Initialize search when DOM is loaded
+  document.addEventListener('DOMContentLoaded', () => {
+    new SearchManager();
+  });
+</script>
+
+<style>
+  mark {
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.3), rgba(138, 154, 126, 0.3));
+    padding: 0.1em 0.2em;
+    border-radius: 0.2em;
+    color: inherit;
+  }
+</style> 

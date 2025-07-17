@@ -61,6 +61,16 @@ function getUrl(path: string): string {
     
     <main class="project-content">
       <div class="container">
+        {entry.data.image && (
+          <div class="project-image-section">
+            <img 
+              src={entry.data.image} 
+              alt={`${entry.data.title} demonstration`}
+              class="project-demo-image"
+            />
+            <p class="image-caption">Project demonstration: {entry.data.title}</p>
+          </div>
+        )}
         <Content />
       </div>
     </main>
@@ -258,73 +268,199 @@ function getUrl(path: string): string {
     padding: 5rem 0;
     max-width: 900px;
     margin: 0 auto;
-    background: linear-gradient(
-      to bottom,
-      rgba(244, 232, 209, 0.4) 0%,
-      rgba(244, 232, 209, 0.2) 50%,
-      rgba(244, 232, 209, 0.4) 100%
-    );
     position: relative;
   }
   
-  .project-content::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: 
-      radial-gradient(circle at 10% 20%, rgba(138, 154, 126, 0.05) 0%, transparent 50%),
-      radial-gradient(circle at 90% 80%, rgba(212, 175, 55, 0.08) 0%, transparent 50%);
-    pointer-events: none;
+  /* Ensure proper spacing around fixed components */
+  .project-content .container {
+    /* Match blog content styling */
+    background: rgba(255, 255, 255, 0.9);
+    padding: 2.5rem;
+    border-radius: 16px;
+    margin: 2rem 0;
+    border: 1px solid rgba(138, 154, 126, 0.2);
+    box-shadow: 
+      0 4px 20px rgba(0, 0, 0, 0.08),
+      0 2px 8px rgba(138, 154, 126, 0.1);
+    
+    /* Better text rendering for reading comfort */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    
+    /* Improved text spacing for reading */
+    letter-spacing: 0.01em;
+    word-spacing: 0.05em;
+    line-height: 1.8;
+    color: #2c3e50;
+    font-family: var(--font-accent, 'Cormorant Garamond', serif);
+    font-size: 1.1rem;
   }
   
-  /* Adjust layout for TOC on larger screens */
+  /* Adjust layout for TOC on larger screens (individual project pages only have TOC) */
   @media (min-width: 1201px) {
+    .project-header .container,
     .project-content {
-      margin-left: 320px;
+      margin-left: 340px; /* TOC width (280px) + gap (60px) like blog pages */
       margin-right: auto;
+      max-width: calc(100vw - 380px);
+      transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
     
     .project-footer .container {
-      margin-left: 320px;
+      margin-left: 340px;
       margin-right: auto;
+      max-width: calc(100vw - 380px);
+      transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
   }
   
-  .project-content :global(h1),
-  .project-content :global(h2),
-  .project-content :global(h3),
-  .project-content :global(h4),
-  .project-content :global(h5),
-  .project-content :global(h6) {
-    margin-top: 3rem;
-    margin-bottom: 1.5rem;
-    color: #2E3A59;
-    font-weight: 700;
-    position: relative;
-    z-index: 2;
-  }
-  
+  /* Enhanced typography for project content - matching blog styling */
   .project-content :global(h2) {
-    font-size: 2rem;
+    color: var(--deep-navy, #2E3A59);
+    font-family: var(--font-heading, 'Playfair Display', serif);
+    font-size: 1.8rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
     border-bottom: 2px solid rgba(138, 154, 126, 0.3);
     padding-bottom: 0.5rem;
+    line-height: 1.3;
   }
   
   .project-content :global(h3) {
-    font-size: 1.5rem;
-    color: #39647c;
+    color: var(--terracotta, #39647c);
+    font-family: var(--font-heading, 'Playfair Display', serif);
+    font-size: 1.4rem;
+    margin-top: 2rem;
+    margin-bottom: 0.8rem;
+    line-height: 1.4;
+  }
+  
+  .project-content :global(h4),
+  .project-content :global(h5),
+  .project-content :global(h6) {
+    color: var(--warm-brown, #A87C5D);
+    font-family: var(--font-heading, 'Playfair Display', serif);
+    margin-top: 1.5rem;
+    margin-bottom: 0.8rem;
+    line-height: 1.4;
   }
   
   .project-content :global(p) {
     margin-bottom: 1.5rem;
     line-height: 1.8;
-    color: #4A5568;
-    font-size: 1.05rem;
-    position: relative;
-    z-index: 2;
+    color: #34495e;
+  }
+  
+  .project-content :global(a) {
+    color: var(--sage-green, #8A9A7E);
+    font-weight: 600;
+    transition: color 0.3s ease;
+    text-decoration: underline;
+    text-decoration-color: rgba(138, 154, 126, 0.3);
+    text-underline-offset: 3px;
+  }
+  
+  .project-content :global(a:hover) {
+    color: var(--terracotta, #39647c);
+    text-decoration-color: rgba(57, 100, 124, 0.6);
+  }
+  
+  .project-content :global(blockquote) {
+    border-left: 4px solid var(--sage-green, #8A9A7E);
+    padding-left: 1.5rem;
+    margin: 2rem 0;
+    font-style: italic;
+    color: var(--warm-brown, #A87C5D);
+    background: rgba(138, 154, 126, 0.05);
+    padding: 1.5rem;
+    border-radius: 0 12px 12px 0;
+    font-size: 1.05em;
+    line-height: 1.7;
+  }
+  
+  .project-content :global(ul),
+  .project-content :global(ol) {
+    margin-bottom: 1.5rem;
+    padding-left: 2rem;
+    line-height: 1.7;
+  }
+  
+  .project-content :global(li) {
+    margin-bottom: 0.8rem;
+    color: #34495e;
+  }
+  
+  .project-content :global(code) {
+    background: rgba(138, 154, 126, 0.1);
+    color: #2E3A59;
+    padding: 0.2em 0.4em;
+    border-radius: 4px;
+    font-family: 'Fira Code', monospace;
+    font-size: 0.9em;
+  }
+  
+  .project-content :global(pre) {
+    background: #2c3e50;
+    color: #ecf0f1;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin: 1.5rem 0;
+    overflow-x: auto;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  .project-content :global(pre code) {
+    background: transparent;
+    color: inherit;
+    padding: 0;
+  }
+  
+  /* Project demonstration image styling */
+  .project-image-section {
+    margin: 3rem 0 4rem 0;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 
+      0 8px 32px rgba(0, 0, 0, 0.12),
+      0 4px 16px rgba(138, 154, 126, 0.1);
+    border: 1px solid rgba(138, 154, 126, 0.2);
+    transition: all 0.3s ease;
+  }
+  
+  .project-image-section:hover {
+    transform: translateY(-4px);
+    box-shadow: 
+      0 16px 48px rgba(0, 0, 0, 0.15),
+      0 8px 24px rgba(138, 154, 126, 0.15);
+  }
+  
+  .project-demo-image {
+    width: 100%;
+    max-width: 800px;
+    height: auto;
+    border-radius: 16px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+    border: 2px solid rgba(138, 154, 126, 0.1);
+  }
+  
+  .project-demo-image:hover {
+    transform: scale(1.02);
+    box-shadow: 0 20px 48px rgba(0, 0, 0, 0.2);
+    border-color: rgba(138, 154, 126, 0.3);
+  }
+  
+  .image-caption {
+    margin-top: 1.5rem;
+    color: var(--terracotta, #39647c);
+    font-family: var(--font-accent, 'Cormorant Garamond', serif);
+    font-size: 1.1rem;
+    font-style: italic;
+    font-weight: 500;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
   }
   
   .project-content :global(img) {
@@ -394,6 +530,20 @@ function getUrl(path: string): string {
     transform: translateX(-3px);
   }
   
+  /* Mobile responsive adjustments */
+  @media (max-width: 1200px) {
+    /* Reset margins when sidebar components are hidden */
+    .project-header .container,
+    .project-content,
+    .project-footer .container {
+      margin-left: auto;
+      margin-right: auto;
+      max-width: 900px;
+      padding-left: 2rem;
+      padding-right: 2rem;
+    }
+  }
+  
   @media (max-width: 768px) {
     .project-header h1 {
       font-size: 2rem;
@@ -412,5 +562,14 @@ function getUrl(path: string): string {
       width: 100%;
       justify-content: center;
     }
+    
+    .project-header .container,
+    .project-content,
+    .project-footer .container {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
   }
-</style> 
+</style>
+
+ 

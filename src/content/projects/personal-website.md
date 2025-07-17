@@ -1,7 +1,8 @@
 ---
 title: "Personal Website with Astro"
 description: "A modern personal website built with Astro, featuring blog posts, project showcases, and mathematical content rendering."
-pubDate: 2025-01-16
+pubDate: 2024-12-15
+image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
 tags: ["Astro", "TypeScript", "Markdown", "KaTeX", "CSS3", "GitHub Actions"]
 ---
 

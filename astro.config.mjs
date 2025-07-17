@@ -2,6 +2,8 @@
 import { defineConfig } from 'astro/config';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
+import react from '@astrojs/react';
+import tailwind from '@astrojs/tailwind';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 import remarkGfm from 'remark-gfm';
@@ -13,6 +15,10 @@ export default defineConfig({
   outDir: './docs',
   
   integrations: [
+    react(),
+    tailwind({
+      applyBaseStyles: false, // Keep your existing styles
+    }),
     mdx({
       remarkPlugins: [
         remarkGfm,        // GitHub Flavored Markdown

@@ -1,0 +1,693 @@
+---
+export interface Props {
+  allProjects: any[];
+  currentProject?: string;
+}
+
+const { allProjects, currentProject } = Astro.props;
+
+// Helper function to get proper URL with base path
+const baseUrl = import.meta.env.BASE_URL;
+function getUrl(path: string): string {
+  const cleanBaseUrl = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
+  const cleanPath = path.startsWith('/') ? path : `/${path}`;
+  return `${cleanBaseUrl}${cleanPath}`;
+}
+
+// Sort projects by date (newest first)
+const sortedProjects = allProjects.sort((a, b) => 
+  b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+// Get all unique tags and organize projects by tags
+const allTags = [...new Set(sortedProjects.flatMap(project => project.data.tags || []))];
+
+// Create a map of tags to projects for better organization
+const projectsByTag = allTags.reduce((acc: Record<string, any[]>, tag: string) => {
+  acc[tag] = sortedProjects.filter(project => project.data.tags?.includes(tag));
+  return acc;
+}, {} as Record<string, any[]>);
+---
+
+<div class="timeline-container" id="project-timeline">
+  <div class="timeline-header">
+    <div class="timeline-title-area">
+      <h3>Project Timeline</h3>
+      <div class="timeline-stats">
+        <span class="stat">
+          <span class="stat-number">{sortedProjects.length}</span>
+          <span class="stat-label">Projects</span>
+        </span>
+        <span class="stat">
+          <span class="stat-number">{allTags.length}</span>
+          <span class="stat-label">Technologies</span>
+        </span>
+      </div>
+    </div>
+    <button id="timeline-toggle" class="timeline-toggle" aria-label="Toggle project timeline">
+      <span class="toggle-icon">→</span>
+    </button>
+  </div>
+
+  <div class="timeline-content">
+    <!-- Main Timeline -->
+    <div class="timeline">
+      <div class="timeline-line"></div>
+      
+      {sortedProjects.map((project, index) => (
+        <div 
+          class="timeline-item" 
+          class:list={[currentProject === project.slug && 'active']}
+          data-index={index}
+        >
+          <div class="timeline-marker">
+            <div class="marker-dot"></div>
+            <div class="marker-pulse"></div>
+          </div>
+          
+          <div class="timeline-card">
+            <div class="card-header">
+              <h4>
+                <a href={getUrl(`/projects/${project.slug}/`)}>{project.data.title}</a>
+              </h4>
+              <time class="project-date" datetime={project.data.pubDate.toISOString()}>
+                {project.data.pubDate.toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'short'
+                })}
+              </time>
+            </div>
+            
+            <p class="project-description">{project.data.description}</p>
+            
+            <div class="project-tags">
+              {project.data.tags?.slice(0, 3).map((tag: string) => (
+                <span class="timeline-tag" data-tag={tag}>{tag}</span>
+              ))}
+              {project.data.tags && project.data.tags.length > 3 && (
+                <span class="timeline-tag more">+{project.data.tags.length - 3}</span>
+              )}
+            </div>
+            
+            <div class="card-actions">
+              <a href={getUrl(`/projects/${project.slug}/`)} class="view-project">
+                View Details
+              </a>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <!-- Tag Legend -->
+    <div class="tag-legend">
+      <h4>Technologies</h4>
+      <div class="legend-tags">
+        {allTags.map((tag: string) => (
+          <div class="legend-item" data-tag={tag}>
+            <span class="legend-dot" style={`background-color: var(--tag-color-${tag.toLowerCase().replace(/[^a-z0-9]/g, '-')})`}></span>
+            <span class="legend-label">{tag}</span>
+            <span class="legend-count">({projectsByTag[tag].length})</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .timeline-container {
+    position: fixed;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 320px;
+    height: 80vh;
+    background: rgba(255, 255, 255, 0.95);
+    border: 2px solid rgba(138, 154, 126, 0.3);
+    border-radius: 16px;
+    backdrop-filter: blur(12px);
+    box-shadow: 
+      0 15px 35px rgba(0, 0, 0, 0.1),
+      0 8px 20px rgba(138, 154, 126, 0.2);
+    z-index: 1000;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    /* Ensure visibility */
+    opacity: 1;
+    visibility: visible;
+  }
+  
+  .timeline-container.collapsed {
+    transform: translateY(-50%) translateX(-280px);
+    width: 60px; /* Just enough for the toggle button */
+  }
+  
+  .timeline-container.collapsed:hover {
+    transform: translateY(-50%) translateX(-250px);
+  }
+  
+  .timeline-container.collapsed .timeline-content {
+    opacity: 0;
+    pointer-events: none;
+  }
+  
+  .timeline-container.collapsed .timeline-header {
+    padding: 1rem 0.5rem;
+    justify-content: center;
+  }
+  
+  .timeline-container.collapsed .timeline-title-area {
+    display: none;
+  }
+  
+  .timeline-container.collapsed .toggle-icon {
+    transform: rotate(180deg);
+  }
+  
+  .timeline-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, #2E3A59 0%, #39647c 50%, #8A9A7E 100%);
+    color: white;
+    border-radius: 14px 14px 0 0;
+  }
+  
+  .timeline-title-area {
+    flex: 1;
+  }
+  
+  .timeline-header h3 {
+    margin: 0 0 1rem 0;
+    font-size: 1.2rem;
+    font-weight: 700;
+    font-family: 'Playfair Display', serif;
+  }
+  
+  .timeline-stats {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 1rem;
+  }
+  
+  .timeline-toggle {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 6px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+  }
+  
+  .timeline-toggle:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.1);
+  }
+  
+  .timeline-toggle .toggle-icon {
+    font-size: 1rem;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .stat-number {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #F4E8D1;
+  }
+  
+  .stat-label {
+    font-size: 0.8rem;
+    opacity: 0.9;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  .timeline-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1rem;
+    position: relative;
+  }
+  
+  .timeline-content::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  .timeline-content::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 3px;
+  }
+  
+  .timeline-content::-webkit-scrollbar-thumb {
+    background: rgba(138, 154, 126, 0.6);
+    border-radius: 3px;
+  }
+  
+  .timeline-content::-webkit-scrollbar-thumb:hover {
+    background: rgba(138, 154, 126, 0.8);
+  }
+  
+  .timeline {
+    position: relative;
+    padding-left: 2rem;
+  }
+  
+  .timeline-line {
+    position: absolute;
+    left: 1.5rem;
+    top: 0;
+    bottom: 2rem;
+    width: 3px;
+    background: linear-gradient(180deg, 
+      #8A9A7E 0%, 
+      #39647c 50%, 
+      #2E3A59 100%);
+    border-radius: 2px;
+    box-shadow: 0 0 10px rgba(138, 154, 126, 0.3);
+  }
+  
+  .timeline-item {
+    position: relative;
+    margin-bottom: 2.5rem;
+    opacity: 0.8;
+    transition: all 0.4s ease;
+  }
+  
+  .timeline-item:hover,
+  .timeline-item.active {
+    opacity: 1;
+    transform: translateX(8px);
+  }
+  
+  .timeline-item.active .timeline-card {
+    background: linear-gradient(135deg, 
+      rgba(255, 215, 0, 0.1) 0%, 
+      rgba(212, 175, 55, 0.1) 100%);
+    border-color: #D4AF37;
+    box-shadow: 
+      0 8px 25px rgba(212, 175, 55, 0.2),
+      0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  .timeline-marker {
+    position: absolute;
+    left: -2.3rem;
+    top: 1rem;
+    width: 20px;
+    height: 20px;
+    z-index: 2;
+  }
+  
+  .marker-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #8A9A7E 0%, #39647c 100%);
+    border: 3px solid white;
+    box-shadow: 
+      0 0 0 2px #8A9A7E,
+      0 4px 8px rgba(138, 154, 126, 0.3);
+    transition: all 0.3s ease;
+  }
+  
+  .marker-pulse {
+    position: absolute;
+    top: -3px;
+    left: -3px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: rgba(138, 154, 126, 0.3);
+    animation: pulse 2s ease-in-out infinite;
+    opacity: 0;
+  }
+  
+  .timeline-item:hover .marker-pulse,
+  .timeline-item.active .marker-pulse {
+    opacity: 1;
+  }
+  
+  .timeline-item.active .marker-dot {
+    background: linear-gradient(135deg, #D4AF37 0%, #FFD700 100%);
+    border-color: #F4E8D1;
+    box-shadow: 
+      0 0 0 2px #D4AF37,
+      0 4px 12px rgba(212, 175, 55, 0.4);
+    transform: scale(1.2);
+  }
+  
+  @keyframes pulse {
+    0%, 100% { 
+      transform: scale(1); 
+      opacity: 0.3; 
+    }
+    50% { 
+      transform: scale(1.5); 
+      opacity: 0.1; 
+    }
+  }
+  
+  .timeline-card {
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(138, 154, 126, 0.2);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 
+      0 4px 15px rgba(0, 0, 0, 0.08),
+      0 2px 6px rgba(138, 154, 126, 0.1);
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+  }
+  
+  .timeline-card:hover {
+    box-shadow: 
+      0 8px 25px rgba(0, 0, 0, 0.12),
+      0 4px 10px rgba(138, 154, 126, 0.15);
+  }
+  
+  .card-header {
+    margin-bottom: 1rem;
+  }
+  
+  .card-header h4 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1rem;
+    line-height: 1.3;
+  }
+  
+  .card-header h4 a {
+    color: #2E3A59;
+    text-decoration: none;
+    font-weight: 700;
+    transition: color 0.3s ease;
+  }
+  
+  .card-header h4 a:hover {
+    color: #8A9A7E;
+  }
+  
+  .project-date {
+    color: #666;
+    font-size: 0.8rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
+  
+  .project-date::before {
+    content: '📅';
+    font-size: 0.7rem;
+  }
+  
+  .project-description {
+    color: #555;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  
+  .project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 1rem;
+  }
+  
+  .timeline-tag {
+    background: rgba(138, 154, 126, 0.1);
+    color: #2E3A59;
+    padding: 0.3rem 0.6rem;
+    border-radius: 12px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    border: 1px solid rgba(138, 154, 126, 0.2);
+    transition: all 0.3s ease;
+  }
+  
+  .timeline-tag:hover {
+    background: rgba(138, 154, 126, 0.2);
+    transform: translateY(-1px);
+  }
+  
+  .timeline-tag.more {
+    background: rgba(212, 175, 55, 0.1);
+    border-color: rgba(212, 175, 55, 0.3);
+    color: #A87C5D;
+  }
+  
+  .card-actions {
+    text-align: center;
+  }
+  
+  .view-project {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: white;
+    background: linear-gradient(135deg, #8A9A7E 0%, #39647c 100%);
+    padding: 0.6rem 1.2rem;
+    border-radius: 20px;
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+  
+  .view-project:hover {
+    background: linear-gradient(135deg, #39647c 0%, #2E3A59 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(57, 100, 124, 0.3);
+  }
+  
+  .tag-legend {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(138, 154, 126, 0.2);
+  }
+  
+  .tag-legend h4 {
+    margin: 0 0 1rem 0;
+    font-size: 1rem;
+    color: #2E3A59;
+    font-weight: 700;
+  }
+  
+  .legend-tags {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.8rem;
+    cursor: pointer;
+    padding: 0.4rem;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+  }
+  
+  .legend-item:hover {
+    background: rgba(138, 154, 126, 0.1);
+  }
+  
+  .legend-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  
+  .legend-label {
+    flex: 1;
+    color: #555;
+    font-weight: 600;
+  }
+  
+  .legend-count {
+    color: #888;
+    font-size: 0.7rem;
+    font-weight: 600;
+  }
+  
+  /* Dynamic tag colors using CSS custom properties */
+  :root {
+    --tag-color-astro: #FF5D01;
+    --tag-color-typescript: #3178C6;
+    --tag-color-markdown: #084C61;
+    --tag-color-katex: #0D7377;
+    --tag-color-css3: #1572B6;
+    --tag-color-github-actions: #2088FF;
+    --tag-color-react: #61DAFB;
+    --tag-color-javascript: #F7DF1E;
+    --tag-color-python: #3776AB;
+    --tag-color-node-js: #339933;
+  }
+  
+  /* Hide only on very small screens */
+  @media (max-width: 768px) {
+    .timeline-container {
+      display: none !important;
+    }
+  }
+  
+  /* Show on tablet and larger screens */
+  @media (min-width: 769px) {
+    .timeline-container {
+      display: flex !important;
+      z-index: 1001;
+    }
+  }
+  
+  /* Responsive positioning for different screen sizes */
+  @media (min-width: 769px) and (max-width: 1200px) {
+    .timeline-container {
+      width: 280px;
+      left: 15px;
+    }
+    
+    .timeline-container.collapsed {
+      transform: translateY(-50%) translateX(-250px);
+    }
+  }
+  
+  /* Large screen positioning */
+  @media (min-width: 1201px) {
+    .timeline-container {
+      width: 320px;
+      left: 20px;
+    }
+    
+    .timeline-container.collapsed {
+      transform: translateY(-50%) translateX(-280px);
+    }
+  }
+
+</style>
+
+<script>
+  // @ts-nocheck
+  document.addEventListener('DOMContentLoaded', () => {
+    const timelineContainer = document.querySelector('.timeline-container');
+    const timelineToggle = document.getElementById('timeline-toggle');
+    const timelineItems = document.querySelectorAll('.timeline-item');
+    const legendItems = document.querySelectorAll('.legend-item');
+    
+    // Ensure timeline is visible and expanded on page load
+    if (timelineContainer) {
+      // Force visibility
+      timelineContainer.style.display = 'flex';
+      timelineContainer.style.visibility = 'visible';
+      timelineContainer.style.opacity = '1';
+      
+      // Remove collapsed state on page load/refresh
+      timelineContainer.classList.remove('collapsed');
+      localStorage.removeItem('timeline-collapsed');
+      sessionStorage.removeItem('timeline-collapsed');
+      
+      console.log('Timeline initialized and visible');
+    }
+    
+    // Toggle timeline visibility
+    if (timelineToggle && timelineContainer) {
+      timelineToggle.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        console.log('Toggle clicked');
+        timelineContainer.classList.toggle('collapsed');
+        
+        const isCollapsed = timelineContainer.classList.contains('collapsed');
+        console.log('Timeline collapsed:', isCollapsed);
+        
+        // Save state only during current session
+        sessionStorage.setItem('timeline-collapsed', isCollapsed.toString());
+      });
+      
+      // Don't restore collapsed state - always start expanded
+      console.log('Toggle button initialized');
+    }
+    
+    // Add index for staggered animation
+    timelineItems.forEach((item, index) => {
+      item.style.setProperty('--index', index.toString());
+    });
+    
+    // Tag filtering functionality
+    legendItems.forEach(legendItem => {
+      legendItem.addEventListener('click', () => {
+        const tag = legendItem.getAttribute('data-tag');
+        
+        // Toggle selection
+        legendItem.classList.toggle('selected');
+        
+        // Filter timeline items
+        timelineItems.forEach(timelineItem => {
+          const itemTags = Array.from(timelineItem.querySelectorAll('.timeline-tag'))
+            .map(tagEl => tagEl.textContent.trim());
+          
+          const hasTag = itemTags.some(itemTag => itemTag === tag);
+          const isSelected = legendItem.classList.contains('selected');
+          
+          if (isSelected) {
+            timelineItem.style.opacity = hasTag ? '1' : '0.3';
+            timelineItem.style.transform = hasTag ? 'translateX(8px)' : 'translateX(0)';
+          } else {
+            timelineItem.style.opacity = '0.8';
+            timelineItem.style.transform = 'translateX(0)';
+          }
+        });
+        
+        // If no items are selected, show all
+        const anySelected = document.querySelector('.legend-item.selected');
+        if (!anySelected) {
+          timelineItems.forEach(item => {
+            item.style.opacity = '0.8';
+            item.style.transform = 'translateX(0)';
+          });
+        }
+      });
+    });
+    
+    // Smooth scroll to active project
+    const activeItem = document.querySelector('.timeline-item.active');
+    if (activeItem) {
+      activeItem.scrollIntoView({ 
+        behavior: 'smooth', 
+        block: 'center' 
+      });
+    }
+    
+    // Debug logging to help troubleshoot
+    console.log('Timeline container found:', !!timelineContainer);
+    console.log('Timeline toggle found:', !!timelineToggle);
+    console.log('Timeline items found:', timelineItems.length);
+    console.log('Screen width:', window.innerWidth);
+    console.log('Timeline display:', timelineContainer ? getComputedStyle(timelineContainer).display : 'none');
+  });
+</script> 

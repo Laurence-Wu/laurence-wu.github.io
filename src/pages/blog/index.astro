@@ -1,14 +1,15 @@
 ---
 import Layout from '../../components/Layout.astro';
+import SearchBar from '../../components/SearchBar.astro';
 import { getCollection } from 'astro:content';
 
 const allBlogPosts = await getCollection('blog');
+const allProjects = await getCollection('projects');
 const publishedPosts = allBlogPosts
-  .filter(post => !post.data.draft)
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
 // Get all unique tags
-const allTags = [...new Set(publishedPosts.flatMap(post => post.data.tags))];
+const allTags = [...new Set(publishedPosts.flatMap(post => post.data.tags || []))];
 
 // Helper function to get proper URL with base path
 const baseUrl = import.meta.env.BASE_URL;
@@ -31,10 +32,15 @@ function getUrl(path: string): string {
     <div class="container">
       <div class="blog-sidebar">
         <div class="sidebar-section">
+          <h3>Search</h3>
+          <SearchBar allBlogPosts={publishedPosts} allProjects={allProjects} />
+        </div>
+        
+        <div class="sidebar-section">
           <h3>Categories</h3>
           <div class="tag-cloud">
             {allTags.map(tag => (
-              <span class="tag-filter" data-tag={tag}>{tag}</span>
+              <a href={getUrl(`/blog/tag/${tag}/`)} class="tag-filter">{tag}</a>
             ))}
           </div>
         </div>
@@ -65,8 +71,8 @@ function getUrl(path: string): string {
               )}
               
               <div class="post-tags">
-                {post.data.tags.map(tag => (
-                  <span class="tag">{tag}</span>
+                {post.data.tags?.map(tag => (
+                  <a href={getUrl(`/blog/tag/${tag}/`)} class="tag">{tag}</a>
                 ))}
               </div>
               
@@ -146,18 +152,25 @@ function getUrl(path: string): string {
   }
   
   .tag-filter {
-    background: #f0f0f0;
-    padding: 0.25rem 0.5rem;
-    border-radius: 0.25rem;
+    background: rgba(138, 154, 126, 0.1);
+    color: #2E3A59;
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
     font-size: 0.8rem;
-    color: #333;
-    cursor: pointer;
+    font-weight: 600;
+    text-decoration: none;
+    border: 1px solid rgba(138, 154, 126, 0.2);
     transition: all 0.3s ease;
+    font-family: var(--font-body, 'Montserrat', sans-serif);
+    display: inline-block;
   }
   
   .tag-filter:hover {
-    background: #39647c;
+    background: linear-gradient(135deg, #8A9A7E 0%, #39647c 100%);
     color: white;
+    border-color: #8A9A7E;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(138, 154, 126, 0.3);
   }
   
   .blog-posts {
@@ -218,11 +231,25 @@ function getUrl(path: string): string {
   }
   
   .tag {
-    background: #f0f0f0;
-    padding: 0.25rem 0.5rem;
-    border-radius: 0.25rem;
+    background: rgba(138, 154, 126, 0.1);
+    color: #2E3A59;
+    padding: 0.3rem 0.6rem;
+    border-radius: 15px;
     font-size: 0.8rem;
-    color: #333;
+    font-weight: 600;
+    text-decoration: none;
+    border: 1px solid rgba(138, 154, 126, 0.2);
+    transition: all 0.3s ease;
+    font-family: var(--font-body, 'Montserrat', sans-serif);
+    display: inline-block;
+  }
+  
+  .tag:hover {
+    background: rgba(138, 154, 126, 0.2);
+    border-color: #8A9A7E;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(138, 154, 126, 0.3);
+    color: #39647c;
   }
   
   .read-more {
@@ -270,27 +297,4 @@ function getUrl(path: string): string {
   }
 </style>
 
-<script>
-  // Add tag filtering functionality
-  document.addEventListener('DOMContentLoaded', () => {
-    const tagFilters = document.querySelectorAll('.tag-filter');
-    const postCards = document.querySelectorAll('.blog-post-card');
-    
-    tagFilters.forEach(filter => {
-      filter.addEventListener('click', () => {
-        const selectedTag = filter.getAttribute('data-tag');
-        
-        // Toggle active state
-        filter.classList.toggle('active');
-        
-        // Filter posts
-        postCards.forEach(card => {
-          const postTags = Array.from(card.querySelectorAll('.tag')).map(tag => tag.textContent);
-          const shouldShow = postTags.includes(selectedTag);
-          
-          card.style.display = shouldShow ? 'block' : 'none';
-        });
-      });
-    });
-  });
-</script> 
+ 

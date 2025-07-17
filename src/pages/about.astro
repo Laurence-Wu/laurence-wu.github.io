@@ -1,29 +1,26 @@
 ---
-// About Page - Preserved Legacy Frontend Design
+// About Page - Personal and non-academic content
 import BaseLayout from '../layouts/BaseLayout.astro';
+import AnimatedWaves from '../components/AnimatedWaves.astro';
 ---
 
-<BaseLayout title="About - Xiaoyou Wu" description="Learn about Xiaoyou Wu's journey in computer engineering, passion projects, and vision for the future of technology.">
+<BaseLayout title="About - Xiaoyou Wu" description="Learn about Xiaoyou Wu's personal side, unique perspective, and passions beyond academics.">
   <div class="about">
+    <AnimatedWaves />
     <div class="container">
-      <h1>About Me</h1>
+      <h1>About Me:Xiaoyou Wu</h1>
       
       <div class="about-content">
-        <a class="question">
+        <div class="question">
           <p>
             Why on earth we have both profile tab and about me tab?
           </p>
-        </a>
-        <a class="answer">
+        </div>
+        <div class="answer">
           <p> 
             This one is about the non-academic part of me ~
           </p>
-        </a>
-        <a class="quote">
-          <p>
-            It is my good fortune to have been born of the coast, and to have known since childhood that so much of this world is consumed by a ceaseless, reciprocal devouring. Some of this feasting is soundless, as it is with the day and the night. Not a whimper escapes their lips, yet their eternal clash bleeds out across the sky as the crimson blush of dawn and dusk. But other conflicts cannot conceal their choked cries and lamentations—so it is with the ocean and the land. Where the sea and the earth meet, there is ever an overwhelming, sorrowful chorus that fills all space.
-          </p>
-        </a>
+        </div>
         
         <h2 class="difference-section">What makes me different ?
           <p class="difference-content">
@@ -41,29 +38,39 @@ import BaseLayout from '../layouts/BaseLayout.astro';
               Studying philosophy and psychology ~
           </p>
         </h2>
-
-        <p class="closing-message">
-          Thank you for taking the time to learn about my story. I'd love to connect with fellow engineers, 
-          researchers, and anyone passionate about technology and innovation.
-        </p>
       </div>
     </div>
   </div>
 </BaseLayout>
 
 <style>
-  /* About Page Styles - Preserved from Legacy Frontend */
+  /* About Page Styles - Enhanced with Animated Waves */
   .about {
-    background-color: #F4E8D1;
+    background: linear-gradient(135deg, 
+      rgba(34, 197, 94, 0.05) 0%,   /* Light Green */
+      rgba(59, 130, 246, 0.05) 35%, /* Light Blue */
+      rgba(251, 191, 36, 0.05) 70%, /* Light Yellow */
+      rgba(34, 197, 94, 0.05) 100%  /* Light Green */
+    );
     color: var(--color-text);
     font-family: var(--font-body);
     padding: var(--section-spacing) 0;
     text-align: center;
     position: relative;
     overflow: hidden;
+    min-height: 100vh;
   }
 
-  /* Premium heading with luxury styling - Preserved */
+  /* Ensure content is above the animated waves */
+  .about .container {
+    position: relative;
+    z-index: 3;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  /* Premium heading with luxury styling */
   .about h1 {
     color: var(--color-dark);
     display: inline-block;
@@ -89,7 +96,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     }
   }
 
-  /* Elegant heading underline - Preserved */
+  /* Elegant heading underline */
   .about h1::after {
     background: linear-gradient(to right, var(--color-gold), var(--color-gold-light));
     bottom: -10px;
@@ -111,50 +118,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     }
   }
 
-  /* Decorative elements - Preserved */
-  .about::before {
-    background: linear-gradient(to bottom, var(--color-gold), transparent);
-    content: '';
-    height: 120px;
-    left: 20px;
-    opacity: 0.7;
-    position: absolute;
-    top: 0;
-    width: 3px;
-    animation: slideDown 1.5s ease-out;
-  }
-
-  .about::after {
-    background: linear-gradient(to bottom, transparent, var(--color-gold));
-    content: '';
-    height: 120px;
-    right: 20px;
-    opacity: 0.7;
-    position: absolute;
-    bottom: 0;
-    width: 3px;
-    animation: slideUp 1.5s ease-out;
-  }
-
-  @keyframes slideDown {
-    0% {
-      height: 0;
-    }
-    100% {
-      height: 120px;
-    }
-  }
-
-  @keyframes slideUp {
-    0% {
-      height: 0;
-    }
-    100% {
-      height: 120px;
-    }
-  }
-
-  /* Content container with premium styling - Preserved */
+  /* Content container with premium styling */
   .about-content {
     background-color: var(--color-card-bg);
     border-radius: var(--border-radius-lg);
@@ -182,7 +146,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     box-shadow: var(--shadow-medium);
   }
 
-  /* Elegant side accent - Preserved */
+  /* Elegant side accent */
   .about-content::before {
     background: linear-gradient(to bottom, var(--color-gold), var(--color-gold-light));
     content: '';
@@ -328,81 +292,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     }
   }
 
-  /* Quote styling - literary and flowing */
-  .quote {
-    display: block;
-    background: linear-gradient(135deg, #fdf4ff, #faf5ff);
-    border: 2px solid #a855f7;
-    border-radius: 16px;
-    padding: 2rem;
-    margin: 2rem 0;
-    position: relative;
-    cursor: pointer;
-    transition: all 0.5s ease;
-    animation: quoteFadeIn 1s ease-out 1s both;
-  }
-
-  .quote::before {
-    content: "Quote from me";
-    position: absolute;
-    top: -20px;
-    left: 20px;
-    font-size: 4rem;
-    color: #a855f7;
-    font-family: Georgia, serif;
-    line-height: 1;
-    animation: quoteFloat 3s ease-in-out infinite;
-  }
-
-  .quote::after {
-    content: "Quote from me";
-    position: absolute;
-    bottom: -20px;
-    right: 20px;
-    font-size: 4rem;
-    color: #a855f7;
-    font-family: Georgia, serif;
-    line-height: 1;
-    animation: quoteFloat 3s ease-in-out infinite reverse;
-  }
-
-  .quote:hover {
-    transform: scale(1.02);
-    background: linear-gradient(135deg, #f3e8ff, #faf5ff);
-    box-shadow: 0 10px 30px rgba(168, 85, 247, 0.15);
-  }
-
-  .quote p {
-    color: #7c3aed;
-    font-family: Georgia, serif;
-    font-style: italic;
-    line-height: 1.8;
-    text-align: justify;
-    margin: 0;
-    position: relative;
-    z-index: 1;
-  }
-
-  @keyframes quoteFadeIn {
-    0% {
-      opacity: 0;
-      transform: scale(0.95);
-    }
-    100% {
-      opacity: 1;
-      transform: scale(1);
-    }
-  }
-
-  @keyframes quoteFloat {
-    0%, 100% {
-      transform: translateY(0px);
-    }
-    50% {
-      transform: translateY(-5px);
-    }
-  }
-
   /* Difference section - unique and blurred effect */
   .difference-section {
     color: var(--color-gold);
@@ -500,36 +389,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     }
   }
 
-  /* Closing message - warm and inviting */
-  .closing-message {
-    background: linear-gradient(135deg, #f8fafc, #f1f5f9);
-    border: 2px solid #64748b;
-    border-radius: 12px;
-    padding: 2rem;
-    margin-top: 2rem;
-    text-align: center;
-    position: relative;
-    transition: all 0.4s ease;
-    animation: messageWave 1s ease-out 3s both;
-  }
-
-  .closing-message:hover {
-    background: linear-gradient(135deg, #e2e8f0, #f8fafc);
-    box-shadow: 0 8px 25px rgba(100, 116, 139, 0.15);
-    transform: translateY(-3px);
-  }
-
-  @keyframes messageWave {
-    0% {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
   @keyframes sectionSlideIn {
     0% {
       opacity: 0;
@@ -582,35 +441,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     text-align: left;
   }
 
-  .about a {
-    color: var(--color-gold);
-    font-family: var(--font-accent);
-    font-weight: 500;
-    position: relative;
-    text-decoration: none;
-    transition: var(--transition-standard);
-  }
-
-  .about a:hover {
-    color: var(--color-gold-light);
-  }
-
-  .about a::after {
-    background-color: var(--color-gold);
-    bottom: -2px;
-    content: '';
-    height: 1px;
-    left: 0;
-    position: absolute;
-    transition: var(--transition-standard);
-    width: 100%;
-  }
-
-  .about a:hover::after {
-    background-color: var(--color-gold-light);
-  }
-
-  /* Responsive adaptations - Preserved */
+  /* Responsive design */
   @media (max-width: 768px) {
     .about {
       padding: 2.5rem 0;
@@ -627,11 +458,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     .about-content {
       padding: 2rem;
       margin: 1.5rem;
-    }
-
-    .quote::before,
-    .quote::after {
-      font-size: 3rem;
     }
   }
 
@@ -655,11 +481,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     .about-content {
       padding: 1.8rem;
       margin: 1rem;
-    }
-
-    .quote::before,
-    .quote::after {
-      font-size: 2.5rem;
     }
   }
 </style> 
