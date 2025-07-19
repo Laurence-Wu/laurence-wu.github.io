@@ -1,0 +1,340 @@
+<!DOCTYPE html><html lang="en" data-astro-cid-37fxchfa> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Intro to Triton with Matrix Multiplication</title><meta name="description" content="Introduction to GPU programming with Triton and build the matrix multiplication along the way"><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://laurence-wu.github.io/blog/matrix_multiplication/"><meta property="og:title" content="Intro to Triton with Matrix Multiplication"><meta property="og:description" content="Introduction to GPU programming with Triton and build the matrix multiplication along the way"><meta property="og:image" content="/Matrix_multiplication/grouped_vs_row_major_ordering.png"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://laurence-wu.github.io/blog/matrix_multiplication/"><meta property="twitter:title" content="Intro to Triton with Matrix Multiplication"><meta property="twitter:description" content="Introduction to GPU programming with Triton and build the matrix multiplication along the way"><meta property="twitter:image" content="/Matrix_multiplication/grouped_vs_row_major_ordering.png"><!-- KaTeX CSS for Math Rendering --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css" integrity="sha384-GvrOXuhMATgEsSwCs4smul74iXGOixntILdUW9XmUC6+HX0sLNAK3q71HotJqlAn" crossorigin="anonymous"><!-- Google Fonts - Preserved Typography System --><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&family=Cormorant+Garamond:wght@300;400;500;600;700&display=swap" rel="stylesheet"><!-- Fira Code for code blocks --><link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap" rel="stylesheet"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Global CSS Import --><link rel="stylesheet" href="/_astro/_slug_.CaX6V1Dz.css">
+<link rel="stylesheet" href="/_astro/index.TGeb6wFI.css">
+<link rel="stylesheet" href="/_astro/_slug_.CPkxrsu5.css"></head> <body data-astro-cid-37fxchfa> <nav class="navbar" data-astro-cid-pux6a34n> <div class="navbar-brand" data-astro-cid-pux6a34n>Xiaoyou Wu</div> <a href="/" class="navbar-link " data-astro-cid-pux6a34n>
+Home
+</a> <a href="/blog" class="navbar-link active" data-astro-cid-pux6a34n>
+Blog
+</a> <a href="/projects" class="navbar-link " data-astro-cid-pux6a34n>
+Projects
+</a> <a href="/about" class="navbar-link " data-astro-cid-pux6a34n>
+About
+</a> </nav>  <script type="module">function r(){const e=document.querySelector(".navbar");window.scrollY>50?e?.classList.add("scrolled"):e?.classList.remove("scrolled")}window.addEventListener("scroll",r);document.querySelector(".navbar")?.addEventListener("contextmenu",e=>{e.preventDefault()});document.querySelector(".navbar")?.addEventListener("dragstart",e=>{e.preventDefault()});</script> <main class="main-content" data-astro-cid-37fxchfa>  <main class="blog-post" data-astro-cid-bvzihdzo> <article data-astro-cid-bvzihdzo> <header class="post-header" data-astro-cid-bvzihdzo> <h1 data-astro-cid-bvzihdzo>Intro to Triton with Matrix Multiplication</h1> <div class="post-meta" data-astro-cid-bvzihdzo> <time datetime="2025-03-18T00:00:00.000Z" data-astro-cid-bvzihdzo> March 18, 2025 </time> <span class="author" data-astro-cid-bvzihdzo>by Xiaoyou Wu</span>  </div> <div class="tags" data-astro-cid-bvzihdzo> <a href="/blog/tag/triton/" class="tag" data-astro-cid-bvzihdzo>triton</a><a href="/blog/tag/GPU/" class="tag" data-astro-cid-bvzihdzo>GPU</a><a href="/blog/tag/CUDA/" class="tag" data-astro-cid-bvzihdzo>CUDA</a><a href="/blog/tag/compiler/" class="tag" data-astro-cid-bvzihdzo>compiler</a><a href="/blog/tag/code/" class="tag" data-astro-cid-bvzihdzo>code</a><a href="/blog/tag/optimization/" class="tag" data-astro-cid-bvzihdzo>optimization</a> </div> </header> <div id="table-of-contents" class="toc-container" data-astro-cid-xvrfupwn> <div class="toc-header" data-astro-cid-xvrfupwn> <div class="toc-title-area" data-astro-cid-xvrfupwn> <span class="drag-handle" title="Drag to move" data-astro-cid-xvrfupwn>⋮⋮</span> <h3 data-astro-cid-xvrfupwn>Table of Contents</h3> </div> <button id="toc-toggle" class="toc-toggle" aria-label="Toggle table of contents" data-astro-cid-xvrfupwn> <span class="toggle-icon" data-astro-cid-xvrfupwn>←</span> </button> </div> <nav class="toc-nav" aria-label="Table of contents" data-astro-cid-xvrfupwn> <ul id="toc-list" class="toc-list" data-astro-cid-xvrfupwn> <!-- TOC items will be populated by JavaScript --> </ul> </nav> </div>  <script type="module" src="/_astro/TableOfContents.astro_astro_type_script_index_0_lang.CcLlAhMV.js"></script> <div class="post-content" data-astro-cid-bvzihdzo>  <p>As the most important operation in GPU computation, matrix multiplication optimization is a must learn!</p>
+<p><strong>Bruh, let’s dive right in ~</strong></p>
+<h2 id="from-the-architecture-to-the-idea">From the architecture to the idea</h2>
+<h3 id="memory-architecture-of-gpu">Memory Architecture of GPU</h3>
+<figure class="mermaid-diagram">
+  <div class="mermaid-container">
+    Loading diagram...
+  </div>
+  <details class="mermaid-source">
+    <summary>Source</summary>
+    <pre class="mermaid-code"><code>graph TD
+    subgraph CPU / Host
+        A[Host Code] --> B{Kernel Launch};
+    end
+
+    subgraph GPU / Device
+        C[Command Queue];
+        D(Thread Blocks);
+        E[Streaming Multiprocessors];
+        F[L1 Cache / Shared Memory];
+        G[CUDA Cores];
+        H[L2 Cache];
+        I[High-Bandwidth Memory];
+    end
+
+    %% --- Define Connections ---
+    B -- Command --> C;
+    C --> D;
+    D --> E;
+    E -- Contains --> F;
+    E -- Contains --> G;
+
+    %% Memory Flow
+    G &#x3C;--> F;
+    F &#x3C;--> H;
+    H &#x3C;--> I;</code></pre>
+  </details>
+</figure>
+<ol>
+<li>Command from CPU: CPU will run a pointer to the compiled GPU function. <em>But how is it compiled, and what needs to be included? This will be discussed in the compilation part.</em></li>
+<li>Then, the command will undergo an asynchronous operation using a physical memory buffer FIFO. Compile instructions will be loaded.</li>
+<li>Here, the grid of blocks is simply a soft level abstraction. The information about the grid blocks will be compiled for each thread block, which is in the SMs (Streaming Multiprocessor). <em><strong><u>This is incredible, frontend and backend separation techniques, I guess it helps the hardware security.</u></strong></em></li>
+<li><strong><u>VRAM</u></strong> is basically a more general external memory, and <strong><u>HBM</u></strong> is just a high-performance type.</li>
+<li>Then, for the SM, it will manage warp, which manages 32 threads for executing and transporting information to other parts:</li>
+</ol>
+<figure class="mermaid-diagram">
+  <div class="mermaid-container">
+    Loading diagram...
+  </div>
+  <details class="mermaid-source">
+    <summary>Source</summary>
+    <pre class="mermaid-code"><code>graph TD
+    subgraph GPU Device
+        subgraph Streaming Multiprocessor 1
+            subgraph CUDA Core 1A
+                R1[Registers]
+            end
+            subgraph CUDA Core 1B
+                R2[Registers]
+            end
+            L1_1[L1 Cache / Shared Memory]
+        end
+
+        subgraph Streaming Multiprocessor 2
+            subgraph CUDA Core 2A
+                R3[Registers]
+            end
+            subgraph CUDA Core 2B
+                R4[Registers]
+            end
+            L1_2[L1 Cache / Shared Memory]
+        end
+
+        L2[L2 Cache]
+        HBM[High-Bandwidth Memory]
+    end
+
+    %% --- Data Access Paths ---
+    R1 &#x3C;--> L1_1
+    R2 &#x3C;--> L1_1
+    R3 &#x3C;--> L1_2
+    R4 &#x3C;--> L1_2
+    L1_1 &#x3C;--> L2
+    L1_2 &#x3C;--> L2
+    L2 &#x3C;--> HBM
+
+    style R1 fill:#f9f,stroke:#333,stroke-width:2px
+    style R2 fill:#f9f,stroke:#333,stroke-width:2px
+    style R3 fill:#f9f,stroke:#333,stroke-width:2px
+    style R4 fill:#f9f,stroke:#333,stroke-width:2px
+    style L1_1 fill:#bbf,stroke:#333,stroke-width:2px
+    style L1_2 fill:#bbf,stroke:#333,stroke-width:2px
+    style L2 fill:#bdf,stroke:#333,stroke-width:2px
+    style HBM fill:#fb9,stroke:#333,stroke-width:2px</code></pre>
+  </details>
+</figure>
+<p>AND there are their properties:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Memory Hardware</th><th>Key Parameters</th><th>Primary Job</th></tr></thead><tbody><tr><td><strong>Registers</strong></td><td><strong>Size:</strong> Tiniest (bytes per thread)<br><strong>Speed:</strong> Instantaneous <strong>Scope:</strong> Private to <strong>one thread</strong></td><td>Holds the immediate working data for a single thread’s current instruction. The absolute fastest memory available.</td></tr><tr><td><strong>L1 Cache / Shared Memory</strong></td><td><strong>Size:</strong> Small (~100 KB per SM) <br><strong>Speed:</strong> Fastest <br><strong>Scope:</strong> Per SM</td><td>A high-speed scratchpad for threads within a <strong>block</strong> to share data and cooperate.</td></tr><tr><td><strong>L2 Cache</strong></td><td><strong>Size:</strong> Medium (a few MB) <br><strong>Speed:</strong> Fast<br><strong>Scope:</strong> Shared by <strong>all SMs</strong></td><td>A unified cache for the entire GPU, catching data requests that miss L1 to avoid slow HBM access.</td></tr><tr><td><strong>High-Bandwidth Memory (HBM) / VRAM</strong></td><td><strong>Size:</strong> Large (many GB) <strong>Speed:</strong> Slowest <strong>Scope:</strong> Global (entire GPU)</td><td>The main data storage for the GPU, holding all large datasets, textures, and models.</td></tr></tbody></table>
+<h3 id="compilation-architecture">Compilation architecture</h3>
+<figure class="mermaid-diagram">
+  <div class="mermaid-container">
+    Loading diagram...
+  </div>
+  <details class="mermaid-source">
+    <summary>Source</summary>
+    <pre class="mermaid-code"><code>graph TD
+    %% --- Node Definitions ---
+    
+    subgraph "Stage 1: Compilation"
+        A["📄 Source File .cu\nContains both Host CPU and Device GPU code"]
+        B["1. NVCC Compiler Driver"]
+    end
+
+    subgraph "Host CPU Path"
+        C["Host Code C++"]
+        D["Host Compiler\ne.g., GCC, Clang, MSVC"]
+        E["Host Object File .o"]
+    end
+
+    subgraph "Device GPU Path"
+        F["Device Code CUDA C++"]
+        G["CUDA Frontend Compiler"]
+        H["PTX\nParallel Thread Execution\n&#x3C;I>Intermediate Assembly&#x3C;/I>"]
+        I["PTX Assembler"]
+        J["SASS\nStreaming Assembler\n&#x3C;B>GPU Machine Code&#x3C;/B>"]
+        K["Device Object File .o"]
+    end
+    
+    subgraph "Stage 2: Linking"
+        L["Linker"]
+        M["✅ Final Executable\nContains Host code + embedded GPU code"]
+    end
+
+    subgraph "Stage 3: Execution"
+        N["Program runs on Host CPU"]
+        O["CUDA Driver"]
+        P{"&#x3C;B>JIT Compilation&#x3C;/B>\nJust-In-Time"}
+        Q["🚀 GPU Executes Code"]
+    end
+
+    %% --- Connection Definitions ---
+    A --> B
+    B -- Separates Code --> C &#x26; F
+    C --> D --> E
+    F --> G --> H --> I --> J --> K
+    E --> L
+    K --> L
+    L --> M
+    M --> N --> O --> P
+    P -- "If embedded SASS doesn't match current GPU" --> I
+    P -- "If SASS is compatible" --> Q
+
+    %% --- Styling ---
+    style B fill:#f9f,stroke:#333,stroke-width:2px
+    style L fill:#f9f,stroke:#333,stroke-width:2px
+    style N fill:#f9f,stroke:#333,stroke-width:2px
+    style O fill:#f9f,stroke:#333,stroke-width:2px</code></pre>
+  </details>
+</figure>
+<ol>
+<li>Command from CPU: The command will be compiled in the CPU. The kernel function should include the behavior of the Grid of Blocks and the number of threads per block.</li>
+<li><strong><u>JIT (just in time)</u></strong> means it compiles the program, not before, but during the GPU’s execution.</li>
+<li><strong><u>Bank conflict:</u></strong> since multiple threads can potentially want to access the same shared memory bank (a column) simultaneously, we would have to serialize them / or arrange the data properly</li>
+<li><strong><u>PTX</u></strong> provides forward compatibility, and <strong><u>SASS</u></strong> provides the maximum performance.</li>
+<li><strong><u>Memory coalescing</u></strong>: When a warp accesses the GPU’s main VRAM, the hardware checks the addresses they are requesting. If these addresses are close together and fall within a single, aligned memory segment, the GPU “coalesces” them. Instead of performing 32 small, separate memory fetches, it performs one single, large fetch that grabs all the requested data at once. Shared Memory/registers are fast enough, and L1/L2 also have this feature called locality.</li>
+</ol>
+<h2 id="torch-implementation-of-matrix-multiplication">Torch Implementation of Matrix Multiplication</h2>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> matrix_multilication</span><span style="color:#E1E4E8">(x,y):</span></span>
+<span class="line"><span style="color:#6A737D">  # consider matrix x and y with dimention M,N,K</span></span>
+<span class="line"><span style="color:#E1E4E8">  M,N </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> x.shape</span></span>
+<span class="line"><span style="color:#E1E4E8">  N,K </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> y.shape</span></span>
+<span class="line"><span style="color:#E1E4E8">  accumulator </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> torch.zeros(M,K)</span></span>
+<span class="line"><span style="color:#F97583">  for</span><span style="color:#E1E4E8"> row_x </span><span style="color:#F97583">in</span><span style="color:#79B8FF"> range</span><span style="color:#E1E4E8">(M):</span></span>
+<span class="line"><span style="color:#F97583">    for</span><span style="color:#E1E4E8"> col_y </span><span style="color:#F97583">in</span><span style="color:#79B8FF"> range</span><span style="color:#E1E4E8">(K):</span></span>
+<span class="line"><span style="color:#E1E4E8">      dot_product </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> torch.dot(x[row_X,:],y[:,col_y])</span></span>
+<span class="line"><span style="color:#E1E4E8">      accumulator[row_x][col_y] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> dot_product</span></span>
+<span class="line"><span style="color:#F97583">	return</span><span style="color:#E1E4E8"> accumulator</span></span>
+<span class="line"><span style="color:#6A737D"># Basically just use</span></span>
+<span class="line"><span style="color:#E1E4E8">result </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> torch.matmul(x,y)</span></span></code></pre>
+<h2 id="high-level-implementation-of-matrix-multiplication">High-Level Implementation of Matrix Multiplication</h2>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#6A737D">#Implement the tiling in the Triton</span></span>
+<span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> matrix_multiplication</span><span style="color:#E1E4E8">(x,y,BLOCK_SIZE_M,BLOCK_SIZE_N,BLOCK_SIZE_K):</span></span>
+<span class="line"><span style="color:#E1E4E8">  M,N </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> x.shape</span></span>
+<span class="line"><span style="color:#E1E4E8">  N,K </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> y.shape</span></span>
+<span class="line"><span style="color:#E1E4E8">  z </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> torch.zeros(M,K)</span></span>
+<span class="line"><span style="color:#F97583">  for</span><span style="color:#E1E4E8"> m </span><span style="color:#F97583">in</span><span style="color:#79B8FF"> range</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">,M,</span><span style="color:#79B8FF">BLOCK_SIZE_M</span><span style="color:#E1E4E8">):</span></span>
+<span class="line"><span style="color:#F97583">  	for</span><span style="color:#E1E4E8"> k </span><span style="color:#F97583">in</span><span style="color:#79B8FF"> range</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">,K,</span><span style="color:#79B8FF">BLOCK_SIZE_K</span><span style="color:#E1E4E8">):</span></span>
+<span class="line"><span style="color:#E1E4E8">      accumulator </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> zeros((</span><span style="color:#79B8FF">BLOCK_SIZE_M</span><span style="color:#E1E4E8">,</span><span style="color:#79B8FF">BLOCK_SIZE_K</span><span style="color:#E1E4E8">),</span><span style="color:#FFAB70">dtype</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">float32)</span></span>
+<span class="line"><span style="color:#6A737D">      #in the SM So we have to export the ACCU to the L2 first</span></span>
+<span class="line"><span style="color:#F97583">      for</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">in</span><span style="color:#79B8FF"> range</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">,n,</span><span style="color:#79B8FF">BLOCK_SIZE_N</span><span style="color:#E1E4E8">):</span></span>
+<span class="line"><span style="color:#E1E4E8">        a </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> x[m:m</span><span style="color:#F97583">+</span><span style="color:#79B8FF">BLOCK_SIZE_M</span><span style="color:#E1E4E8">,n:n</span><span style="color:#F97583">+</span><span style="color:#79B8FF">BLOCK_SIZE_N</span><span style="color:#E1E4E8">]</span></span>
+<span class="line"><span style="color:#E1E4E8">        b </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> y[n:n</span><span style="color:#F97583">+</span><span style="color:#79B8FF">BLOCK_SIZE_N</span><span style="color:#E1E4E8">,k:k</span><span style="color:#F97583">+</span><span style="color:#79B8FF">BLOCK_SIZE_K</span><span style="color:#E1E4E8">]</span></span>
+<span class="line"><span style="color:#E1E4E8">        accumulator </span><span style="color:#F97583">+=</span><span style="color:#E1E4E8"> dot(a,b)</span></span>
+<span class="line"><span style="color:#E1E4E8">      z[m:m</span><span style="color:#F97583">+</span><span style="color:#79B8FF">BLOCK_SIZE</span><span style="color:#E1E4E8">,k:k</span><span style="color:#F97583">+</span><span style="color:#79B8FF">BLOCK_SIZE_K</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> accumulator</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#E1E4E8"> z</span></span></code></pre>
+<p>Here are some useful insights:</p>
+<ul>
+<li>Why do we use the accumulator? Why can’t we just add to the output matrix? A: Because of the coalescing the access to the information is faster</li>
+<li>Why do we do a small matrix multiplication instead of a faster dot product? A: They are essentially the same because they are just 1D arrays in the memory space, and the difference between these two algorithms won’t make much of a difference.</li>
+</ul>
+<h2 id="triton-kernel-for-matrix-multiplication">Triton Kernel for Matrix Multiplication</h2>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#B392F0">@triton.jit</span></span>
+<span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> kernel_maxmul</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#6A737D">        # Pointers to matrices</span></span>
+<span class="line"><span style="color:#E1E4E8">        a_ptr, b_ptr, c_ptr,</span></span>
+<span class="line"><span style="color:#6A737D">        # Matrix dimensions</span></span>
+<span class="line"><span style="color:#E1E4E8">        M, N, K,</span></span>
+<span class="line"><span style="color:#6A737D">        # The stride variables represent how much to increase the ptr by when moving by 1</span></span>
+<span class="line"><span style="color:#E1E4E8">        stride_am, stride_ak,</span></span>
+<span class="line"><span style="color:#E1E4E8">        stride_bk, stride_bn,</span></span>
+<span class="line"><span style="color:#E1E4E8">        stride_cm, stride_cn,</span></span>
+<span class="line"><span style="color:#6A737D">        # Meta-parameters</span></span>
+<span class="line"><span style="color:#E1E4E8">        BLOCK_SIZE_M: tl.constexpr, BLOCK_SIZE_N: tl.constexpr, BLOCK_SIZE_K: tl.constexpr,  </span><span style="color:#6A737D"># for tiling</span></span>
+<span class="line"><span style="color:#E1E4E8">        GROUP_SIZE_M: tl.constexpr,  </span><span style="color:#6A737D"># for super band</span></span>
+<span class="line"><span style="color:#E1E4E8">        ACTIVATION: tl.constexpr  )</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    # This is done in a grouped ordering to promote L2 data reuse.(exactly why we use the GROUP_SIZE_M)</span></span>
+<span class="line"><span style="color:#E1E4E8">    pid </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> tl.program_id(</span><span style="color:#FFAB70">axis</span><span style="color:#F97583">=</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">    num_pid_m </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> tl.cdiv(M, </span><span style="color:#79B8FF">BLOCK_SIZE_M</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">    num_pid_n </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> tl.cdiv(N, </span><span style="color:#79B8FF">BLOCK_SIZE_N</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">    num_pid_in_group </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> GROUP_SIZE_M</span><span style="color:#F97583"> *</span><span style="color:#E1E4E8"> num_pid_n</span></span>
+<span class="line"><span style="color:#E1E4E8">    group_id </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> pid </span><span style="color:#F97583">//</span><span style="color:#E1E4E8"> num_pid_in_group</span></span>
+<span class="line"><span style="color:#E1E4E8">    first_pid_m </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> group_id </span><span style="color:#F97583">*</span><span style="color:#79B8FF"> GROUP_SIZE_M</span></span>
+<span class="line"><span style="color:#E1E4E8">    group_size_m </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> min</span><span style="color:#E1E4E8">(num_pid_m </span><span style="color:#F97583">-</span><span style="color:#E1E4E8"> first_pid_m, </span><span style="color:#79B8FF">GROUP_SIZE_M</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">    pid_m </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> first_pid_m </span><span style="color:#F97583">+</span><span style="color:#E1E4E8"> ((pid </span><span style="color:#F97583">%</span><span style="color:#E1E4E8"> num_pid_in_group) </span><span style="color:#F97583">%</span><span style="color:#E1E4E8"> group_size_m)</span></span>
+<span class="line"><span style="color:#E1E4E8">    pid_n </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> (pid </span><span style="color:#F97583">%</span><span style="color:#E1E4E8"> num_pid_in_group) </span><span style="color:#F97583">//</span><span style="color:#E1E4E8"> group_size_m</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    # ------------------------------------------------------</span></span>
+<span class="line"><span style="color:#6A737D">    # This helps to guide integer analysis in the backend to optimize load/store offset address calculation</span></span>
+<span class="line"><span style="color:#E1E4E8">    tl.assume(pid_m </span><span style="color:#F97583">>=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">    tl.assume(pid_n </span><span style="color:#F97583">>=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">    tl.assume(stride_am </span><span style="color:#F97583">></span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">    tl.assume(stride_ak </span><span style="color:#F97583">></span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">    tl.assume(stride_bn </span><span style="color:#F97583">></span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">    tl.assume(stride_bk </span><span style="color:#F97583">></span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">    tl.assume(stride_cm </span><span style="color:#F97583">></span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">    tl.assume(stride_cn </span><span style="color:#F97583">></span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    # ----------------------------------------------------------</span></span>
+<span class="line"><span style="color:#6A737D">    # Create pointers for the first blocks of A and B.</span></span>
+<span class="line"><span style="color:#E1E4E8">    offs_am </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> (pid_m </span><span style="color:#F97583">*</span><span style="color:#79B8FF"> BLOCK_SIZE_M</span><span style="color:#F97583"> +</span><span style="color:#E1E4E8"> tl.arange(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">BLOCK_SIZE_M</span><span style="color:#E1E4E8">)) </span><span style="color:#F97583">%</span><span style="color:#E1E4E8"> M</span></span>
+<span class="line"><span style="color:#E1E4E8">    offs_bn </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> (pid_n </span><span style="color:#F97583">*</span><span style="color:#79B8FF"> BLOCK_SIZE_N</span><span style="color:#F97583"> +</span><span style="color:#E1E4E8"> tl.arange(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">BLOCK_SIZE_N</span><span style="color:#E1E4E8">)) </span><span style="color:#F97583">%</span><span style="color:#E1E4E8"> N</span></span>
+<span class="line"><span style="color:#E1E4E8">    offs_k </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> tl.arange(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">BLOCK_SIZE_K</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">    a_ptrs </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> a_ptr </span><span style="color:#F97583">+</span><span style="color:#E1E4E8"> (offs_am[:, </span><span style="color:#79B8FF">None</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> stride_am </span><span style="color:#F97583">+</span><span style="color:#E1E4E8"> offs_k[</span><span style="color:#79B8FF">None</span><span style="color:#E1E4E8">, :] </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> stride_ak)</span></span>
+<span class="line"><span style="color:#E1E4E8">    b_ptrs </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> b_ptr </span><span style="color:#F97583">+</span><span style="color:#E1E4E8"> (offs_k[:, </span><span style="color:#79B8FF">None</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> stride_bk </span><span style="color:#F97583">+</span><span style="color:#E1E4E8"> offs_bn[</span><span style="color:#79B8FF">None</span><span style="color:#E1E4E8">, :] </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> stride_bn)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    # -----------------------------------------------------------</span></span>
+<span class="line"><span style="color:#6A737D">    # Iterate to compute a block of the C matrix.</span></span>
+<span class="line"><span style="color:#6A737D">    # We accumulate into a `[BLOCK_SIZE_M, BLOCK_SIZE_N]` block</span></span>
+<span class="line"><span style="color:#6A737D">    # of fp32 values for higher accuracy.</span></span>
+<span class="line"><span style="color:#6A737D">    # `accumulator` will be converted back to fp16 after the loop.</span></span>
+<span class="line"><span style="color:#E1E4E8">    accumulator </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> tl.zeros((</span><span style="color:#79B8FF">BLOCK_SIZE_M</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">BLOCK_SIZE_N</span><span style="color:#E1E4E8">), </span><span style="color:#FFAB70">dtype</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">tl.float32)</span></span>
+<span class="line"><span style="color:#F97583">    for</span><span style="color:#E1E4E8"> k </span><span style="color:#F97583">in</span><span style="color:#79B8FF"> range</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">, tl.cdiv(K, </span><span style="color:#79B8FF">BLOCK_SIZE_K</span><span style="color:#E1E4E8">)):</span></span>
+<span class="line"><span style="color:#6A737D">        # Load the next block of A and B, generate a mask by checking the K dimension.</span></span>
+<span class="line"><span style="color:#6A737D">        # If it is out of bounds, set it to 0.</span></span>
+<span class="line"><span style="color:#E1E4E8">        a </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> tl.load(a_ptrs, </span><span style="color:#FFAB70">mask</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">offs_k[</span><span style="color:#79B8FF">None</span><span style="color:#E1E4E8">, :] </span><span style="color:#F97583">&#x3C;</span><span style="color:#E1E4E8"> K </span><span style="color:#F97583">-</span><span style="color:#E1E4E8"> k </span><span style="color:#F97583">*</span><span style="color:#79B8FF"> BLOCK_SIZE_K</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">other</span><span style="color:#F97583">=</span><span style="color:#79B8FF">0.0</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">        b </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> tl.load(b_ptrs, </span><span style="color:#FFAB70">mask</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">offs_k[:, </span><span style="color:#79B8FF">None</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">&#x3C;</span><span style="color:#E1E4E8"> K </span><span style="color:#F97583">-</span><span style="color:#E1E4E8"> k </span><span style="color:#F97583">*</span><span style="color:#79B8FF"> BLOCK_SIZE_K</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">other</span><span style="color:#F97583">=</span><span style="color:#79B8FF">0.0</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#6A737D">        # We accumulate along the K dimension.</span></span>
+<span class="line"><span style="color:#E1E4E8">        accumulator </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> tl.dot(a, b, accumulator)</span></span>
+<span class="line"><span style="color:#6A737D">        # Advance the ptrs to the next K block.</span></span>
+<span class="line"><span style="color:#E1E4E8">        a_ptrs </span><span style="color:#F97583">+=</span><span style="color:#79B8FF"> BLOCK_SIZE_K</span><span style="color:#F97583"> *</span><span style="color:#E1E4E8"> stride_ak</span></span>
+<span class="line"><span style="color:#E1E4E8">        b_ptrs </span><span style="color:#F97583">+=</span><span style="color:#79B8FF"> BLOCK_SIZE_K</span><span style="color:#F97583"> *</span><span style="color:#E1E4E8"> stride_bk</span></span>
+<span class="line"><span style="color:#6A737D">    # You can fuse arbitrary activation functions here</span></span>
+<span class="line"><span style="color:#6A737D">    # while the accumulator is still in FP32!</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#79B8FF"> ACTIVATION</span><span style="color:#F97583"> ==</span><span style="color:#9ECBFF"> "leaky_relu"</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">        accumulator </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> leaky_relu(accumulator)</span></span>
+<span class="line"><span style="color:#E1E4E8">    c </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> accumulator.to(tl.float16)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    # -----------------------------------------------------------</span></span>
+<span class="line"><span style="color:#6A737D">    # Write back the block of the output matrix C with masks.</span></span>
+<span class="line"><span style="color:#E1E4E8">    offs_cm </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> pid_m </span><span style="color:#F97583">*</span><span style="color:#79B8FF"> BLOCK_SIZE_M</span><span style="color:#F97583"> +</span><span style="color:#E1E4E8"> tl.arange(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">BLOCK_SIZE_M</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">    offs_cn </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> pid_n </span><span style="color:#F97583">*</span><span style="color:#79B8FF"> BLOCK_SIZE_N</span><span style="color:#F97583"> +</span><span style="color:#E1E4E8"> tl.arange(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">BLOCK_SIZE_N</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">    c_ptrs </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> c_ptr </span><span style="color:#F97583">+</span><span style="color:#E1E4E8"> stride_cm </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> offs_cm[:, </span><span style="color:#79B8FF">None</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">+</span><span style="color:#E1E4E8"> stride_cn </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> offs_cn[</span><span style="color:#79B8FF">None</span><span style="color:#E1E4E8">, :]</span></span>
+<span class="line"><span style="color:#E1E4E8">    c_mask </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> (offs_cm[:, </span><span style="color:#79B8FF">None</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">&#x3C;</span><span style="color:#E1E4E8"> M) </span><span style="color:#F97583">&#x26;</span><span style="color:#E1E4E8"> (offs_cn[</span><span style="color:#79B8FF">None</span><span style="color:#E1E4E8">, :] </span><span style="color:#F97583">&#x3C;</span><span style="color:#E1E4E8"> N)</span></span>
+<span class="line"><span style="color:#E1E4E8">    tl.store(c_ptrs, c, </span><span style="color:#FFAB70">mask</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">c_mask)</span></span>
+<span class="line"></span></code></pre>
+<ul>
+<li>We used a novel parameter: GROUP_SIZE_M, which was meant to be the height of a super-block with several BLOCK_SIZE_M tall. The following picture shows this idea better. Let me use the quote from the original tutorial <u><em>“In the following matmul where each matrix is 9 blocks by 9 blocks, we can see that if we compute the output in row-major ordering, we need to load 90 blocks into SRAM to compute the first 9 output blocks, but if we do it in grouped ordering, we only need to load 54 blocks.”</em></u></li>
+</ul>
+<h2 id=""><img src="/Matrix_multiplication/grouped_vs_row_major_ordering.png" alt="grouped_vs_row_major_ordering"></h2>
+<h2 id="conclusion">Conclusion</h2>
+<p>GPU performance is dictated by its memory hierarchy: extremely fast but small on-chip memory (Registers, L1 Cache/Shared Memory) and large but slow off-chip memory (VRAM/HBM). The primary optimization goal is to minimize traffic to slow VRAM by maximizing data reuse in the fast caches.</p>
+<p>The key software strategy is <strong>tiling</strong> (or blocking), where large matrices are broken into smaller blocks that fit into fast on-chip memory. Computations are performed on these blocks using a local <strong>accumulator</strong> to sum results, ensuring only one final, slow write to VRAM per block. This algorithm must also account for hardware features, ensuring memory access is <strong>coalesced</strong> to maximize VRAM bandwidth and that it avoids <strong>bank conflicts</strong> in shared memory.</p>
+<p>Block Tiling also works ! And it fosters the calculation speed.</p>  </div> <!-- Mermaid Diagram Renderer --> <script type="module" src="/_astro/BlogPost.astro_astro_type_script_index_0_lang.D0V2i9KR.js"></script> </article> </main> <footer class="blog-footer" data-astro-cid-bvzihdzo> <div class="container" data-astro-cid-bvzihdzo> <a href="/blog" class="back-link" data-astro-cid-bvzihdzo>← Back to Blog</a> </div> </footer>  </main> <footer class="site-footer" data-astro-cid-37fxchfa> <div class="footer-content" data-astro-cid-37fxchfa> <p data-astro-cid-37fxchfa>&copy; 2025 Xiaoyou Wu. All rights reserved.</p> <div class="footer-links" data-astro-cid-37fxchfa> <a href="https://github.com/yourusername" target="_blank" rel="noopener noreferrer" data-astro-cid-37fxchfa>GitHub</a> <a href="https://linkedin.com/in/yourprofile" target="_blank" rel="noopener noreferrer" data-astro-cid-37fxchfa>LinkedIn</a> <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" data-astro-cid-37fxchfa>Resume</a> </div> </div> </footer> <!-- KaTeX JavaScript for Math Rendering --> <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js" integrity="sha384-cpW21h6RZv/phavutF+AuVYrr+dA8xD9zs6FwLpaCct6O9ctzYFfFr4dgmgccOTx" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous" onload="renderMathInDocument()"></script> <script>
+    function renderMathInDocument() {
+      if (typeof window.renderMathInElement !== 'undefined') {
+        window.renderMathInElement(document.body, {
+          delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false},
+            {left: '\\(', right: '\\)', display: false},
+            {left: '\\[', right: '\\]', display: true}
+          ],
+          throwOnError: false
+        });
+      }
+    }
+    
+    document.addEventListener("DOMContentLoaded", renderMathInDocument);
+  </script> </body> </html>  

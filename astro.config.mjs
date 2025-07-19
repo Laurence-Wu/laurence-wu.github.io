@@ -8,6 +8,13 @@ import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 import remarkGfm from 'remark-gfm';
 
+// Import Typora-compatible remark plugins
+import { 
+  remarkTyporaMermaid, 
+  remarkTyporaImages, 
+  remarkTyporaExtensions 
+} from './src/plugins/remark-typora/index.js';
+
 // https://astro.build/config
 export default defineConfig({
   site: 'https://laurence-wu.github.io', // Your GitHub Pages root domain
@@ -23,6 +30,27 @@ export default defineConfig({
       remarkPlugins: [
         remarkGfm,        // GitHub Flavored Markdown
         remarkMath,       // Math notation support
+        // Typora-compatible plugins (order matters)
+        [remarkTyporaMermaid, { 
+          componentPath: '../../components/Mermaid.astro',
+          componentName: 'Mermaid',
+          preserveCodeBlock: false,
+          autoImport: true
+        }],
+        [remarkTyporaImages, { 
+          contentDir: 'src/content/blog',
+          preserveZoom: true,
+          createAssetFolders: false
+        }],
+        [remarkTyporaExtensions, {
+          enableHighlight: true,
+          enableUnderline: true,
+          enableTaskLists: true,
+          enableFootnotes: true,
+          enableMathBlocks: true,
+          enableCodeAttributes: true,
+          highlightClassName: 'typora-highlight'
+        }]
       ],
       rehypePlugins: [
         rehypeKatex,      // LaTeX math rendering
@@ -37,6 +65,27 @@ export default defineConfig({
     remarkPlugins: [
       remarkGfm,          // GitHub Flavored Markdown (tables, strikethrough, etc.)
       remarkMath,         // Math notation parsing
+      // Typora-compatible plugins (same configuration as MDX)
+      [remarkTyporaMermaid, { 
+        componentPath: '../../components/Mermaid.astro',
+        componentName: 'Mermaid',
+        preserveCodeBlock: false,
+        autoImport: true
+      }],
+      [remarkTyporaImages, { 
+        contentDir: 'src/content/blog',
+        preserveZoom: true,
+        createAssetFolders: false
+      }],
+      [remarkTyporaExtensions, {
+        enableHighlight: true,
+        enableUnderline: true,
+        enableTaskLists: true,
+        enableFootnotes: true,
+        enableMathBlocks: true,
+        enableCodeAttributes: true,
+        highlightClassName: 'typora-highlight'
+      }]
     ],
     rehypePlugins: [
       rehypeKatex,        // LaTeX math rendering with KaTeX

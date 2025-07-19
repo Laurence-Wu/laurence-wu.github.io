@@ -490,3 +490,243 @@ body #search-results .result-type {
   letter-spacing: 0.1em !important;
   box-shadow: 0 2px 4px rgba(139, 92, 246, 0.3) !important;
 } 
+/
+* ============================================ */
+/* 📊 TABLE STYLING - Enhanced Readability     */
+/* ============================================ */
+
+/* Main table container */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 2rem 0;
+  background: var(--color-card-bg);
+  border-radius: var(--border-radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-soft);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+/* Table header styling */
+thead {
+  background: linear-gradient(135deg, var(--sage-green), var(--light-sage));
+  color: white;
+}
+
+thead th {
+  padding: 1.25rem 1rem;
+  text-align: left;
+  font-weight: 600;
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  letter-spacing: 0.025em;
+  border-bottom: 3px solid var(--deep-navy);
+  position: relative;
+}
+
+/* Add subtle separator lines between header columns */
+thead th:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 25%;
+  height: 50%;
+  width: 1px;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Table body styling */
+tbody {
+  background: var(--color-card-bg);
+}
+
+tbody tr {
+  border-bottom: 1px solid var(--color-border);
+  transition: all 0.2s ease;
+}
+
+/* Alternating row colors for better readability */
+tbody tr:nth-child(even) {
+  background: rgba(138, 154, 126, 0.03);
+}
+
+/* Row hover effect */
+tbody tr:hover {
+  background: rgba(138, 154, 126, 0.08);
+  transform: translateX(2px);
+  box-shadow: inset 4px 0 0 var(--sage-green);
+}
+
+/* Table cell styling */
+td, th {
+  padding: 1rem;
+  text-align: left;
+  vertical-align: top;
+  border-right: 1px solid var(--color-border);
+}
+
+/* Remove right border from last column */
+td:last-child, th:last-child {
+  border-right: none;
+}
+
+/* Table data cells */
+tbody td {
+  color: var(--deep-navy);
+  font-weight: 400;
+  line-height: 1.7;
+}
+
+/* Strong text in table cells */
+tbody td strong, tbody td b {
+  color: var(--deep-navy);
+  font-weight: 600;
+}
+
+/* Emphasized text in table cells */
+tbody td em, tbody td i {
+  color: var(--terracotta);
+  font-style: italic;
+}
+
+/* Code in table cells */
+tbody td code {
+  background: rgba(138, 154, 126, 0.1);
+  color: var(--deep-navy);
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--border-radius-sm);
+  font-family: var(--font-code);
+  font-size: 0.875em;
+  border: 1px solid rgba(138, 154, 126, 0.2);
+}
+
+/* Links in table cells */
+tbody td a {
+  color: var(--terracotta);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: all 0.2s ease;
+}
+
+tbody td a:hover {
+  color: var(--deep-navy);
+  border-bottom-color: var(--sage-green);
+}
+
+/* Responsive table wrapper */
+.table-wrapper {
+  overflow-x: auto;
+  margin: 2rem 0;
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-soft);
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  table {
+    font-size: 0.875rem;
+  }
+  
+  td, th {
+    padding: 0.75rem 0.5rem;
+  }
+  
+  thead th {
+    padding: 1rem 0.5rem;
+    font-size: 0.9rem;
+  }
+  
+  /* Stack table on very small screens */
+  @media (max-width: 480px) {
+    table, thead, tbody, th, td, tr {
+      display: block;
+    }
+    
+    thead tr {
+      position: absolute;
+      top: -9999px;
+      left: -9999px;
+    }
+    
+    tbody tr {
+      border: 2px solid var(--sage-green);
+      border-radius: var(--border-radius);
+      margin-bottom: 1rem;
+      padding: 1rem;
+      background: var(--color-card-bg);
+      box-shadow: var(--shadow-soft);
+    }
+    
+    tbody td {
+      border: none;
+      border-bottom: 1px solid var(--color-border);
+      position: relative;
+      padding: 0.75rem 0 0.75rem 35%;
+      text-align: left;
+    }
+    
+    tbody td:before {
+      content: attr(data-label) ": ";
+      position: absolute;
+      left: 0;
+      width: 30%;
+      padding-right: 1rem;
+      white-space: nowrap;
+      font-weight: 600;
+      color: var(--sage-green);
+      font-family: var(--font-heading);
+    }
+    
+    tbody td:last-child {
+      border-bottom: none;
+    }
+  }
+}
+
+/* Table caption styling */
+caption {
+  caption-side: top;
+  padding: 1rem;
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--deep-navy);
+  text-align: left;
+  margin-bottom: 0.5rem;
+}
+
+/* Special styling for numeric data */
+.numeric {
+  text-align: right;
+  font-family: var(--font-code);
+  font-weight: 500;
+}
+
+/* Special styling for status indicators */
+.status-positive {
+  color: #059669;
+  font-weight: 600;
+}
+
+.status-negative {
+  color: #dc2626;
+  font-weight: 600;
+}
+
+.status-neutral {
+  color: var(--color-text-light);
+  font-weight: 500;
+}
+
+/* Table within blog posts - additional spacing */
+.post-content table {
+  margin: 2.5rem 0;
+}
+
+.post-content table + p,
+.post-content table + ul,
+.post-content table + ol {
+  margin-top: 2rem;
+}
