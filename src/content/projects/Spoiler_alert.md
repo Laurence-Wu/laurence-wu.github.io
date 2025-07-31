@@ -5,7 +5,6 @@ pubDate: 2024-01-15
 githubLink: https://github.com/Laurence-Wu/spoiler_alert.git
 tags: ["React", "Flask", "MySQL","HTTPS", "Web Development", "Full Stack"]
 ---
-# Spoiler Alert: fridge website to alert people about their spoiled food
 
 ## My feelings about this project
 
