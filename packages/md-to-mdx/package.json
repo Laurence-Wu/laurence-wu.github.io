@@ -1,0 +1,80 @@
+{
+  "name": "@kiro/md-to-mdx",
+  "version": "1.0.0",
+  "description": "A powerful and extensible Markdown to MDX compiler with support for mermaid diagrams, math expressions, images, and tables",
+  "type": "commonjs",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "md-to-mdx": "dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "rollup -c",
+    "dev": "rollup -c -w",
+    "test": "vitest",
+    "test:coverage": "vitest --coverage",
+    "lint": "eslint src --ext .js,.ts",
+    "lint:fix": "eslint src --ext .js,.ts --fix",
+    "type-check": "tsc --noEmit",
+    "prepublishOnly": "npm run build && npm run test",
+    "example": "node examples/basic-usage.js"
+  },
+  "keywords": [
+    "markdown",
+    "mdx",
+    "compiler",
+    "mermaid",
+    "math",
+    "latex",
+    "katex",
+    "images",
+    "tables",
+    "astro",
+    "nextjs",
+    "vite",
+    "static-site-generator"
+  ],
+  "author": "Kiro Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kiro-dev/md-to-mdx.git"
+  },
+  "bugs": {
+    "url": "https://github.com/kiro-dev/md-to-mdx/issues"
+  },
+  "homepage": "https://github.com/kiro-dev/md-to-mdx#readme",
+  "dependencies": {
+    "chokidar": "^3.5.3",
+    "commander": "^11.0.0",
+    "glob": "^10.3.0"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^25.0.0",
+    "@rollup/plugin-json": "^6.0.0",
+    "@rollup/plugin-node-resolve": "^15.0.0",
+    "@rollup/plugin-typescript": "^11.0.0",
+    "@types/node": "^20.0.0",
+    "eslint": "^8.0.0",
+    "rollup": "^3.0.0",
+    "typescript": "^5.0.0",
+    "vitest": "^1.0.0"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "peerDependencies": {
+    "astro": ">=4.0.0"
+  },
+  "peerDependenciesMeta": {
+    "astro": {
+      "optional": true
+    }
+  }
+}

@@ -1,0 +1,40 @@
+---
+title: Do Not Disturb Robotics Arm Project
+description: A brain-computer interface and computer vision powered robotic arm that intelligently prevents interruptions during deep focus.
+pubDate: 2025-07-31
+githubLink: "https://github.com/Laurence-Wu/RoboticsArmControl.git"
+tags: [Robotics, BCI, Computer Vision, Raspberry Pi, PID Control, Python]
+---
+
+## My feelings to this project
+
+This project means everything to me. I built it solo during a four-day hackathon, fueled by passion and just six hours of sleep. I was so exhausted afterward that I bombed my finals in statistics and signal processing. You could say I traded my GPA for this project, but it was worth it.
+
+That was the moment I knew I had to be in robotics—it just clicked. It was the perfect fusion of computer vision, embedded systems, control theory, and PCB design, all working together to bring a complex robotic arm to life. I still vividly remember the late nights: writing error handling / testing scripts, recording and adding safety angular constraints,troubleshooting communication failures on the shared serial port, and fixing the burned out motors from overcurrent.
+
+The more I thought about it, the more I understood. This world may not be a world of science; it might be a complex world that are engineered with 1000 more preprocessing steps.
+
+## Introduction
+
+The "Do Not Disturb" project is an integrated robotics system designed to intelligently prevent interruptions based on a user's mental state. The project was conceived from the personal experience of being disrupted while in a state of deep focus, or "flow." By combining Brain-Computer Interface (BCI) technology with computer vision and a robotic arm, the system serves as an automated guardian that only activates when the user is genuinely concentrating, solving the nuanced problem of distinguishing between welcome and unwelcome interruptions.
+
+## Why This Project and What It Does
+
+The primary motivation behind this project was to create a system that could understand the user's level of focus and act accordingly. The creator identified that not all interruptions are undesirable; sometimes, a distraction is welcome when one is not deeply engaged in a task. The challenge was to build a system that could differentiate between a focused state and an unfocused one.
+
+The system operates through the collaboration of two main components:
+
+1. **Brainwave Analysis System:** A user wears a BCI headset that captures EEG (electroencephalogram) data. This raw data is first processed by the manufacturer's API and then fed into a custom deep learning network. This network, trained on public data, performs a two-category classification to determine if the user is currently "focusing" or "not focusing."
+2. **Robotic Guardian System:** The classification result is sent over the cloud to a **Raspberry Pi** that controls a robotic arm. If the system detects the user is in a state of focus, it activates the arm. Using an onboard camera, the arm employs a visual tracking algorithm to detect and follow the face of any person who approaches, acting as a clear, non-verbal "Do Not Disturb" signal.
+
+## Technical Details
+
+The project's architecture integrates complex software and hardware components, primarily developed in **Python** for its rapid prototyping capabilities and SDK availability.
+
+- **Computer Vision:** The visual tracking system uses a two-stage approach for robust performance. It first uses **Haar Cascades** for general human face detection. Then, a deep learning model is used for more precise identification and tracking. To prevent erratic arm movements, a **"lockdown period"** was implemented; if the target face is lost, the system waits a few seconds and predicts the face's next likely position before re-engaging, ensuring smoother motion.
+- **Robotic Arm Control:** The robotic arm has **2 degrees of freedom ** and is controlled using a **PID (Proportional-Integral-Derivative)** algorithm. This required the meticulous tuning of six distinct PID parameters (three for each axis) to accurately translate the 2D coordinates from the camera feed into physical movement. This process was a significant challenge, involving extensive debugging of signs and values to correct initial bugs that caused the arm to lock up or behave erratically.
+- **System Integration and Challenges:** The Raspberry Pi communicated with the robotic arm over a **single-threaded serial port**. This limitation made it difficult to run the PID control loop concurrently with other logic, such as returning the arm to a home position. The solution was to create a routine that could rapidly send velocity commands to override the PID data flow when necessary. Other challenges included creating an accurate mapping between the camera's pixels and the arm's real-world distance and dealing with hardware failures, such as two servo motors breaking from over-current before software constraints were added.
+
+## Project Summary
+
+The "Do Not Disturb" project is a successful proof-of-concept that effectively integrates BCI, deep learning, and robotics to solve a nuanced real-world problem. The development process provided a significant learning experience in complex system integration, PID control algorithms, hardware interfacing with a Raspberry Pi, and robust debugging. The project culminated in winning first place in the "Brain Interaction" robotics category at a competition. The complete codebase, including testing scripts and error handling, is available on GitHub for further review.

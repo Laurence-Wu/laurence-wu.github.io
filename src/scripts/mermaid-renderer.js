@@ -67,12 +67,10 @@ class MermaidRenderer {
       
       const container = document.querySelector(`#${diagramId} .mermaid-container`);
       if (!container) {
-        console.error('Container not found for:', diagramId);
         return;
       }
       
       if (!code) {
-        console.error('No code provided for:', diagramId);
         return;
       }
 
@@ -84,28 +82,18 @@ class MermaidRenderer {
       wrapper.className = 'mermaid-svg-wrapper';
       wrapper.innerHTML = svg;
       
-      // Add zoom controls sidebar
-      const controlsSidebar = document.createElement('div');
-      controlsSidebar.className = 'mermaid-controls-sidebar';
-      controlsSidebar.innerHTML = `
-        <div class="mermaid-controls-toggle" title="Toggle Controls">⚙</div>
-        <div class="mermaid-controls-panel">
-          <button class="mermaid-btn zoom-in" title="Zoom In">+</button>
-          <button class="mermaid-btn zoom-out" title="Zoom Out">−</button>
-          <button class="mermaid-btn zoom-reset" title="Reset Zoom">⌂</button>
-          <button class="mermaid-btn fullscreen" title="View Fullscreen">⛶</button>
-        </div>
-      `;
-      
       container.innerHTML = '';
       container.appendChild(wrapper);
-      container.appendChild(controlsSidebar);
       
-      // Add zoom functionality
-      this.setupZoomControls(wrapper, controlsSidebar, svg, diagramId);
+      // Add controls to the source section
+      const sourceSection = container.closest('.mermaid-diagram').querySelector('.mermaid-source');
+      if (sourceSection) {
+        const controlsPanel = this.addControlsToSource(sourceSection, wrapper, svg, diagramId);
+        // Add zoom functionality
+        this.setupZoomControls(wrapper, controlsPanel, svg, diagramId);
+      }
       
     } catch (error) {
-      console.error('Mermaid rendering error for', diagramId, ':', error);
       const container = document.querySelector(`#${diagramId} .mermaid-container`);
       if (container) {
         container.innerHTML = `
@@ -121,7 +109,28 @@ class MermaidRenderer {
     }
   }
 
-  setupZoomControls(wrapper, controlsSidebar, svg, diagramId) {
+  addControlsToSource(sourceSection, wrapper, svg, diagramId) {
+    // Add controls directly to the source summary bar
+    const summary = sourceSection.querySelector('summary');
+    if (!summary) return null;
+    
+    // Create controls panel and add it directly to the summary
+    const controlsPanel = document.createElement('div');
+    controlsPanel.className = 'mermaid-controls-panel';
+    controlsPanel.innerHTML = `
+      <button class="mermaid-btn zoom-in" title="Zoom In">+</button>
+      <button class="mermaid-btn zoom-out" title="Zoom Out">−</button>
+      <button class="mermaid-btn zoom-reset" title="Reset Zoom">⌂</button>
+      <button class="mermaid-btn fullscreen" title="View Fullscreen">⛶</button>
+    `;
+    
+    // Add controls to the summary bar
+    summary.appendChild(controlsPanel);
+    
+    return controlsPanel;
+  }
+
+  setupZoomControls(wrapper, controlsContainer, svg, diagramId) {
     let currentScale = 0.7; // Start smaller
     const svgElement = wrapper.querySelector('svg');
     
@@ -135,32 +144,32 @@ class MermaidRenderer {
     // Initial scale
     updateScale();
     
-    // Toggle sidebar visibility
-    const toggle = controlsSidebar.querySelector('.mermaid-controls-toggle');
-    const panel = controlsSidebar.querySelector('.mermaid-controls-panel');
-    
-    toggle.addEventListener('click', () => {
-      panel.classList.toggle('visible');
-    });
-    
     // Zoom controls
-    controlsSidebar.querySelector('.zoom-in').addEventListener('click', () => {
+    controlsContainer.querySelector('.zoom-in').addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
       currentScale = Math.min(currentScale + 0.2, 3);
       updateScale();
     });
     
-    controlsSidebar.querySelector('.zoom-out').addEventListener('click', () => {
+    controlsContainer.querySelector('.zoom-out').addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
       currentScale = Math.max(currentScale - 0.2, 0.3);
       updateScale();
     });
     
-    controlsSidebar.querySelector('.zoom-reset').addEventListener('click', () => {
+    controlsContainer.querySelector('.zoom-reset').addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
       currentScale = 0.7;
       updateScale();
     });
     
     // Fullscreen modal
-    controlsSidebar.querySelector('.fullscreen').addEventListener('click', () => {
+    controlsContainer.querySelector('.fullscreen').addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
       const modal = document.createElement('div');
       modal.className = 'mermaid-modal';
       modal.innerHTML = `
@@ -199,7 +208,7 @@ class MermaidRenderer {
     
     // Click to zoom functionality
     wrapper.addEventListener('click', (e) => {
-      if (e.target.closest('.mermaid-controls-sidebar')) return;
+      if (e.target.closest('.mermaid-controls-container')) return;
       currentScale = currentScale < 1 ? 1 : 0.7;
       updateScale();
     });
@@ -227,7 +236,7 @@ class MermaidRenderer {
 const mermaidRenderer = new MermaidRenderer();
 
 function initMermaid() {
-  mermaidRenderer.renderAllDiagrams().catch(console.error);
+  mermaidRenderer.renderAllDiagrams().catch(() => {});
 }
 
 if (document.readyState === 'loading') {

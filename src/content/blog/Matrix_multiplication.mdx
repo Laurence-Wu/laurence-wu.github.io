@@ -1,17 +1,15 @@
 ---
-title: "Intro to Triton with Matrix Multiplication"
-description: "Introduction to GPU programming with Triton and build the matrix multiplication along the way"
+title: Intro to Triton with Matrix Multiplication
+description: Introduction to GPU programming with Triton and build the matrix multiplication along the way
 pubDate: 2025-03-18
-author: "Xiaoyou Wu"
-tags: ["triton", "GPU", "CUDA", "compiler", "code","optimization"]
-image: "/Matrix_multiplication/grouped_vs_row_major_ordering.png"
+author: Xiaoyou Wu
+tags: [triton, GPU, CUDA, compiler, code, optimization]
+image: /images/grouped_vs_row_major_ordering.png
 ---
 
+import Mermaid from "../../components/Mermaid.astro";
 
-
-As the most important operation in GPU computation, matrix multiplication optimization is a must learn! 
-
-
+As the most important operation in GPU computation, matrix multiplication optimization is a must learn!
 
 **Bruh, let's dive right in ~**
 
@@ -19,8 +17,7 @@ As the most important operation in GPU computation, matrix multiplication optimi
 
 ### Memory Architecture of GPU
 
-```mermaid
-graph TD
+<Mermaid code={`graph TD
     subgraph CPU / Host
         A[Host Code] --> B{Kernel Launch};
     end
@@ -45,17 +42,14 @@ graph TD
     %% Memory Flow
     G <--> F;
     F <--> H;
-    H <--> I;
-```
-
-1. Command from CPU: CPU will run a pointer to the compiled GPU function. *But how is it compiled, and what needs to be included? This will be discussed in the compilation part.*
-2. Then, the command will undergo an asynchronous operation using a physical memory buffer FIFO. Compile instructions will be loaded. 
-3. Here, the grid of blocks is simply a soft level abstraction. The information about the grid blocks will be compiled for each thread block, which is in the SMs (Streaming Multiprocessor). ***<u>This is incredible, frontend and backend separation techniques, I guess it helps the hardware security.</u>***
+    H <--> I;`} />
+1. Command from CPU: CPU will run a pointer to the compiled GPU function. _But how is it compiled, and what needs to be included? This will be discussed in the compilation part._
+2. Then, the command will undergo an asynchronous operation using a physical memory buffer FIFO. Compile instructions will be loaded.
+3. Here, the grid of blocks is simply a soft level abstraction. The information about the grid blocks will be compiled for each thread block, which is in the SMs (Streaming Multiprocessor). **_<u>This is incredible, frontend and backend separation techniques, I guess it helps the hardware security.</u>_**
 4. **<u>VRAM</u>** is basically a more general external memory, and **<u>HBM</u>** is just a high-performance type.
 5. Then, for the SM, it will manage warp, which manages 32 threads for executing and transporting information to other parts:
 
-```mermaid
-graph TD
+<Mermaid code={`graph TD
     subgraph GPU Device
         subgraph Streaming Multiprocessor 1
             subgraph CUDA Core 1A
@@ -97,55 +91,55 @@ graph TD
     style L1_1 fill:#bbf,stroke:#333,stroke-width:2px
     style L1_2 fill:#bbf,stroke:#333,stroke-width:2px
     style L2 fill:#bdf,stroke:#333,stroke-width:2px
-    style HBM fill:#fb9,stroke:#333,stroke-width:2px
-```
-
-
-
+    style HBM fill:#fb9,stroke:#333,stroke-width:2px`} />
 AND there are their properties:
 
-| Memory Hardware                        | Key Parameters                                               | Primary Job                                                  |
-| -------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| **Registers**                          | **Size:** Tiniest (bytes per thread)<br />**Speed:** Instantaneous **Scope:** Private to **one thread** | Holds the immediate working data for a single thread's current instruction. The absolute fastest memory available. |
-| **L1 Cache / Shared Memory**           | **Size:** Small (~100 KB per SM) <br />**Speed:** Fastest <br />**Scope:** Per SM | A high-speed scratchpad for threads within a **block** to share data and cooperate. |
-| **L2 Cache**                           | **Size:** Medium (a few MB) <br />**Speed:** Fast<br />**Scope:** Shared by **all SMs** | A unified cache for the entire GPU, catching data requests that miss L1 to avoid slow HBM access. |
+| Memory Hardware | Key Parameters | Primary Job |
+| --- | --- | --- |
+| **Registers** | **Size:** Tiniest (bytes per thread)<br />**Speed:** Instantaneous **Scope:** Private to **one thread** | Holds the immediate working data for a single thread's current instruction. The absolute fastest memory available. |
+| **L1 Cache / Shared Memory** | **Size:** Small (~100 KB per SM) <br />**Speed:** Fastest <br />**Scope:** Per SM | A high-speed scratchpad for threads within a **block** to share data and cooperate. |
+| **L2 Cache** | **Size:** Medium (a few MB) <br />**Speed:** Fast<br />**Scope:** Shared by **all SMs** | A unified cache for the entire GPU, catching data requests that miss L1 to avoid slow HBM access. |
 | **High-Bandwidth Memory (HBM) / VRAM** | **Size:** Large (many GB) **Speed:** Slowest **Scope:** Global (entire GPU) | The main data storage for the GPU, holding all large datasets, textures, and models. |
 
 ### Compilation architecture
 
-```mermaid
-graph TD
+<div style={{color: '#ff6b6b', padding: '1rem', border: '1px solid #ff6b6b', borderRadius: '4px'}}>
+  <strong>Mermaid Error:</strong> Mermaid syntax errors: Invalid arrow syntax detected
+  <details style={{marginTop: '0.5rem'}}>
+    <summary>Show code</summary>
+    <pre style={{background: '#f5f5f5', padding: '0.5rem', marginTop: '0.5rem', overflowX: 'auto'}}>
+      <code>{`graph TD
     %% --- Node Definitions ---
-    
+
     subgraph "Stage 1: Compilation"
-        A["📄 Source File .cu\nContains both Host CPU and Device GPU code"]
+        A["📄 Source File .cu\\nContains both Host CPU and Device GPU code"]
         B["1. NVCC Compiler Driver"]
     end
 
     subgraph "Host CPU Path"
         C["Host Code C++"]
-        D["Host Compiler\ne.g., GCC, Clang, MSVC"]
+        D["Host Compiler\\ne.g., GCC, Clang, MSVC"]
         E["Host Object File .o"]
     end
 
     subgraph "Device GPU Path"
         F["Device Code CUDA C++"]
         G["CUDA Frontend Compiler"]
-        H["PTX\nParallel Thread Execution\n<I>Intermediate Assembly</I>"]
+        H["PTX\\nParallel Thread Execution\\n<I>Intermediate Assembly</I>"]
         I["PTX Assembler"]
-        J["SASS\nStreaming Assembler\n<B>GPU Machine Code</B>"]
+        J["SASS\\nStreaming Assembler\\n<B>GPU Machine Code</B>"]
         K["Device Object File .o"]
     end
-    
+
     subgraph "Stage 2: Linking"
         L["Linker"]
-        M["✅ Final Executable\nContains Host code + embedded GPU code"]
+        M["✅ Final Executable\\nContains Host code + embedded GPU code"]
     end
 
     subgraph "Stage 3: Execution"
         N["Program runs on Host CPU"]
         O["CUDA Driver"]
-        P{"<B>JIT Compilation</B>\nJust-In-Time"}
+        P{"<B>JIT Compilation</B>\\nJust-In-Time"}
         Q["🚀 GPU Executes Code"]
     end
 
@@ -165,11 +159,10 @@ graph TD
     style B fill:#f9f,stroke:#333,stroke-width:2px
     style L fill:#f9f,stroke:#333,stroke-width:2px
     style N fill:#f9f,stroke:#333,stroke-width:2px
-    style O fill:#f9f,stroke:#333,stroke-width:2px
-```
-
-
-
+    style O fill:#f9f,stroke:#333,stroke-width:2px`}</code>
+    </pre>
+  </details>
+</div>
 1. Command from CPU: The command will be compiled in the CPU. The kernel function should include the behavior of the Grid of Blocks and the number of threads per block.
 2. **<u>JIT (just in time)</u>** means it compiles the program, not before, but during the GPU's execution.
 3. **<u>Bank conflict:</u>** since multiple threads can potentially want to access the same shared memory bank (a column) simultaneously, we would have to serialize them / or arrange the data properly
@@ -177,7 +170,6 @@ graph TD
 5. **<u>Memory coalescing</u>**: When a warp accesses the GPU's main VRAM, the hardware checks the addresses they are requesting. If these addresses are close together and fall within a single, aligned memory segment, the GPU "coalesces" them. Instead of performing 32 small, separate memory fetches, it performs one single, large fetch that grabs all the requested data at once. Shared Memory/registers are fast enough, and L1/L2 also have this feature called locality.
 
 ## Torch Implementation of Matrix Multiplication
-
 ```python
 def matrix_multilication(x,y):
   # consider matrix x and y with dimention M,N,K
@@ -192,9 +184,7 @@ def matrix_multilication(x,y):
 # Basically just use
 result = torch.matmul(x,y)
 ```
-
 ## High-Level Implementation of Matrix Multiplication
-
 ```python
 #Implement the tiling in the Triton
 def matrix_multiplication(x,y,BLOCK_SIZE_M,BLOCK_SIZE_N,BLOCK_SIZE_K):
@@ -212,14 +202,12 @@ def matrix_multiplication(x,y,BLOCK_SIZE_M,BLOCK_SIZE_N,BLOCK_SIZE_K):
       z[m:m+BLOCK_SIZE,k:k+BLOCK_SIZE_K] = accumulator
   return z
 ```
-
 Here are some useful insights:
 
 - Why do we use the accumulator? Why can't we just add to the output matrix? A: Because of the coalescing the access to the information is faster
 - Why do we do a small matrix multiplication instead of a faster dot product? A: They are essentially the same because they are just 1D arrays in the memory space, and the difference between these two algorithms won't make much of a difference.
 
 ## Triton Kernel for Matrix Multiplication
-
 ```python
 @triton.jit
 def kernel_maxmul(
@@ -297,12 +285,9 @@ def kernel_maxmul(
     tl.store(c_ptrs, c, mask=c_mask)
 
 ```
+- We used a novel parameter: GROUP_SIZE_M, which was meant to be the height of a super-block with several BLOCK_SIZE_M tall. The following picture shows this idea better. Let me use the quote from the original tutorial <u>_"In the following matmul where each matrix is 9 blocks by 9 blocks, we can see that if we compute the output in row-major ordering, we need to load 90 blocks into SRAM to compute the first 9 output blocks, but if we do it in grouped ordering, we only need to load 54 blocks."_</u>
 
-- We used a novel parameter: GROUP_SIZE_M, which was meant to be the height of a super-block with several BLOCK_SIZE_M tall. The following picture shows this idea better. Let me use the quote from the original tutorial <u>*"In the following matmul where each matrix is 9 blocks by 9 blocks, we can see that if we compute the output in row-major ordering, we need to load 90 blocks into SRAM to compute the first 9 output blocks, but if we do it in grouped ordering, we only need to load 54 blocks."*</u>
-
-## ![grouped_vs_row_major_ordering](/Matrix_multiplication/grouped_vs_row_major_ordering.png)
-
-
+## ![grouped_vs_row_major_ordering](/images/grouped_vs_row_major_ordering.png)
 
 ## Conclusion
 
@@ -311,8 +296,3 @@ GPU performance is dictated by its memory hierarchy: extremely fast but small on
 The key software strategy is **tiling** (or blocking), where large matrices are broken into smaller blocks that fit into fast on-chip memory. Computations are performed on these blocks using a local **accumulator** to sum results, ensuring only one final, slow write to VRAM per block. This algorithm must also account for hardware features, ensuring memory access is **coalesced** to maximize VRAM bandwidth and that it avoids **bank conflicts** in shared memory.
 
 Block Tiling also works ! And it fosters the calculation speed.
-
-
-
-
-

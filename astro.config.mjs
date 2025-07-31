@@ -8,6 +8,9 @@ import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 import remarkGfm from 'remark-gfm';
 
+// Import MD to MDX compilation plugin
+import { createMDToMDXPlugin } from './src/build/md-to-mdx-plugin.js';
+
 // Import Typora-compatible remark plugins
 import { 
   remarkTyporaMermaid, 
@@ -97,6 +100,25 @@ export default defineConfig({
   },
   
   vite: {
+    plugins: [
+      // Add MD to MDX compilation plugin
+      createMDToMDXPlugin({
+        contentDir: 'src/content',
+        outputDir: 'src/content',
+        processors: {
+          mermaid: {
+            enabled: true,
+            componentPath: '../../components/Mermaid.astro'
+          },
+          math: {
+            enabled: true
+          },
+          tables: {
+            enabled: true
+          }
+        }
+      })
+    ],
     css: {
       preprocessorOptions: {
         scss: {

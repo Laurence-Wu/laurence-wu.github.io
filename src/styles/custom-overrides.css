@@ -5,9 +5,19 @@
    This file contains easy-to-customize styles for:
    - Search Results
    - Table of Contents
+   - Mermaid Controls Sidebar
    
    Simply modify the colors, sizes, and effects below!
 */
+
+/* ============================================ */
+/* 🎨 MERMAID CONTROLS SIDEBAR POSITIONING     */
+/* ============================================ */
+
+/* Align mermaid controls sidebar with window edge */
+.mermaid-controls-sidebar {
+  right: 0 !important;
+}
 
 /* ============================================ */
 /* 🔍 SEARCH RESULTS CUSTOMIZATION             */

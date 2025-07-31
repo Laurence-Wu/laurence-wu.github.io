@@ -64,15 +64,18 @@ const elementType = block ? 'div' : 'span';
         const isBlock = element.classList.contains('math-block');
         
         try {
-          window.katex.render(math, element, {
-            displayMode: isBlock,
-            throwOnError: false,
-            errorColor: '#cc0000',
-            strict: 'warn'
-          });
+          if (math && element instanceof HTMLElement) {
+            window.katex.render(math, element, {
+              displayMode: isBlock,
+              throwOnError: false,
+              errorColor: '#cc0000',
+              strict: 'warn'
+            });
+          }
         } catch (error) {
-          console.error('KaTeX rendering error:', error);
-          element.textContent = math;
+          if (math && element instanceof HTMLElement) {
+            element.textContent = math;
+          }
         }
       });
     };

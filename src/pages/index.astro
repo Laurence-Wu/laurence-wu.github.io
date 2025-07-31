@@ -894,7 +894,6 @@ import EvolvingSmudgeCanvas from '../components/EvolvingSmudgeCanvas.astro';
         await Promise.all(promises);
         await new Promise(resolve => setTimeout(resolve, 300));
       } catch (error) {
-        console.warn('Some resources failed to preload:', error);
         await new Promise(resolve => setTimeout(resolve, 500));
       }
     }

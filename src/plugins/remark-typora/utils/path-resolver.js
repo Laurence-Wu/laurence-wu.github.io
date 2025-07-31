@@ -220,7 +220,6 @@ export class PathResolver {
       }
       return true;
     } catch (error) {
-      console.warn(`Failed to create asset directory: ${context.assetDir}`, error);
       return false;
     }
   }

@@ -360,7 +360,6 @@ function getUrl(path: string): string {
       const { default: MiniSearch } = await import('minisearch');
       return MiniSearch;
     } catch (error) {
-      console.error('Failed to load MiniSearch:', error);
       return null;
     }
   }
@@ -381,7 +380,6 @@ function getUrl(path: string): string {
     async init() {
       const MiniSearch = await loadMiniSearch();
       if (!MiniSearch) {
-        console.error('MiniSearch could not be loaded');
         this.setupFallbackSearch();
         return;
       }

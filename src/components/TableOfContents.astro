@@ -808,9 +808,9 @@
             
             this.tocContainer.style.transform = `translate3d(${this.currentX}px, ${this.currentY}px, 0)`;
           }
-        } catch (e) {
-          console.warn('Failed to restore TOC position:', e);
-        }
+              } catch (e) {
+        // Failed to restore TOC position
+      }
       }
     }
   }

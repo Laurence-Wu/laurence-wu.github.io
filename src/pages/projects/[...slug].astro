@@ -42,6 +42,14 @@ function getUrl(path: string): string {
               })}
             </time>
           </div>
+          
+          {entry.data.githubLink && (
+            <div class="project-links">
+              <a href={entry.data.githubLink} class="project-link github-link" target="_blank" rel="noopener noreferrer">
+                <span>View on GitHub</span>
+              </a>
+            </div>
+          )}
         </div>
         
         {entry.data.tags && entry.data.tags.length > 0 && (
@@ -213,6 +221,18 @@ function getUrl(path: string): string {
   .project-link.demo:hover {
     background: rgba(244, 232, 209, 0.2);
     border-color: #F4E8D1;
+    color: white;
+  }
+  
+  .project-link.github-link {
+    background: linear-gradient(135deg, #333, #555);
+    color: white;
+    border: 2px solid #333;
+  }
+  
+  .project-link.github-link:hover {
+    background: linear-gradient(135deg, #555, #777);
+    border-color: #555;
     color: white;
   }
   

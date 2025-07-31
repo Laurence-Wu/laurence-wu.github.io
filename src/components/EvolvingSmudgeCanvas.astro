@@ -231,13 +231,11 @@ const { class: className = "" } = Astro.props;
     constructor() {
       this.canvas = document.getElementById('smudge-canvas') as HTMLCanvasElement;
       if (!this.canvas) {
-        console.error('Smudge canvas element not found!');
         return;
       }
       
       const ctx = this.canvas.getContext('2d');
       if (!ctx) {
-        console.error('Could not get 2d context!');
         return;
       }
       this.ctx = ctx;

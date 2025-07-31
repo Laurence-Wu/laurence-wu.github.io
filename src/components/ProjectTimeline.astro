@@ -93,6 +93,11 @@ const projectsByTag = allTags.reduce((acc: Record<string, any[]>, tag: string) =
               <a href={getUrl(`/projects/${project.slug}/`)} class="view-project">
                 View Details
               </a>
+              {project.data.githubLink && (
+                <a href={project.data.githubLink} class="view-project github-link" target="_blank" rel="noopener noreferrer">
+                  GitHub
+                </a>
+              )}
             </div>
           </div>
         </div>
@@ -481,6 +486,25 @@ const projectsByTag = allTags.reduce((acc: Record<string, any[]>, tag: string) =
     transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(57, 100, 124, 0.3);
   }
+
+  .view-project.github-link {
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    color: white;
+    padding: 0.6rem 1.2rem;
+    border-radius: 20px;
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+
+  .view-project.github-link:hover {
+    background: linear-gradient(135deg, #0056b3 0%, #004085 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+  }
   
   .tag-legend {
     margin-top: 2rem;
@@ -610,7 +634,7 @@ const projectsByTag = allTags.reduce((acc: Record<string, any[]>, tag: string) =
       localStorage.removeItem('timeline-collapsed');
       sessionStorage.removeItem('timeline-collapsed');
       
-      console.log('Timeline initialized and visible');
+      // Timeline initialized
     }
     
     // Toggle timeline visibility
@@ -619,18 +643,15 @@ const projectsByTag = allTags.reduce((acc: Record<string, any[]>, tag: string) =
         e.preventDefault();
         e.stopPropagation();
         
-        console.log('Toggle clicked');
         timelineContainer.classList.toggle('collapsed');
         
         const isCollapsed = timelineContainer.classList.contains('collapsed');
-        console.log('Timeline collapsed:', isCollapsed);
         
         // Save state only during current session
         sessionStorage.setItem('timeline-collapsed', isCollapsed.toString());
       });
       
       // Don't restore collapsed state - always start expanded
-      console.log('Toggle button initialized');
     }
     
     // Add index for staggered animation
@@ -683,11 +704,6 @@ const projectsByTag = allTags.reduce((acc: Record<string, any[]>, tag: string) =
       });
     }
     
-    // Debug logging to help troubleshoot
-    console.log('Timeline container found:', !!timelineContainer);
-    console.log('Timeline toggle found:', !!timelineToggle);
-    console.log('Timeline items found:', timelineItems.length);
-    console.log('Screen width:', window.innerWidth);
-    console.log('Timeline display:', timelineContainer ? getComputedStyle(timelineContainer).display : 'none');
+    // Timeline initialization complete
   });
 </script> 
