@@ -25,7 +25,7 @@ About
 <h2 id="technical-details">Technical Details</h2>
 <p>The project is a full-stack application with a sophisticated architecture designed to handle real-time, AI-driven narrative generation.</p>
 <ul>
-<li><strong>Architecture &amp; Tech Stack:</strong>
+<li><strong>Architecture &#x26; Tech Stack:</strong>
 <ul>
 <li><strong>Frontend:</strong> Built with <strong>React</strong> using <strong>TypeScript</strong>, which was chosen for its strong typing and structural benefits. It includes a separate visual component for rendering the story’s dependency tree.</li>
 <li><strong>Backend:</strong> The core of the backend is a <strong>dependency tree</strong> that manages narrative logic and prerequisites for events. It uses <strong>JSON</strong> and <strong>YML</strong> files for configuration and data exchange.</li>
@@ -45,29 +45,29 @@ About
 </li>
 </ul>
 <h2 id="architecture">Architecture</h2>
-<h3 id="backend-components">Backend Components```</h3>
-<p>StoryForge/
-├── engine.py              # Core game engine
-├── socket_server.py       # WebSocket server
-├── agents/                # AI agent implementations
-│   ├── arbiter.py         # Decision validation
-│   ├── narrator.py        # Story generation
-│   └── reality_agent.py   # Reality reconstruction
-├── models/                # Data models
-│   ├── story.py           # Story structures
-│   ├── context.py         # Game context
-│   └── agents.py          # Agent interfaces
-├── utils/                 # Utilities
-│   ├── llm_service.py     # LLM integration
-│   ├── save_manager.py    # Save system
-│   └── command_handler.py # Command processing
-└── data/story/            # Story definitions
-└── [story-name]/
-├── world_definition.yaml
-├── condition_tree.yaml
-└── images/</p>
-<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="plaintext"><code><span class="line"><span>### Frontend Components```</span></span>
-<span class="line"><span>frontend/</span></span>
+<h3 id="backend-components">Backend Components</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>StoryForge/</span></span>
+<span class="line"><span>├── engine.py              # Core game engine</span></span>
+<span class="line"><span>├── socket_server.py       # WebSocket server</span></span>
+<span class="line"><span>├── agents/                # AI agent implementations</span></span>
+<span class="line"><span>│   ├── arbiter.py         # Decision validation</span></span>
+<span class="line"><span>│   ├── narrator.py        # Story generation</span></span>
+<span class="line"><span>│   └── reality_agent.py   # Reality reconstruction</span></span>
+<span class="line"><span>├── models/                # Data models</span></span>
+<span class="line"><span>│   ├── story.py           # Story structures</span></span>
+<span class="line"><span>│   ├── context.py         # Game context</span></span>
+<span class="line"><span>│   └── agents.py          # Agent interfaces</span></span>
+<span class="line"><span>├── utils/                 # Utilities</span></span>
+<span class="line"><span>│   ├── llm_service.py     # LLM integration</span></span>
+<span class="line"><span>│   ├── save_manager.py    # Save system</span></span>
+<span class="line"><span>│   └── command_handler.py # Command processing</span></span>
+<span class="line"><span>└── data/story/            # Story definitions</span></span>
+<span class="line"><span>    └── [story-name]/</span></span>
+<span class="line"><span>        ├── world_definition.yaml</span></span>
+<span class="line"><span>        ├── condition_tree.yaml</span></span>
+<span class="line"><span>        └── images/</span></span></code></pre>
+<h3 id="frontend-components">Frontend Components</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>frontend/</span></span>
 <span class="line"><span>├── src/</span></span>
 <span class="line"><span>│   ├── components/        # React components</span></span>
 <span class="line"><span>│   │   ├── Stage.tsx      # Main game display</span></span>
@@ -79,38 +79,36 @@ About
 <span class="line"><span>│   └── types/             # TypeScript definitions</span></span>
 <span class="line"><span>├── public/                # Static assets</span></span>
 <span class="line"><span>└── dist/                  # Built application</span></span></code></pre>
-<h3 id="data-flow">Data Flow```</h3>
-<p>Player Input → Socket.IO → Engine → AI Agents → Story Generation → Frontend Update
-↑                                    ↓
-Save System ← Delta Storage ← Game State ← Reality Validation</p>
-<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="plaintext"><code><span class="line"><span>## Configuration</span></span>
-<span class="line"><span></span></span>
-<span class="line"><span>### Story Creation</span></span>
-<span class="line"><span>Create new stories by adding directories to `data/story/`:</span></span>
-<span class="line"><span></span></span>
-<span class="line"><span>**world_definition.yaml**```yaml</span></span>
-<span class="line"><span>world_definition:</span></span>
-<span class="line"><span>  story_name: &quot;Your Story Title&quot;</span></span>
-<span class="line"><span>  core_concept: &quot;Central theme or question&quot;</span></span>
-<span class="line"><span>  ontological_layers:</span></span>
-<span class="line"><span>    surface_narrative:</span></span>
-<span class="line"><span>      official_story: &quot;What appears to happen&quot;</span></span>
-<span class="line"><span>      rules: [&quot;Surface world rules&quot;]</span></span>
-<span class="line"><span>    underlying_structure:</span></span>
-<span class="line"><span>      hidden_truth: &quot;Deeper reality&quot;</span></span>
-<span class="line"><span>      rules: [&quot;Hidden mechanics&quot;]</span></span>
-<span class="line"><span>  protagonist_intent: &quot;Player&#39;s initial goal&quot;</span></span>
-<span class="line"><span>  endings:</span></span>
-<span class="line"><span>    good_ending: &quot;Positive resolution&quot;</span></span>
-<span class="line"><span>    bad_ending: &quot;Negative outcome&quot;</span></span></code></pre>
+<h3 id="data-flow">Data Flow</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>Player Input → Socket.IO → Engine → AI Agents → Story Generation → Frontend Update</span></span>
+<span class="line"><span>     ↑                                    ↓</span></span>
+<span class="line"><span>Save System ← Delta Storage ← Game State ← Reality Validation</span></span></code></pre>
+<h2 id="configuration">Configuration</h2>
+<h3 id="story-creation">Story Creation</h3>
+<p>Create new stories by adding directories to <code>data/story/</code>:</p>
+<p><strong>world_definition.yaml</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="yaml"><code><span class="line"><span style="color:#85E89D">world_definition</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">  story_name</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"Your Story Title"</span></span>
+<span class="line"><span style="color:#85E89D">  core_concept</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"Central theme or question"</span></span>
+<span class="line"><span style="color:#85E89D">  ontological_layers</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">    surface_narrative</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">      official_story</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"What appears to happen"</span></span>
+<span class="line"><span style="color:#85E89D">      rules</span><span style="color:#E1E4E8">: [</span><span style="color:#9ECBFF">"Surface world rules"</span><span style="color:#E1E4E8">]</span></span>
+<span class="line"><span style="color:#85E89D">    underlying_structure</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">      hidden_truth</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"Deeper reality"</span></span>
+<span class="line"><span style="color:#85E89D">      rules</span><span style="color:#E1E4E8">: [</span><span style="color:#9ECBFF">"Hidden mechanics"</span><span style="color:#E1E4E8">]</span></span>
+<span class="line"><span style="color:#85E89D">  protagonist_intent</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"Player's initial goal"</span></span>
+<span class="line"><span style="color:#85E89D">  endings</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">    good_ending</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"Positive resolution"</span></span>
+<span class="line"><span style="color:#85E89D">    bad_ending</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"Negative outcome"</span></span></code></pre>
 <p><strong>condition_tree.yaml</strong></p>
-<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="yaml"><code><span class="line"><span style="color:#85E89D">tree_id</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">&quot;your_story&quot;</span></span>
-<span class="line"><span style="color:#85E89D">root_conditions</span><span style="color:#E1E4E8">: [</span><span style="color:#9ECBFF">&quot;start&quot;</span><span style="color:#E1E4E8">]</span></span>
-<span class="line"><span style="color:#85E89D">terminal_conditions</span><span style="color:#E1E4E8">: [</span><span style="color:#9ECBFF">&quot;ending&quot;</span><span style="color:#E1E4E8">]</span></span>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="yaml"><code><span class="line"><span style="color:#85E89D">tree_id</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"your_story"</span></span>
+<span class="line"><span style="color:#85E89D">root_conditions</span><span style="color:#E1E4E8">: [</span><span style="color:#9ECBFF">"start"</span><span style="color:#E1E4E8">]</span></span>
+<span class="line"><span style="color:#85E89D">terminal_conditions</span><span style="color:#E1E4E8">: [</span><span style="color:#9ECBFF">"ending"</span><span style="color:#E1E4E8">]</span></span>
 <span class="line"><span style="color:#85E89D">nodes</span><span style="color:#E1E4E8">:</span></span>
-<span class="line"><span style="color:#E1E4E8">  - </span><span style="color:#85E89D">node_id</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">&quot;start&quot;</span></span>
-<span class="line"><span style="color:#85E89D">    symbolic_goal</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">&quot;Begin the adventure&quot;</span></span>
-<span class="line"><span style="color:#85E89D">    default_interpretation</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">&quot;You find yourself...&quot;</span></span>
+<span class="line"><span style="color:#E1E4E8">  - </span><span style="color:#85E89D">node_id</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"start"</span></span>
+<span class="line"><span style="color:#85E89D">    symbolic_goal</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"Begin the adventure"</span></span>
+<span class="line"><span style="color:#85E89D">    default_interpretation</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"You find yourself..."</span></span>
 <span class="line"><span style="color:#85E89D">    dependencies</span><span style="color:#E1E4E8">: []</span></span></code></pre> </div> </main> <footer class="project-footer" data-astro-cid-5uq7evlv> <div class="container" data-astro-cid-5uq7evlv> <a href="/projects/" class="back-link" data-astro-cid-5uq7evlv>← Back to Projects</a> </div> </footer> </article>  </main>  </main> <footer class="site-footer" data-astro-cid-37fxchfa> <div class="footer-content" data-astro-cid-37fxchfa> <p data-astro-cid-37fxchfa>&copy; 2025 Xiaoyou Wu. All rights reserved.</p> <div class="footer-links" data-astro-cid-37fxchfa> <a href="https://github.com/yourusername" target="_blank" rel="noopener noreferrer" data-astro-cid-37fxchfa>GitHub</a> <a href="https://linkedin.com/in/yourprofile" target="_blank" rel="noopener noreferrer" data-astro-cid-37fxchfa>LinkedIn</a> <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" data-astro-cid-37fxchfa>Resume</a> </div> </div> </footer> <!-- KaTeX JavaScript for Math Rendering --> <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js" integrity="sha384-cpW21h6RZv/phavutF+AuVYrr+dA8xD9zs6FwLpaCct6O9ctzYFfFr4dgmgccOTx" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous" onload="renderMathInDocument()"></script> <script>
     function renderMathInDocument() {
       if (typeof window.renderMathInElement !== 'undefined') {

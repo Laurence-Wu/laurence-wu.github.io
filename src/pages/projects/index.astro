@@ -9,7 +9,7 @@ const sortedProjects = allProjects.sort((a, b) =>
 );
 
 // Since we removed 'featured' field, just show all projects
-const featuredProjects = sortedProjects.slice(0, 1); // Show first project as featured
+const featuredProjects = sortedProjects.slice(0, 3); // Show first project as featured
 const otherProjects = sortedProjects.slice(1); // Rest as other projects
 
 // Helper function to get proper URL with base path
