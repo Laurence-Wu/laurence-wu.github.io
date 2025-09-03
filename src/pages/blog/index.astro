@@ -3,7 +3,8 @@ import Layout from '../../components/Layout.astro';
 import SearchBar from '../../components/SearchBar.astro';
 import { getCollection } from 'astro:content';
 
-const allBlogPosts = await getCollection('blog');
+const allBlogPosts = await getCollection('blogs');
+
 const allProjects = await getCollection('projects');
 const publishedPosts = allBlogPosts
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en" data-astro-cid-37fxchfa> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>About - Xiaoyou Wu</title><meta name="description" content="Learn about Xiaoyou Wu's personal side, unique perspective, and passions beyond academics."><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://laurence-wu.github.io/about/"><meta property="og:title" content="About - Xiaoyou Wu"><meta property="og:description" content="Learn about Xiaoyou Wu's personal side, unique perspective, and passions beyond academics."><meta property="og:image" content="/assets/profile-image.jpg"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://laurence-wu.github.io/about/"><meta property="twitter:title" content="About - Xiaoyou Wu"><meta property="twitter:description" content="Learn about Xiaoyou Wu's personal side, unique perspective, and passions beyond academics."><meta property="twitter:image" content="/assets/profile-image.jpg"><!-- KaTeX CSS for Math Rendering --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css" integrity="sha384-GvrOXuhMATgEsSwCs4smul74iXGOixntILdUW9XmUC6+HX0sLNAK3q71HotJqlAn" crossorigin="anonymous"><!-- Google Fonts - Preserved Typography System --><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&family=Cormorant+Garamond:wght@300;400;500;600;700&display=swap" rel="stylesheet"><!-- Fira Code for code blocks --><link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap" rel="stylesheet"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Global CSS Import --><link rel="stylesheet" href="/_astro/index.ybLl4Hl7.css">
+<!DOCTYPE html><html lang="en" data-astro-cid-37fxchfa> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>About - Xiaoyou Wu</title><meta name="description" content="Learn about Xiaoyou Wu's personal side, unique perspective, and passions beyond academics."><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://laurence-wu.github.io/about/"><meta property="og:title" content="About - Xiaoyou Wu"><meta property="og:description" content="Learn about Xiaoyou Wu's personal side, unique perspective, and passions beyond academics."><meta property="og:image" content="/assets/profile-image.jpg"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://laurence-wu.github.io/about/"><meta property="twitter:title" content="About - Xiaoyou Wu"><meta property="twitter:description" content="Learn about Xiaoyou Wu's personal side, unique perspective, and passions beyond academics."><meta property="twitter:image" content="/assets/profile-image.jpg"><!-- KaTeX CSS for Math Rendering --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css" integrity="sha384-GvrOXuhMATgEsSwCs4smul74iXGOixntILdUW9XmUC6+HX0sLNAK3q71HotJqlAn" crossorigin="anonymous"><!-- Google Fonts - Preserved Typography System --><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&family=Cormorant+Garamond:wght@300;400;500;600;700&display=swap" rel="stylesheet"><!-- Fira Code for code blocks --><link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap" rel="stylesheet"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Global CSS Import --><link rel="stylesheet" href="/_astro/index.BCrk01Mj.css">
 <link rel="stylesheet" href="/_astro/about.BtU-geGL.css"></head> <body data-astro-cid-37fxchfa> <nav class="navbar" data-astro-cid-pux6a34n> <div class="navbar-brand" data-astro-cid-pux6a34n>Xiaoyou Wu</div> <a href="/" class="navbar-link " data-astro-cid-pux6a34n>
 Home
 </a> <a href="/blog" class="navbar-link " data-astro-cid-pux6a34n>
@@ -38,273 +38,101 @@ Raps ~
     }
     
     document.addEventListener("DOMContentLoaded", renderMathInDocument);
-  </script> <!-- Mermaid Diagram Renderer --> <script type="module">
-    /**
-     * Mermaid Diagram Renderer
-     * Handles loading and rendering of mermaid diagrams
-     */
+  </script> <!-- Simple Mermaid Test Script --> <script type="module">
+    console.log('[Simple Mermaid Test] Starting...');
 
-    class MermaidRenderer {
-      constructor() {
-        this.mermaidLoaded = false;
-        this.mermaidInitialized = false;
-        this.pendingDiagrams = new Set();
-      }
-
-      async loadMermaid() {
-        if (window.mermaid) {
-          console.log('Mermaid already loaded');
-          this.mermaidLoaded = true;
-          return window.mermaid;
-        }
-
-        console.log('Loading Mermaid from CDN...');
-        return new Promise((resolve, reject) => {
+    // Simple function to load and initialize Mermaid
+    async function loadAndTestMermaid() {
+      try {
+        console.log('[Simple Mermaid Test] Loading Mermaid from CDN...');
+        
+        // Load Mermaid if not already loaded
+        if (!window.mermaid) {
           const script = document.createElement('script');
           script.src = 'https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js';
-          script.onload = () => {
-            console.log('Mermaid script loaded');
-            if (window.mermaid) {
-              console.log('Mermaid library available');
-              this.mermaidLoaded = true;
-              resolve(window.mermaid);
-            } else {
-              console.error('Mermaid library not available after script load');
-              reject(new Error('Mermaid failed to load'));
-            }
-          };
-          script.onerror = (error) => {
-            console.error('Failed to load Mermaid script:', error);
-            reject(new Error('Failed to load mermaid script'));
-          };
-          document.head.appendChild(script);
-        });
-      }
-
-      async initializeMermaid() {
-        if (this.mermaidInitialized) {
-          console.log('Mermaid already initialized');
-          return;
-        }
-
-        console.log('Initializing Mermaid...');
-        const mermaid = await this.loadMermaid();
-        
-        console.log('Configuring Mermaid theme...');
-        mermaid.initialize({ 
-          startOnLoad: false,
-          theme: 'neutral',
-          themeVariables: {
-            primaryColor: '#8A9A7E',
-            primaryTextColor: '#2E3A59',
-            primaryBorderColor: '#39647c',
-            lineColor: '#2E3A59',
-            secondaryColor: '#F4E9D8',
-            tertiaryColor: '#A87C5D',
-            background: '#ffffff',
-            mainBkg: '#ffffff',
-            secondaryBkg: '#F4E9D8',
-            tertiaryBkg: '#8A9A7E',
-            textColor: '#2E3A59',
-            fontSize: '16px',
-            fontFamily: 'Montserrat, sans-serif'
-          },
-          securityLevel: 'loose'
-        });
-        
-        console.log('Mermaid initialized successfully');
-        this.mermaidInitialized = true;
-      }
-
-      async renderDiagram(diagramId, code) {
-        try {
-          console.log(`Starting to render diagram ${diagramId}`);
-          await this.initializeMermaid();
-          console.log(`Mermaid initialized for diagram ${diagramId}`);
           
-          const container = document.querySelector(`#${diagramId} .mermaid-container`);
-          if (!container) {
-            console.error(`Container not found for diagram ${diagramId}`);
-            return;
-          }
-          
-          if (!code) {
-            console.error(`No code provided for diagram ${diagramId}`);
-            return;
-          }
-
-          console.log(`Rendering diagram ${diagramId} with code:`, code);
-          // Render the diagram
-          const { svg } = await window.mermaid.render(`${diagramId}-svg`, code);
-          console.log(`Successfully rendered SVG for diagram ${diagramId}`);
-          
-          // Create wrapper with zoom functionality
-          const wrapper = document.createElement('div');
-          wrapper.className = 'mermaid-svg-wrapper';
-          wrapper.innerHTML = svg;
-          
-          // Add zoom controls sidebar
-          const controlsSidebar = document.createElement('div');
-          controlsSidebar.className = 'mermaid-controls-sidebar';
-          controlsSidebar.innerHTML = `
-            <div class="mermaid-controls-toggle" title="Toggle Controls">⚙</div>
-            <div class="mermaid-controls-panel">
-              <button class="mermaid-btn zoom-in" title="Zoom In">+</button>
-              <button class="mermaid-btn zoom-out" title="Zoom Out">−</button>
-              <button class="mermaid-btn zoom-reset" title="Reset Zoom">⌂</button>
-              <button class="mermaid-btn fullscreen" title="View Fullscreen">⛶</button>
-            </div>
-          `;
-          
-          container.innerHTML = '';
-          container.appendChild(wrapper);
-          container.appendChild(controlsSidebar);
-          
-          // Add zoom functionality
-          this.setupZoomControls(wrapper, controlsSidebar, svg, diagramId);
-          
-        } catch (error) {
-          console.error(`Mermaid rendering error for ${diagramId}:`, error);
-          const container = document.querySelector(`#${diagramId} .mermaid-container`);
-          if (container) {
-            container.innerHTML = `
-              <div style="color: #ff6b6b; padding: 1rem; border: 1px solid #ff6b6b; border-radius: 4px;">
-                <strong>Mermaid Error:</strong> ${error.message || 'Unknown error'}
-                <details style="margin-top: 0.5rem;">
-                  <summary>Show code</summary>
-                  <pre style="background: #f5f5f5; padding: 0.5rem; margin-top: 0.5rem; overflow-x: auto;"><code>${code}</code></pre>
-                </details>
-              </div>
-            `;
-          }
-        }
-      }
-
-      setupZoomControls(wrapper, controlsSidebar, svg, diagramId) {
-        let currentScale = 0.7; // Start smaller
-        const svgElement = wrapper.querySelector('svg');
-        
-        function updateScale() {
-          if (svgElement) {
-            svgElement.style.transform = `scale(${currentScale})`;
-            svgElement.style.transformOrigin = 'center center';
-          }
-        }
-        
-        // Initial scale
-        updateScale();
-        
-        // Toggle sidebar visibility
-        const toggle = controlsSidebar.querySelector('.mermaid-controls-toggle');
-        const panel = controlsSidebar.querySelector('.mermaid-controls-panel');
-        
-        toggle.addEventListener('click', () => {
-          panel.classList.toggle('visible');
-        });
-        
-        // Zoom controls
-        controlsSidebar.querySelector('.zoom-in').addEventListener('click', () => {
-          currentScale = Math.min(currentScale + 0.2, 3);
-          updateScale();
-        });
-        
-        controlsSidebar.querySelector('.zoom-out').addEventListener('click', () => {
-          currentScale = Math.max(currentScale - 0.2, 0.3);
-          updateScale();
-        });
-        
-        controlsSidebar.querySelector('.zoom-reset').addEventListener('click', () => {
-          currentScale = 0.7;
-          updateScale();
-        });
-        
-        // Fullscreen modal
-        controlsSidebar.querySelector('.fullscreen').addEventListener('click', () => {
-          const modal = document.createElement('div');
-          modal.className = 'mermaid-modal';
-          modal.innerHTML = `
-            <div class="mermaid-modal-content">
-              <div class="mermaid-modal-header">
-                <h3>Diagram</h3>
-                <button class="mermaid-modal-close">×</button>
-              </div>
-              <div class="mermaid-modal-body">
-                ${svg}
-              </div>
-            </div>
-          `;
-          
-          document.body.appendChild(modal);
-          
-          // Close modal functionality
-          const closeModal = () => {
-            document.body.removeChild(modal);
-          };
-          
-          modal.querySelector('.mermaid-modal-close').addEventListener('click', closeModal);
-          modal.addEventListener('click', (e) => {
-            if (e.target === modal) closeModal();
+          await new Promise((resolve, reject) => {
+            script.onload = resolve;
+            script.onerror = reject;
+            document.head.appendChild(script);
           });
           
-          // ESC key to close
-          const handleEsc = (e) => {
-            if (e.key === 'Escape') {
-              closeModal();
-              document.removeEventListener('keydown', handleEsc);
-            }
-          };
-          document.addEventListener('keydown', handleEsc);
-        });
-        
-        // Click to zoom functionality
-        wrapper.addEventListener('click', (e) => {
-          if (e.target.closest('.mermaid-controls-sidebar')) return;
-          currentScale = currentScale < 1 ? 1 : 0.7;
-          updateScale();
-        });
-      }
+          console.log('[Simple Mermaid Test] Mermaid loaded from CDN');
+        } else {
+          console.log('[Simple Mermaid Test] Mermaid already available');
+        }
 
-      // Auto-discover and render all mermaid diagrams
-      async renderAllDiagrams() {
-        const diagrams = document.querySelectorAll('.mermaid-diagram');
-        console.log(`Found ${diagrams.length} mermaid diagrams to render`);
+        if (!window.mermaid) {
+          throw new Error('Mermaid not available after loading');
+        }
+
+        console.log('[Simple Mermaid Test] Initializing Mermaid...');
         
-        for (const diagram of diagrams) {
-          const diagramId = diagram.id;
+        // Initialize Mermaid with simple config
+        window.mermaid.initialize({
+          startOnLoad: false,
+          theme: 'neutral'
+        });
+
+        console.log('[Simple Mermaid Test] Finding diagram elements...');
+        
+        // Find all mermaid diagrams
+        const diagrams = document.querySelectorAll('.mermaid-diagram');
+        console.log(`[Simple Mermaid Test] Found ${diagrams.length} diagrams`);
+
+        // Process each diagram
+        for (let i = 0; i < diagrams.length; i++) {
+          const diagram = diagrams[i];
+          const id = diagram.id || `test-diagram-${i}`;
           const codeElement = diagram.querySelector('.mermaid-code code');
           
-          console.log(`Processing diagram ${diagramId}:`, {
-            hasCodeElement: !!codeElement,
-            codeContent: codeElement?.textContent?.trim()
-          });
+          console.log(`[Simple Mermaid Test] Processing diagram ${id}`);
           
-          if (diagramId && codeElement) {
-            const code = codeElement.textContent?.trim();
-            if (code) {
-              console.log(`Rendering diagram ${diagramId} with code:`, code);
-              await this.renderDiagram(diagramId, code);
+          if (codeElement) {
+            const code = codeElement.textContent.trim();
+            console.log(`[Simple Mermaid Test] Code for ${id}:`, code.substring(0, 100) + '...');
+            
+            try {
+              // Render the diagram
+              const { svg } = await window.mermaid.render(`${id}-render`, code);
+              console.log(`[Simple Mermaid Test] SVG generated for ${id}`);
+              
+              // Replace the loading text with the SVG
+              const container = diagram.querySelector('.mermaid-container');
+              if (container) {
+                container.innerHTML = svg;
+                console.log(`[Simple Mermaid Test] SVG inserted for ${id}`);
+              } else {
+                console.error(`[Simple Mermaid Test] No container found for ${id}`);
+              }
+              
+            } catch (renderError) {
+              console.error(`[Simple Mermaid Test] Render error for ${id}:`, renderError);
+              
+              const container = diagram.querySelector('.mermaid-container');
+              if (container) {
+                container.innerHTML = `<div style="color: red; padding: 1rem;">Error: ${renderError.message}</div>`;
+              }
             }
+          } else {
+            console.error(`[Simple Mermaid Test] No code element found for ${id}`);
           }
         }
+
+        console.log('[Simple Mermaid Test] Completed processing all diagrams');
+        
+      } catch (error) {
+        console.error('[Simple Mermaid Test] Fatal error:', error);
       }
     }
 
-    // Initialize and render diagrams when DOM is ready
-    const mermaidRenderer = new MermaidRenderer();
-
-    function initMermaid() {
-      mermaidRenderer.renderAllDiagrams().catch(() => {});
-    }
-
+    // Run the test when DOM is ready
     if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initMermaid);
+      document.addEventListener('DOMContentLoaded', loadAndTestMermaid);
     } else {
-      initMermaid();
+      loadAndTestMermaid();
     }
 
-    // Also try after window load as fallback
-    window.addEventListener('load', initMermaid);
-
-    // Export for manual use
-    window.mermaidRenderer = mermaidRenderer;
+    // Export for manual testing
+    window.testMermaid = loadAndTestMermaid;
   </script> </body> </html>  

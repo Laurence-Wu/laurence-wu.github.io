@@ -92,110 +92,171 @@ const diagramId = `mermaid-${Math.random().toString(36).substring(2, 11)}`;
   .mermaid-controls-panel {
     display: flex;
     flex-direction: row;
-    gap: 0.25rem;
+    gap: 0.5rem;
     align-items: center;
     margin-left: auto;
+    padding: 0.25rem;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(244, 233, 216, 0.95));
+    border-radius: 8px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(138, 154, 126, 0.2);
   }
   
   .mermaid-btn {
-    background: rgba(255, 255, 255, 0.9);
+    background: linear-gradient(135deg, #ffffff, #f9fafb);
     color: var(--sage-green);
-    border: none;
-    border-radius: 6px;
-    padding: 0.25rem;
-    cursor: pointer;
-    font-size: 0.875rem;
-    font-weight: 600;
-    transition: all 0.2s ease;
-    width: 1.75rem;
-    height: 1.75rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     border: 1px solid rgba(138, 154, 126, 0.3);
-  }
-  
-  .mermaid-btn:hover {
-    background: rgba(255, 255, 255, 1);
-    color: var(--deep-navy);
-    transform: scale(1.05);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  }
-  
-  .mermaid-btn:active {
-    transform: scale(0.95);
-  }
-  
-  /* Modal Styles */
-  .mermaid-modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.8);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-    padding: 2rem;
-    box-sizing: border-box;
-  }
-  
-  .mermaid-modal-content {
-    background: white;
-    border-radius: 12px;
-    max-width: 95vw;
-    max-height: 95vh;
-    overflow: auto;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-  }
-  
-  .mermaid-modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1.5rem 2rem;
-    border-bottom: 1px solid var(--sage-green);
-    background: var(--warm-neutral);
-  }
-  
-  .mermaid-modal-header h3 {
-    margin: 0;
-    color: var(--deep-navy);
-    font-family: var(--font-heading);
-  }
-  
-  .mermaid-modal-close {
-    background: none;
-    border: none;
-    font-size: 2rem;
-    cursor: pointer;
-    color: var(--deep-navy);
+    border-radius: 8px;
     padding: 0;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 700;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     width: 2rem;
     height: 2rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 50%;
-    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
   }
   
-  .mermaid-modal-close:hover {
-    background: var(--sage-green);
+  .mermaid-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, var(--sage-green), var(--light-sage));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  .mermaid-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(138, 154, 126, 0.3);
+    border-color: var(--sage-green);
+  }
+  
+  .mermaid-btn:hover::before {
+    opacity: 1;
+  }
+  
+  .mermaid-btn:hover {
     color: white;
   }
   
-  .mermaid-modal-body {
-    padding: 2rem;
-    text-align: center;
+  .mermaid-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(138, 154, 126, 0.2);
   }
   
-  .mermaid-modal-body svg {
-    max-width: 100%;
-    height: auto;
-    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+  /* Button icons with better contrast */
+  .mermaid-btn.zoom-in::after,
+  .mermaid-btn.zoom-out::after,
+  .mermaid-btn.zoom-reset::after,
+  .mermaid-btn.fullscreen::after {
+    position: relative;
+    z-index: 1;
+  }
+  
+  /* Modal Styles - Global scope for JavaScript-created elements */
+  :global(.mermaid-modal) {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    background: rgba(0, 0, 0, 0.9) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    z-index: 99999 !important;
+    padding: 2rem !important;
+    box-sizing: border-box !important;
+    animation: fadeIn 0.3s ease !important;
+  }
+  
+  :global(.mermaid-modal-content) {
+    background: white !important;
+    border-radius: 16px !important;
+    max-width: 90vw !important;
+    max-height: 90vh !important;
+    overflow: auto !important;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5) !important;
+    animation: slideUp 0.3s ease !important;
+  }
+  
+  :global(.mermaid-modal-header) {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 1.5rem 2rem !important;
+    border-bottom: 2px solid var(--sage-green) !important;
+    background: linear-gradient(135deg, var(--warm-neutral), rgba(244, 233, 216, 0.95)) !important;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 10 !important;
+  }
+  
+  :global(.mermaid-modal-header h3) {
+    margin: 0 !important;
+    color: var(--deep-navy) !important;
+    font-family: var(--font-heading) !important;
+    font-size: 1.5rem !important;
+  }
+  
+  :global(.mermaid-modal-close) {
+    background: var(--sage-green) !important;
+    border: none !important;
+    font-size: 1.5rem !important;
+    cursor: pointer !important;
+    color: white !important;
+    padding: 0 !important;
+    width: 2.5rem !important;
+    height: 2.5rem !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 50% !important;
+    transition: all 0.3s ease !important;
+    font-weight: bold !important;
+  }
+  
+  :global(.mermaid-modal-close:hover) {
+    background: var(--deep-navy) !important;
+    transform: rotate(90deg) !important;
+  }
+  
+  :global(.mermaid-modal-body) {
+    padding: 3rem !important;
+    text-align: center !important;
+    background: white !important;
+    overflow: auto !important;
+  }
+  
+  :global(.mermaid-modal-body svg) {
+    max-width: 100% !important;
+    height: auto !important;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1)) !important;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  @keyframes slideUp {
+    from { 
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to { 
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
   
   /* Ensure text in SVG is readable */

@@ -195,7 +195,9 @@ export function remarkTyporaMermaid(options = {}) {
           } else {
             // Create HTML string for regular markdown files
             const escapedCode = node.value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-            const htmlString = `<figure class="mermaid-diagram">
+            // Generate unique ID for this diagram instance
+            const diagramId = `mermaid-${Math.random().toString(36).substring(2, 11)}`;
+            const htmlString = `<figure class="mermaid-diagram" id="${diagramId}">
   <div class="mermaid-container">
     Loading diagram...
   </div>
