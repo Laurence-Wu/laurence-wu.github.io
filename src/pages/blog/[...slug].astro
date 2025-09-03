@@ -20,7 +20,7 @@ try {
   const extensions = ['jpg', 'jpeg', 'png', 'webp', 'gif'];
   for (const ext of extensions) {
     try {
-      const imported = await import(`../../content/blogs/${entry.slug}/front-picture/front.${ext}`);
+      const imported = await import(`../../content/blogs/front-picture/front.${ext}`);
       if (imported && imported.default) {
         frontPicture = imported.default.src || imported.default;
         break;
