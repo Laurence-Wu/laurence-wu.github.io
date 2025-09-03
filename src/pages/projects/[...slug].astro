@@ -20,6 +20,26 @@ function getUrl(path: string): string {
   const cleanPath = path.startsWith('/') ? path : `/${path}`;
   return `${cleanBaseUrl}${cleanPath}`;
 }
+
+// Function to try to import front picture
+let frontPicture: string | null = null;
+try {
+  // Try to import front picture with common extensions
+  const extensions = ['jpg', 'jpeg', 'png', 'webp', 'gif'];
+  for (const ext of extensions) {
+    try {
+      const imported = await import(`../../content/projects/${entry.slug}/front-picture/front.${ext}`);
+      if (imported && imported.default) {
+        frontPicture = imported.default.src || imported.default;
+        break;
+      }
+    } catch (e) {
+      // Continue to next extension
+    }
+  }
+} catch (e) {
+  // Front picture not found
+}
 ---
 
 <Layout
@@ -69,17 +89,32 @@ function getUrl(path: string): string {
     
     <main class="project-content">
       <div class="container">
-        {entry.data.image && (
-          <div class="project-image-section">
-            <img 
-              src={entry.data.image} 
-              alt={`${entry.data.title} demonstration`}
-              class="project-demo-image"
-            />
-            <p class="image-caption">Project demonstration: {entry.data.title}</p>
+        <div class="content-with-sidebar">
+          <div class="main-content">
+            {entry.data.image && (
+              <div class="project-image-section">
+                <img 
+                  src={entry.data.image} 
+                  alt={`${entry.data.title} demonstration`}
+                  class="project-demo-image"
+                />
+                <p class="image-caption">Project demonstration: {entry.data.title}</p>
+              </div>
+            )}
+            <Content />
           </div>
-        )}
-        <Content />
+          
+          {frontPicture && (
+            <div class="front-picture-sidebar">
+              <h4>Project Preview</h4>
+              <img 
+                src={frontPicture} 
+                alt={`${entry.data.title} preview`}
+                class="front-picture-image"
+              />
+            </div>
+          )}
+        </div>
       </div>
     </main>
     
@@ -436,6 +471,54 @@ function getUrl(path: string): string {
     padding: 0;
   }
   
+  /* Content with sidebar layout */
+  .content-with-sidebar {
+    display: flex;
+    gap: 3rem;
+    align-items: flex-start;
+  }
+
+  .main-content {
+    flex: 1;
+    min-width: 0; /* Allow flexbox to shrink */
+  }
+
+  .front-picture-sidebar {
+    flex: 0 0 300px; /* Fixed width sidebar */
+    background: rgba(255, 255, 255, 0.95);
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: 
+      0 8px 32px rgba(0, 0, 0, 0.12),
+      0 4px 16px rgba(138, 154, 126, 0.1);
+    border: 1px solid rgba(138, 154, 126, 0.2);
+    position: sticky;
+    top: 2rem;
+  }
+
+  .front-picture-sidebar h4 {
+    color: #2E3A59;
+    font-family: var(--font-heading, 'Playfair Display', serif);
+    font-size: 1.2rem;
+    margin: 0 0 1.5rem 0;
+    text-align: center;
+    border-bottom: 2px solid rgba(138, 154, 126, 0.3);
+    padding-bottom: 0.8rem;
+  }
+
+  .front-picture-image {
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .front-picture-image:hover {
+    transform: scale(1.03);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  }
+
   /* Project demonstration image styling */
   .project-image-section {
     margin: 3rem 0 4rem 0;
@@ -564,6 +647,21 @@ function getUrl(path: string): string {
     }
   }
   
+  @media (max-width: 1024px) {
+    /* Stack sidebar below main content on smaller screens */
+    .content-with-sidebar {
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .front-picture-sidebar {
+      flex: none;
+      position: static;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+  }
+
   @media (max-width: 768px) {
     .project-header h1 {
       font-size: 2rem;
@@ -588,6 +686,15 @@ function getUrl(path: string): string {
     .project-footer .container {
       padding-left: 1rem;
       padding-right: 1rem;
+    }
+
+    .content-with-sidebar {
+      gap: 1.5rem;
+    }
+
+    .front-picture-sidebar {
+      padding: 1.5rem;
+      max-width: none;
     }
   }
 </style>

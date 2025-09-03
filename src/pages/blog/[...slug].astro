@@ -3,7 +3,8 @@ import { getCollection } from 'astro:content';
 import BlogPost from '../../layouts/BlogPost.astro';
 
 export async function getStaticPaths() {
-  const blogEntries = await getCollection('blog');
+  const blogEntries = await getCollection('blogs');
+  
   return blogEntries.map(entry => ({
     params: { slug: entry.slug }, props: { entry },
   }));
@@ -11,6 +12,26 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content } = await entry.render();
+
+// Function to try to import front picture for blogs
+let frontPicture: string | null = null;
+try {
+  // Try to import front picture with common extensions
+  const extensions = ['jpg', 'jpeg', 'png', 'webp', 'gif'];
+  for (const ext of extensions) {
+    try {
+      const imported = await import(`../../content/blogs/${entry.slug}/front-picture/front.${ext}`);
+      if (imported && imported.default) {
+        frontPicture = imported.default.src || imported.default;
+        break;
+      }
+    } catch (e) {
+      // Continue to next extension
+    }
+  }
+} catch (e) {
+  // Front picture not found
+}
 ---
 
 <BlogPost
@@ -21,6 +42,7 @@ const { Content } = await entry.render();
   author={entry.data.author}
   image={entry.data.image}
   tags={entry.data.tags}
+  frontPicture={frontPicture}
 >
   <Content />
 </BlogPost> 
