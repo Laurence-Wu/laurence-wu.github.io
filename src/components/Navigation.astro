@@ -1,31 +1,12 @@
 ---
 // Navigation.astro - Preserved Legacy Frontend Styling
+import { getUrl, isActive } from '../utils/url';
+
 export interface Props {
   currentPath?: string;
 }
 
 const { currentPath = Astro.url.pathname } = Astro.props;
-const baseUrl = import.meta.env.BASE_URL;
-
-// Helper function to check if a path is active
-function isActive(linkPath: string, currentPath: string): boolean {
-  const fullLinkPath = getUrl(linkPath);
-  if (linkPath === '/') {
-    return currentPath === baseUrl || currentPath === '/' || currentPath === baseUrl.slice(0, -1);
-  }
-  return currentPath.includes(linkPath) || currentPath.includes(fullLinkPath);
-}
-
-// Helper function to get proper URL
-function getUrl(path: string): string {
-  if (path === '/') {
-    return baseUrl;
-  }
-  // Remove trailing slash from baseUrl and leading slash from path to avoid double slashes
-  const cleanBaseUrl = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
-  const cleanPath = path.startsWith('/') ? path : `/${path}`;
-  return `${cleanBaseUrl}${cleanPath}`;
-}
 ---
 
 <nav class="navbar">

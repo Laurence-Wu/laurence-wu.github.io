@@ -224,6 +224,40 @@ button:hover, .button:hover {
   50% { opacity: 0; }
 }
 
+@keyframes floatingWave {
+  0%, 100% {
+    transform: translateX(0) translateY(0) scale(1);
+    background-position: 0% 0%, 100% 100%, 50% 50%;
+  }
+  25% {
+    transform: translateX(10px) translateY(-15px) scale(1.02);
+    background-position: 10% 10%, 90% 90%, 60% 40%;
+  }
+  50% {
+    transform: translateX(-5px) translateY(10px) scale(0.98);
+    background-position: 20% 30%, 80% 70%, 30% 70%;
+  }
+  75% {
+    transform: translateX(-15px) translateY(-5px) scale(1.01);
+    background-position: 30% 20%, 70% 80%, 40% 60%;
+  }
+}
+
+@keyframes gridWave {
+  0%, 100% {
+    transform: translateX(0) translateY(0) rotate(0deg);
+    opacity: 0.6;
+  }
+  33% {
+    transform: translateX(20px) translateY(-10px) rotate(0.5deg);
+    opacity: 0.4;
+  }
+  66% {
+    transform: translateX(-10px) translateY(15px) rotate(-0.3deg);
+    opacity: 0.8;
+  }
+}
+
 .fade-in {
   animation: fadeIn 0.8s ease-in-out;
 }

@@ -1,0 +1,103 @@
+---
+// AnimatedBackground.astro - Reusable animated background component
+// Extracted from multiple layouts to reduce duplication
+export interface Props {
+  type?: 'full' | 'compact';
+}
+
+const { type = 'full' } = Astro.props;
+---
+
+<div class={`animated-background ${type}`} aria-hidden="true"></div>
+
+<style>
+  .animated-background {
+    position: fixed;
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  /* Full version - for BaseLayout (covers entire viewport below navbar) */
+  .animated-background.full {
+    top: 60px;
+    left: 0;
+    right: 0;
+    bottom: 160px;
+    background:
+      radial-gradient(circle at 20% 20%, rgba(138, 154, 126, 0.15) 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(212, 175, 55, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 40% 60%, rgba(138, 154, 126, 0.08) 0%, transparent 50%);
+    background-color: #F4E8D1;
+    background-size: 100px 100px, 150px 150px, 200px 200px;
+    animation: floatingWave 20s ease-in-out infinite;
+  }
+
+  .animated-background.full::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(138, 154, 126, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(138, 154, 126, 0.05) 1px, transparent 1px),
+      linear-gradient(rgba(212, 175, 55, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(212, 175, 55, 0.03) 1px, transparent 1px);
+    background-size: 50px 50px, 50px 50px, 80px 80px, 80px 80px;
+    animation: gridWave 20s ease-in-out infinite;
+  }
+
+  /* Compact version - for Layout.astro (no footer space) */
+  .animated-background.compact {
+    top: 80px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background:
+      radial-gradient(circle at 20% 20%, rgba(138, 154, 126, 0.15) 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(212, 175, 55, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 40% 60%, rgba(138, 154, 126, 0.08) 0%, transparent 50%);
+    background-color: #F4E8D1;
+    background-size: 100px 100px, 150px 150px, 200px 200px;
+    animation: floatingWave 20s ease-in-out infinite;
+  }
+
+  .animated-background.compact::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(138, 154, 126, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(138, 154, 126, 0.05) 1px, transparent 1px),
+      linear-gradient(rgba(212, 175, 55, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(212, 175, 55, 0.03) 1px, transparent 1px);
+    background-size: 50px 50px, 50px 50px, 80px 80px, 80px 80px;
+    animation: gridWave 20s ease-in-out infinite;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .animated-background.full {
+      top: 60px;
+    }
+
+    .animated-background.compact {
+      top: 60px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .animated-background.full {
+      top: 55px;
+    }
+
+    .animated-background.compact {
+      top: 55px;
+    }
+  }
+
+  @media (max-width: 360px) {
+    .animated-background.full,
+    .animated-background.compact {
+      top: 50px;
+    }
+  }
+</style>

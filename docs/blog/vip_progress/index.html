@@ -1,0 +1,457 @@
+<!DOCTYPE html><html lang="en" data-astro-cid-37fxchfa> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>VIP Progress Journal - SystemVerilog Learning</title><meta name="description" content="Weekly progress journal documenting my journey learning SystemVerilog, including module structures, always blocks, and FSM implementations"><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://laurence-wu.github.io/blog/vip_progress/"><meta property="og:title" content="VIP Progress Journal - SystemVerilog Learning"><meta property="og:description" content="Weekly progress journal documenting my journey learning SystemVerilog, including module structures, always blocks, and FSM implementations"><meta property="og:image" content="/assets/profile-image.jpg"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://laurence-wu.github.io/blog/vip_progress/"><meta property="twitter:title" content="VIP Progress Journal - SystemVerilog Learning"><meta property="twitter:description" content="Weekly progress journal documenting my journey learning SystemVerilog, including module structures, always blocks, and FSM implementations"><meta property="twitter:image" content="/assets/profile-image.jpg"><!-- KaTeX CSS for Math Rendering --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css" integrity="sha384-GvrOXuhMATgEsSwCs4smul74iXGOixntILdUW9XmUC6+HX0sLNAK3q71HotJqlAn" crossorigin="anonymous"><!-- Google Fonts - Preserved Typography System --><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&family=Cormorant+Garamond:wght@300;400;500;600;700&display=swap" rel="stylesheet"><!-- Fira Code for code blocks --><link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap" rel="stylesheet"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Global CSS Import --><link rel="stylesheet" href="/_astro/_slug_.CaX6V1Dz.css">
+<link rel="stylesheet" href="/_astro/index.BRcr8Vd7.css">
+<link rel="stylesheet" href="/_astro/_slug_.CDIrPqxW.css"></head> <body data-astro-cid-37fxchfa> <nav class="navbar" data-astro-cid-pux6a34n> <div class="navbar-brand" data-astro-cid-pux6a34n>Xiaoyou Wu</div> <a href="/" class="navbar-link " data-astro-cid-pux6a34n>
+Home
+</a> <a href="/blog" class="navbar-link active" data-astro-cid-pux6a34n>
+Blog
+</a> <a href="/projects" class="navbar-link " data-astro-cid-pux6a34n>
+Projects
+</a> <a href="/about" class="navbar-link " data-astro-cid-pux6a34n>
+About
+</a> </nav>  <script type="module">function r(){const e=document.querySelector(".navbar");window.scrollY>50?e?.classList.add("scrolled"):e?.classList.remove("scrolled")}window.addEventListener("scroll",r);document.querySelector(".navbar")?.addEventListener("contextmenu",e=>{e.preventDefault()});document.querySelector(".navbar")?.addEventListener("dragstart",e=>{e.preventDefault()});</script> <div class="animated-background full" aria-hidden="true" data-astro-cid-5a2bynky></div>  <main class="main-content" data-astro-cid-37fxchfa>  <main class="blog-post" data-astro-cid-bvzihdzo> <article data-astro-cid-bvzihdzo> <header class="post-header" data-astro-cid-bvzihdzo> <h1 data-astro-cid-bvzihdzo>VIP Progress Journal - SystemVerilog Learning</h1> <div class="post-meta" data-astro-cid-bvzihdzo> <time datetime="2024-08-25T00:00:00.000Z" data-astro-cid-bvzihdzo> August 24, 2024 </time> <span class="author" data-astro-cid-bvzihdzo>by Xiaoyou Wu</span>  </div> <div class="tags" data-astro-cid-bvzihdzo> <a href="/blog/tag/SystemVerilog/" class="tag" data-astro-cid-bvzihdzo>SystemVerilog</a><a href="/blog/tag/hardware/" class="tag" data-astro-cid-bvzihdzo>hardware</a><a href="/blog/tag/FPGA/" class="tag" data-astro-cid-bvzihdzo>FPGA</a><a href="/blog/tag/digital-design/" class="tag" data-astro-cid-bvzihdzo>digital-design</a><a href="/blog/tag/learning-journal/" class="tag" data-astro-cid-bvzihdzo>learning-journal</a> </div> </header> <div id="table-of-contents" class="toc-container" data-astro-cid-xvrfupwn> <div class="toc-header" data-astro-cid-xvrfupwn> <div class="toc-title-area" data-astro-cid-xvrfupwn> <span class="drag-handle" title="Drag to move" data-astro-cid-xvrfupwn>⋮⋮</span> <h3 data-astro-cid-xvrfupwn>Table of Contents</h3> </div> <button id="toc-toggle" class="toc-toggle" aria-label="Toggle table of contents" data-astro-cid-xvrfupwn> <span class="toggle-icon" data-astro-cid-xvrfupwn>←</span> </button> </div> <nav class="toc-nav" aria-label="Table of contents" data-astro-cid-xvrfupwn> <ul id="toc-list" class="toc-list" data-astro-cid-xvrfupwn> <!-- TOC items will be populated by JavaScript --> </ul> </nav> </div>  <script type="module" src="/_astro/TableOfContents.astro_astro_type_script_index_0_lang.ZAa9MuU5.js"></script> <div class="content-with-sidebar" data-astro-cid-bvzihdzo> <div class="post-content main-content" data-astro-cid-bvzihdzo>  <h2 id="week-1-aug-25---aug-31">Week 1: Aug 25 - Aug 31</h2>
+<h3 id="foundation--basic-structures">Foundation &#x26; Basic Structures</h3>
+<h4 id="module-structure">Module Structure</h4>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>module ModuleName (</span></span>
+<span class="line"><span>    // Input signals</span></span>
+<span class="line"><span>    input logic signal_name,</span></span>
+<span class="line"><span>    input logic [31:0] bus_signal,</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>    // Output signals</span></span>
+<span class="line"><span>    output logic output_signal,</span></span>
+<span class="line"><span>    output logic [4:0] output_bus</span></span>
+<span class="line"><span>);</span></span>
+<span class="line"><span>    // Module body</span></span>
+<span class="line"><span>endmodule</span></span></code></pre>
+<p><strong>Remember:</strong></p>
+<ul>
+<li><code>logic</code> replaces wire/reg</li>
+<li>Bus width: <code>[MSB:LSB]</code> before signal name</li>
+<li>Semicolon after port list</li>
+</ul>
+<h4 id="data-types">Data Types</h4>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>// Enumerated types with explicit width</span></span>
+<span class="line"><span>typedef enum logic [2:0] {</span></span>
+<span class="line"><span>    NO_WRITEBACK = 3'b000,</span></span>
+<span class="line"><span>    READ_ALU_RESULT = 3'b001,</span></span>
+<span class="line"><span>    READ_MEM_RESULT = 3'b010</span></span>
+<span class="line"><span>} write_back_mux_selector;</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>// Localparam for compile-time constants</span></span>
+<span class="line"><span>localparam INSTR_START_PC = 0;</span></span>
+<span class="line"><span>localparam DATA_START_PC = 127;</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>// Parameter extraction using bit slicing</span></span>
+<span class="line"><span>localparam REG_S1_MSB = 19;</span></span>
+<span class="line"><span>localparam REG_S1_LSB = 15;</span></span></code></pre>
+<p><strong>Number Formats:</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>7'h23    // 7-bit hex value</span></span>
+<span class="line"><span>3'b001   // 3-bit binary value</span></span>
+<span class="line"><span>32'bz    // 32-bit high-impedance</span></span>
+<span class="line"><span>8'h00    // 8-bit hex (for byte operations)</span></span></code></pre>
+<h4 id="procedural-blocks">Procedural Blocks</h4>
+<p><strong>Combinational - always_comb</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>always_comb begin</span></span>
+<span class="line"><span>    case(alu_operator_ip)</span></span>
+<span class="line"><span>        ALU_ADD: begin</span></span>
+<span class="line"><span>            alu_result_op = alu_operand_a_ip + alu_operand_b_ip;</span></span>
+<span class="line"><span>            alu_valid_op = 1;</span></span>
+<span class="line"><span>        end</span></span>
+<span class="line"><span>        ALU_SUB: begin</span></span>
+<span class="line"><span>            alu_result_op = alu_operand_a_ip - alu_operand_b_ip;</span></span>
+<span class="line"><span>            alu_valid_op = 1;</span></span>
+<span class="line"><span>        end</span></span>
+<span class="line"><span>        default: begin</span></span>
+<span class="line"><span>            alu_result_op = 0;</span></span>
+<span class="line"><span>            alu_valid_op = 0;</span></span>
+<span class="line"><span>        end</span></span>
+<span class="line"><span>    endcase</span></span>
+<span class="line"><span>end</span></span></code></pre>
+<p><strong>Sequential - always @(posedge clk)</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>always @(posedge clk) begin</span></span>
+<span class="line"><span>    if (~reset)</span></span>
+<span class="line"><span>        cycle_count &#x3C;= cycle_count + 1;</span></span>
+<span class="line"><span>end</span></span></code></pre>
+<hr>
+<h2 id="week-2-sep-1---sep-7">Week 2: Sep 1 - Sep 7</h2>
+<h3 id="advanced-patterns--pipeline-design">Advanced Patterns &#x26; Pipeline Design</h3>
+<h4 id="packages">Packages</h4>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>package CORE_PKG;</span></span>
+<span class="line"><span>    // Parameters</span></span>
+<span class="line"><span>    parameter OPCODE_STORE = 7'h23;</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>    // Enumerations</span></span>
+<span class="line"><span>    typedef enum logic [6:0] {</span></span>
+<span class="line"><span>        ALU_NOP = 7'b0000000,</span></span>
+<span class="line"><span>        ALU_ADD = 7'b0011000</span></span>
+<span class="line"><span>    } alu_opcode_e;</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>    // Custom types</span></span>
+<span class="line"><span>    typedef enum {</span></span>
+<span class="line"><span>        REG_A, PC, OPA_NOP</span></span>
+<span class="line"><span>    } operand_a_mux;</span></span>
+<span class="line"><span>endpackage</span></span></code></pre>
+<p><strong>Import:</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>import CORE_PKG::*;</span></span></code></pre>
+<h4 id="pipeline-patterns">Pipeline Patterns</h4>
+<p><strong>Signal Naming Convention</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>// Pass-through signals use _pt suffix</span></span>
+<span class="line"><span>logic [31:0] id_uimmd_pt;</span></span>
+<span class="line"><span>logic [31:0] ex_uimmd_pt;</span></span>
+<span class="line"><span>logic [31:0] lsu_uimmd_pt;</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>// Stage outputs use _op suffix</span></span>
+<span class="line"><span>output logic [31:0] alu_result_op;</span></span>
+<span class="line"><span>output logic alu_valid_op;</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>// Stage inputs use _ip suffix</span></span>
+<span class="line"><span>input logic [31:0] alu_operand_a_ip;</span></span>
+<span class="line"><span>input logic alu_enable_ip;</span></span></code></pre>
+<p><strong>Pipeline Buffers</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>// ID to EX pipeline buffer</span></span>
+<span class="line"><span>logic [31:0] id_instr_pc_addr_pt;</span></span>
+<span class="line"><span>logic [31:0] ex_instr_pc_addr_pt;</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>// EX to MEM pipeline buffer</span></span>
+<span class="line"><span>logic [31:0] ex_alu_result_pt;</span></span>
+<span class="line"><span>logic ex_alu_result_valid_pt;</span></span></code></pre>
+<p><strong>Pipeline Control</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>input logic flush_en;   // Branch flush</span></span>
+<span class="line"><span>output logic stall_op;  // Hazard stall</span></span></code></pre>
+<h4 id="risc-v-patterns">RISC-V Patterns</h4>
+<p><strong>Opcodes</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>parameter OPCODE_STORE = 7'h23;   // S-type</span></span>
+<span class="line"><span>parameter OPCODE_LOAD = 7'h03;    // I-type</span></span>
+<span class="line"><span>parameter OPCODE_BRANCH = 7'h63;  // B-type</span></span>
+<span class="line"><span>parameter OPCODE_JAL = 7'h6f;     // J-type</span></span>
+<span class="line"><span>parameter OPCODE_JALR = 7'h67;</span></span>
+<span class="line"><span>parameter OPCODE_LUI = 7'h37;     // U-type</span></span>
+<span class="line"><span>parameter OPCODE_AUIPC = 7'h17;</span></span>
+<span class="line"><span>parameter OPCODE_OP = 7'h33;      // R-type</span></span>
+<span class="line"><span>parameter OPCODE_OPIMM = 7'h13;</span></span></code></pre>
+<p><strong>Field Extraction</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>logic [6:0] opcode = instruction[6:0];</span></span>
+<span class="line"><span>logic [4:0] rd = instruction[11:7];</span></span>
+<span class="line"><span>logic [2:0] funct3 = instruction[14:12];</span></span>
+<span class="line"><span>logic [4:0] rs1 = instruction[19:15];</span></span>
+<span class="line"><span>logic [4:0] rs2 = instruction[24:20];</span></span>
+<span class="line"><span>logic [6:0] funct7 = instruction[31:25];</span></span></code></pre>
+<hr>
+<h3 id="interesting-knowledge-base-on-my-previous-project">Interesting Knowledge base on my previous project</h3>
+<h2 id="week-3-sep-8---sep-14">Week 3: Sep 8 - Sep 14</h2>
+<h3 id="testing-synthesis--optimization">Testing, Synthesis &#x26; Optimization</h3>
+<h4 id="testbench">Testbench</h4>
+<p><strong>Clock &#x26; Timing</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>`timescale 1ns / 1ns</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>module Core_tb;</span></span>
+<span class="line"><span>    logic clk = 1;</span></span>
+<span class="line"><span>    always #1 clk &#x3C;= clk + 1;</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>    initial begin</span></span>
+<span class="line"><span>        reset = 1'b1;</span></span>
+<span class="line"><span>        #6 reset = 1'b0;</span></span>
+<span class="line"><span>        #50 $finish;</span></span>
+<span class="line"><span>    end</span></span></code></pre>
+<p><strong>Memory Init</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>core_proc.InstructionFetch_Module.InstructionMemory.instr_RAM[0] = 8'h00;</span></span>
+<span class="line"><span>core_proc.InstructionFetch_Module.InstructionMemory.instr_RAM[1] = 8'h00;</span></span>
+<span class="line"><span>core_proc.InstructionFetch_Module.InstructionMemory.instr_RAM[2] = 8'h00;</span></span>
+<span class="line"><span>core_proc.InstructionFetch_Module.InstructionMemory.instr_RAM[3] = 8'h00;</span></span></code></pre>
+<p><strong>Waveform Dump</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>$dumpfile("Core_Simulation.vcd");</span></span>
+<span class="line"><span>$dumpvars(0, Core_tb);</span></span></code></pre>
+<h4 id="tricks">Tricks</h4>
+<p><strong>1. Ternary Operator</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>assign valid_instr_to_decode = instr_data_valid_ip ? instr_data_ip : 32'bz;</span></span>
+<span class="line"><span>alu_result_op = ($signed(alu_operand_a_ip) &#x3C; $signed(alu_operand_b_ip)) ? 1 : 0;</span></span></code></pre>
+<p><strong>2. Prevent Latches</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>always_comb begin</span></span>
+<span class="line"><span>    // Set defaults first</span></span>
+<span class="line"><span>    alu_operator = ALU_NOP;</span></span>
+<span class="line"><span>    operand_a_select = OPA_NOP;</span></span>
+<span class="line"><span>    writeback_mux = NO_WRITEBACK;</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>    // Then override based on conditions</span></span>
+<span class="line"><span>    case(opcode)</span></span>
+<span class="line"><span>        // ...</span></span>
+<span class="line"><span>    endcase</span></span>
+<span class="line"><span>end</span></span></code></pre>
+<p><strong>3. Hierarchical Access</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>core_proc.InstructionFetch_Module.InstructionMemory.instr_RAM[0]</span></span></code></pre>
+<p><strong>4. Module Instance</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>Core core_proc(</span></span>
+<span class="line"><span>    .clock(clk),</span></span>
+<span class="line"><span>    .reset(reset),</span></span>
+<span class="line"><span>    .mem_en(mem_enable)</span></span>
+<span class="line"><span>);</span></span></code></pre>
+<p><strong>5. Case with Default</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>case(selector)</span></span>
+<span class="line"><span>    VALUE1: action1();</span></span>
+<span class="line"><span>    VALUE2: action2();</span></span>
+<span class="line"><span>    default: begin</span></span>
+<span class="line"><span>        default_action();</span></span>
+<span class="line"><span>    end</span></span>
+<span class="line"><span>endcase</span></span></code></pre>
+<h4 id="synthesis-rules">Synthesis Rules</h4>
+<p><strong>1. Assignment Types</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>always @(posedge clk) begin</span></span>
+<span class="line"><span>    signal &#x3C;= new_value;  // Non-blocking in sequential</span></span>
+<span class="line"><span>end</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>always_comb begin</span></span>
+<span class="line"><span>    signal = input_value;  // Blocking in combinational</span></span>
+<span class="line"><span>end</span></span></code></pre>
+<p><strong>2. Sensitivity Lists</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>always_comb begin  // Auto-sensitive to all RHS</span></span>
+<span class="line"><span>end</span></span></code></pre>
+<p><strong>3. No Latches</strong></p>
+<ul>
+<li>Assign in all branches</li>
+<li>Default case mandatory</li>
+<li>Initialize outputs</li>
+</ul>
+<h4 id="debug">Debug</h4>
+<p><strong>1. Display Messages</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>$display("Time: %0t, PC: %h, Instruction: %h", $time, pc, instruction);</span></span></code></pre>
+<p><strong>2. Assertions</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>assert(condition) else $error("Assertion failed at time %0t", $time);</span></span></code></pre>
+<p><strong>3. Generate Loops</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>genvar i;</span></span>
+<span class="line"><span>generate</span></span>
+<span class="line"><span>    for (i = 0; i &#x3C; 32; i++) begin : gen_loop</span></span>
+<span class="line"><span>        assign bit_out[i] = bit_in[i] &#x26; enable;</span></span>
+<span class="line"><span>    end</span></span>
+<span class="line"><span>endgenerate</span></span></code></pre>
+<p><strong>4. Parameterized Width</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>module GenericModule #(</span></span>
+<span class="line"><span>    parameter WIDTH = 32</span></span>
+<span class="line"><span>)(</span></span>
+<span class="line"><span>    input logic [WIDTH-1:0] data_in,</span></span>
+<span class="line"><span>    output logic [WIDTH-1:0] data_out</span></span>
+<span class="line"><span>);</span></span></code></pre>
+<p><strong>5. Width-Specified Constants</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>logic [31:0] data = 32'h0000_0000;  // Underscores for readability</span></span>
+<span class="line"><span>logic [6:0] opcode = 7'b011_0011;</span></span></code></pre>
+<p><strong>6. Forward Declaration</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>logic [31:0] internal_signal;</span></span>
+<span class="line"><span>logic control_signal;</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>always_comb begin</span></span>
+<span class="line"><span>    internal_signal = input_signal + offset;</span></span>
+<span class="line"><span>end</span></span></code></pre>
+<p><strong>7. Auto-sensitivity - always @(*)</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>always @(*) begin</span></span>
+<span class="line"><span>    alu_operator = ALU_NOP; // Default assignment</span></span>
+<span class="line"><span>    operand_a_select = OPA_NOP;</span></span>
+<span class="line"><span>end</span></span></code></pre>
+<p><strong>8. Signed Compare</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>$signed(operand_a) &#x3C; $signed(operand_b)  // Treat as signed values</span></span></code></pre>
+<h2 id="week-3-sep-15---sep-17">Week 3: Sep 15 - Sep 17</h2>
+<p>We decide upon the part for the add-on board</p>
+<p>For this current board, I think I might design a four layer board. I have to correctly consider the WIFI module SPI and the level shifter, and do some entry level impedance matching.</p>
+<h3 id="common-terms-in-selecting-the-part-choice">Common terms in selecting the part choice:</h3>
+<ul>
+<li><strong>RoHS</strong> stands for the <strong>Restriction of Hazardous Substances</strong>. It’s a directive from the European Union that restricts the use of specific hazardous materials in electrical and electronic products</li>
+</ul>
+<h3 id="part-choice">Part choice</h3>
+<ol>
+<li>
+<p>UJC-HP-3-SMT-TR</p>
+<ul>
+<li>
+<p><strong>UJC</strong></p>
+<ul>
+<li><strong>Meaning:</strong> This is the product series prefix. It stands for <strong>USB Jack Connector</strong>.</li>
+</ul>
+<p><strong>HP</strong></p>
+<ul>
+<li><strong>Meaning:</strong> This often specifies a particular feature, like <strong>High Power</strong> or <strong>High Performance</strong>. For a modern USB-C jack, this likely indicates it’s designed to handle the higher power delivery standards for fast charging.</li>
+</ul>
+<p><strong>3</strong></p>
+<ul>
+<li><strong>Meaning:</strong> This number typically refers to the <strong>USB standard</strong> the connector is designed for. In this case, it indicates compatibility with <strong>USB 3.x</strong> specifications (like USB 3.1 or 3.2), which support higher data transfer speeds than older USB 2.0.</li>
+</ul>
+<p><strong>TR</strong></p>
+<ul>
+<li><strong>Meaning:</strong> This is a packaging designator that stands for <strong>Tape and Reel</strong>. The components are packaged in a long, pocketed tape wound onto a reel.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>ATWINC1500</p>
+<ul>
+<li>
+<p><strong>AT:</strong> This prefix often indicates the part originated from <strong>Atmel</strong>, a company that was acquired by Microchip.</p>
+<p><strong>WINC:</strong> This designates the product family, which is Microchip’s <strong>Wireless Network Controller</strong> lineup.</p>
+<p><strong>1500:</strong> This is the specific model number within that family.</p>
+</li>
+</ul>
+</li>
+<li>
+<p>TSW-110-08-G-S</p>
+<ul>
+<li>
+<p><strong>TSW:</strong> This is the series name. It stands for “<strong>T</strong>hrough-hole <strong>S</strong>trip, .025” S<strong>q</strong>uare Post”. This tells you it’s a standard pin header designed to go through holes in a PCB.</p>
+<p><strong>110:</strong> This segment defines the number of pins per row. <code>1</code> indicates it’s a single-row header, and <code>10</code> means it has <strong>10 pins</strong> in that row.</p>
+<p><strong>08:</strong> This code specifies the lead style and plating. <code>08</code> is a common style for standard through-hole headers.</p>
+<p><strong>G:</strong> This indicates the plating material, which is <strong>gold</strong>. Specifically, it’s 10 µ” of gold on the contacts, which provides good conductivity and corrosion resistance.</p>
+<p><strong>S:</strong> This last part defines the row configuration. <code>S</code> means it is a <strong>single-row</strong> header. If it were a dual-row header, it would have a <code>D</code>.</p>
+</li>
+</ul>
+</li>
+<li>
+<p>TXS0108EPWR</p>
+<ul>
+<li>
+<p><strong>TXS:</strong> This prefix identifies the product family, which are voltage-level <strong>translators</strong> with auto-direction sensing.</p>
+<p><strong>01:</strong> This often indicates the technology generation or a specific feature set within the family.</p>
+<p><strong>08:</strong> This number specifies that the chip has <strong>8 channels</strong>, meaning it can translate eight separate signal lines at once.</p>
+<p><strong>E:</strong> This letter indicates that the part is an “enhanced” or updated product.</p>
+<p><strong>PWR:</strong> This suffix describes the packaging. <code>PW</code> specifies the <strong>TSSOP</strong> (Thin Shrink Small Outline Package), and <code>R</code> means it’s supplied on <strong>Tape &#x26; Reel</strong> for automated manufacturing.</p>
+</li>
+</ul>
+</li>
+<li>
+<p>CP2102N-A02-GQFN24R</p>
+<ul>
+<li>
+<p><strong>CP2102N:</strong> This is the base model number. The ‘N’ signifies it’s part of the newer, more advanced generation of this popular chip.</p>
+<p><strong>A02:</strong> This indicates a specific revision of the chip, which often includes minor bug fixes or feature updates from the original <code>A01</code> version.</p>
+<p><strong>GQFN24:</strong> This describes the physical package of the chip. <strong>QFN</strong> (Quad Flat No-leads) is a very compact, square package with 24 pins that are pads on the bottom, not traditional “legs” sticking out.</p>
+<p><strong>R:</strong> This final letter indicates the part is supplied on <strong>Tape &#x26; Reel</strong>, which is standard for automated manufacturing.</p>
+</li>
+</ul>
+</li>
+<li>
+<p>KUSBX-AS1N-B</p>
+<ul>
+<li>
+<p><strong>KUSBX:</strong> This is the series name from Kycon for their line of USB connectors.</p>
+<p><strong>A:</strong> Specifies that it’s a <strong>USB Type-A</strong> connector.</p>
+<p><strong>S:</strong> Indicates that it’s a <strong>plug</strong> (the male half).</p>
+<p><strong>1N:</strong> Defines the mounting style, which is <strong>through-hole</strong> with a standard horizontal orientation.</p>
+<p><strong>B:</strong> Specifies the shell type, which in this case is a standard one-piece metal shell.</p>
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="design-experiences-from-my-previous-pcb-project">Design experiences from my previous PCB project</h3>
+<ol>
+<li>Route the WIFI first, and the UART, for its the high speed route.</li>
+<li>Modify the Rule checks for proper impedance matching</li>
+<li>Make sure the layout first.</li>
+</ol>  </div>  </div> </article> </main> <footer class="blog-footer" data-astro-cid-bvzihdzo> <div class="container" data-astro-cid-bvzihdzo> <a href="/blog" class="back-link" data-astro-cid-bvzihdzo>← Back to Blog</a> </div> </footer>  </main> <footer class="site-footer" data-astro-cid-37fxchfa> <div class="footer-content" data-astro-cid-37fxchfa> <p data-astro-cid-37fxchfa>&copy; 2025 Xiaoyou Wu. All rights reserved.</p> <div class="footer-links" data-astro-cid-37fxchfa> <a href="https://github.com/yourusername" target="_blank" rel="noopener noreferrer" data-astro-cid-37fxchfa>GitHub</a> <a href="https://linkedin.com/in/yourprofile" target="_blank" rel="noopener noreferrer" data-astro-cid-37fxchfa>LinkedIn</a> <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" data-astro-cid-37fxchfa>Resume</a> </div> </div> </footer> <!-- KaTeX JavaScript for Math Rendering --> <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js" integrity="sha384-cpW21h6RZv/phavutF+AuVYrr+dA8xD9zs6FwLpaCct6O9ctzYFfFr4dgmgccOTx" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous" onload="renderMathInDocument()"></script> <script>
+    function renderMathInDocument() {
+      if (typeof window.renderMathInElement !== 'undefined') {
+        window.renderMathInElement(document.body, {
+          delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false},
+            {left: '\\(', right: '\\)', display: false},
+            {left: '\\[', right: '\\]', display: true}
+          ],
+          throwOnError: false
+        });
+      }
+    }
+    
+    document.addEventListener("DOMContentLoaded", renderMathInDocument);
+  </script> <!-- Simple Mermaid Test Script --> <script type="module">
+    console.log('[Simple Mermaid Test] Starting...');
+
+    // Simple function to load and initialize Mermaid
+    async function loadAndTestMermaid() {
+      try {
+        console.log('[Simple Mermaid Test] Loading Mermaid from CDN...');
+        
+        // Load Mermaid if not already loaded
+        if (!window.mermaid) {
+          const script = document.createElement('script');
+          script.src = 'https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js';
+          
+          await new Promise((resolve, reject) => {
+            script.onload = resolve;
+            script.onerror = reject;
+            document.head.appendChild(script);
+          });
+          
+          console.log('[Simple Mermaid Test] Mermaid loaded from CDN');
+        } else {
+          console.log('[Simple Mermaid Test] Mermaid already available');
+        }
+
+        if (!window.mermaid) {
+          throw new Error('Mermaid not available after loading');
+        }
+
+        console.log('[Simple Mermaid Test] Initializing Mermaid...');
+        
+        // Initialize Mermaid with simple config
+        window.mermaid.initialize({
+          startOnLoad: false,
+          theme: 'neutral'
+        });
+
+        console.log('[Simple Mermaid Test] Finding diagram elements...');
+        
+        // Find all mermaid diagrams
+        const diagrams = document.querySelectorAll('.mermaid-diagram');
+        console.log(`[Simple Mermaid Test] Found ${diagrams.length} diagrams`);
+
+        // Process each diagram
+        for (let i = 0; i < diagrams.length; i++) {
+          const diagram = diagrams[i];
+          const id = diagram.id || `test-diagram-${i}`;
+          const codeElement = diagram.querySelector('.mermaid-code code');
+          
+          console.log(`[Simple Mermaid Test] Processing diagram ${id}`);
+          
+          if (codeElement) {
+            const code = codeElement.textContent.trim();
+            console.log(`[Simple Mermaid Test] Code for ${id}:`, code.substring(0, 100) + '...');
+            
+            try {
+              // Render the diagram
+              const { svg } = await window.mermaid.render(`${id}-render`, code);
+              console.log(`[Simple Mermaid Test] SVG generated for ${id}`);
+              
+              // Replace the loading text with the SVG
+              const container = diagram.querySelector('.mermaid-container');
+              if (container) {
+                container.innerHTML = svg;
+                console.log(`[Simple Mermaid Test] SVG inserted for ${id}`);
+              } else {
+                console.error(`[Simple Mermaid Test] No container found for ${id}`);
+              }
+              
+            } catch (renderError) {
+              console.error(`[Simple Mermaid Test] Render error for ${id}:`, renderError);
+              
+              const container = diagram.querySelector('.mermaid-container');
+              if (container) {
+                container.innerHTML = `<div style="color: red; padding: 1rem;">Error: ${renderError.message}</div>`;
+              }
+            }
+          } else {
+            console.error(`[Simple Mermaid Test] No code element found for ${id}`);
+          }
+        }
+
+        console.log('[Simple Mermaid Test] Completed processing all diagrams');
+        
+      } catch (error) {
+        console.error('[Simple Mermaid Test] Fatal error:', error);
+      }
+    }
+
+    // Run the test when DOM is ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', loadAndTestMermaid);
+    } else {
+      loadAndTestMermaid();
+    }
+
+    // Export for manual testing
+    window.testMermaid = loadAndTestMermaid;
+  </script> </body> </html>  

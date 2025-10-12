@@ -1,0 +1,560 @@
+<!DOCTYPE html><html lang="en" data-astro-cid-37fxchfa> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Quantization Strategy Report: Switchable and Cyclic Precision Training</title><meta name="description" content="Comprehensive report on quantization strategies including switchable precision and cyclic precision training applied to WikiText-103 dataset"><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://laurence-wu.github.io/blog/eic_interview_report/"><meta property="og:title" content="Quantization Strategy Report: Switchable and Cyclic Precision Training"><meta property="og:description" content="Comprehensive report on quantization strategies including switchable precision and cyclic precision training applied to WikiText-103 dataset"><meta property="og:image" content="/assets/profile-image.jpg"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://laurence-wu.github.io/blog/eic_interview_report/"><meta property="twitter:title" content="Quantization Strategy Report: Switchable and Cyclic Precision Training"><meta property="twitter:description" content="Comprehensive report on quantization strategies including switchable precision and cyclic precision training applied to WikiText-103 dataset"><meta property="twitter:image" content="/assets/profile-image.jpg"><!-- KaTeX CSS for Math Rendering --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css" integrity="sha384-GvrOXuhMATgEsSwCs4smul74iXGOixntILdUW9XmUC6+HX0sLNAK3q71HotJqlAn" crossorigin="anonymous"><!-- Google Fonts - Preserved Typography System --><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&family=Cormorant+Garamond:wght@300;400;500;600;700&display=swap" rel="stylesheet"><!-- Fira Code for code blocks --><link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap" rel="stylesheet"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Global CSS Import --><link rel="stylesheet" href="/_astro/_slug_.CaX6V1Dz.css">
+<link rel="stylesheet" href="/_astro/index.BRcr8Vd7.css">
+<link rel="stylesheet" href="/_astro/_slug_.CDIrPqxW.css"></head> <body data-astro-cid-37fxchfa> <nav class="navbar" data-astro-cid-pux6a34n> <div class="navbar-brand" data-astro-cid-pux6a34n>Xiaoyou Wu</div> <a href="/" class="navbar-link " data-astro-cid-pux6a34n>
+Home
+</a> <a href="/blog" class="navbar-link active" data-astro-cid-pux6a34n>
+Blog
+</a> <a href="/projects" class="navbar-link " data-astro-cid-pux6a34n>
+Projects
+</a> <a href="/about" class="navbar-link " data-astro-cid-pux6a34n>
+About
+</a> </nav>  <script type="module">function r(){const e=document.querySelector(".navbar");window.scrollY>50?e?.classList.add("scrolled"):e?.classList.remove("scrolled")}window.addEventListener("scroll",r);document.querySelector(".navbar")?.addEventListener("contextmenu",e=>{e.preventDefault()});document.querySelector(".navbar")?.addEventListener("dragstart",e=>{e.preventDefault()});</script> <div class="animated-background full" aria-hidden="true" data-astro-cid-5a2bynky></div>  <main class="main-content" data-astro-cid-37fxchfa>  <main class="blog-post" data-astro-cid-bvzihdzo> <article data-astro-cid-bvzihdzo> <header class="post-header" data-astro-cid-bvzihdzo> <h1 data-astro-cid-bvzihdzo>Quantization Strategy Report: Switchable and Cyclic Precision Training</h1> <div class="post-meta" data-astro-cid-bvzihdzo> <time datetime="2025-01-10T00:00:00.000Z" data-astro-cid-bvzihdzo> January 9, 2025 </time> <span class="author" data-astro-cid-bvzihdzo>by Xiaoyou Wu</span>  </div> <div class="tags" data-astro-cid-bvzihdzo> <a href="/blog/tag/quantization/" class="tag" data-astro-cid-bvzihdzo>quantization</a><a href="/blog/tag/machine-learning/" class="tag" data-astro-cid-bvzihdzo>machine-learning</a><a href="/blog/tag/precision-training/" class="tag" data-astro-cid-bvzihdzo>precision-training</a><a href="/blog/tag/wikitext/" class="tag" data-astro-cid-bvzihdzo>wikitext</a><a href="/blog/tag/model-compression/" class="tag" data-astro-cid-bvzihdzo>model-compression</a> </div> </header> <div id="table-of-contents" class="toc-container" data-astro-cid-xvrfupwn> <div class="toc-header" data-astro-cid-xvrfupwn> <div class="toc-title-area" data-astro-cid-xvrfupwn> <span class="drag-handle" title="Drag to move" data-astro-cid-xvrfupwn>⋮⋮</span> <h3 data-astro-cid-xvrfupwn>Table of Contents</h3> </div> <button id="toc-toggle" class="toc-toggle" aria-label="Toggle table of contents" data-astro-cid-xvrfupwn> <span class="toggle-icon" data-astro-cid-xvrfupwn>←</span> </button> </div> <nav class="toc-nav" aria-label="Table of contents" data-astro-cid-xvrfupwn> <ul id="toc-list" class="toc-list" data-astro-cid-xvrfupwn> <!-- TOC items will be populated by JavaScript --> </ul> </nav> </div>  <script type="module" src="/_astro/TableOfContents.astro_astro_type_script_index_0_lang.ZAa9MuU5.js"></script> <div class="content-with-sidebar" data-astro-cid-bvzihdzo> <div class="post-content main-content" data-astro-cid-bvzihdzo>  <h1 id="report-on-quantization-strategy-on-switchable-precision-and-cyclic-precision-training">Report on Quantization Strategy on Switchable Precision and Cyclic Precision Training</h1>
+<p><em>// Because the link to the squad in the pdf can’t find anything: <a href="https://huggingface.co/Squad/datasets">https://huggingface.co/Squad/datasets</a>, therefore, I switched to a text generative dataset wikitext 103 for its ability on quantization</em></p>
+<h1 id="0-performance-achieved-after-applying-various-quantization-bit-width-configurations-to-the-wikitext-103-dataset">0. Performance achieved after applying various quantization bit-width configurations to the wikitext-103 dataset.</h1>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th></th><th>WikiText103 perplexity</th><th>BoolQ</th><th>HellaSwag</th><th>WinoGrande</th><th>Accuracy  Average</th></tr></thead><tbody><tr><td>4-bit</td><td>54.5</td><td>61.2</td><td>30.2</td><td>53.2</td><td>47.8</td></tr><tr><td>5-bit</td><td>30.8</td><td>61.8</td><td>33.4</td><td>48.2</td><td>47.8</td></tr><tr><td>16-bit</td><td>26.9</td><td>58.8</td><td>33.2</td><td>51.6</td><td>47.9</td></tr><tr><td>32-bit</td><td>26.9</td><td>59.0</td><td>32.2</td><td>53.2</td><td>48.1</td></tr></tbody></table>
+<p>All of them are trained with gradual bit width configurations.</p>
+<h2 id="1-questions-how-did-you-determine-the-optimal-quantization-bit-width-configurations-have-you-gleaned-any-insights-from-your-observations-that-could-guide-future-work-to-further-enhance-performance">1. **Questions: How did you determine the optimal quantization bit-width configurations? Have you gleaned any insights from your observations that could guide future work to further enhance performance? **</h2>
+<p>Determining the <strong>optimal configuration</strong> requires clearly defining what “optimal” means in relation to specific <strong>evaluation benchmarks</strong> and performance metrics. For this report, we define optimal performance based on two primary criteria: perplexity scores and zero-shot accuracy. Several critical factors influence the optimization of model performance:</p>
+<h3 id="11-choice-of-quantizer-base-on-the-current-precision">1.1 <strong>Choice of quantizer base on the current precision</strong>:</h3>
+<p>The choice of quantization method significantly impacts model performance and varies with the target bit width:</p>
+<ul>
+<li><strong>For 4-bit or lower precision</strong>: MinMax quantization delivers the best results</li>
+<li><strong>For 5-bit or higher precision</strong>: Advanced methods like log quantization and tanh quantization provide superior performance</li>
+</ul>
+<p>My experiments reveal that log quantization reduces 8-bit model degradation to just 2%, compared to 15% degradation with MinMax quantization. This improvement likely occurs because GPT-2 Small has relatively limited information content and less pronounced outlier effects, allowing log quantization to outperform the MinMax clipping function in case of higher precisions.  Here’s my experiments results on different approaches of changing the quantization strategies.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th></th><th>4 bit with Minmax Quantizer</th><th>4 bit with Log Quantizer</th><th>5 bit with Minmax Quantizer</th><th>5 bit with Log Quantizer</th></tr></thead><tbody><tr><td>perplexity on WikiText2</td><td>53.2</td><td>56.5</td><td>40.5</td><td>35.1</td></tr><tr><td>perplexity on WikiText103</td><td>44.5</td><td>48.4</td><td>33.6</td><td>29.3</td></tr><tr><td>BoolQ</td><td>57.0</td><td>59.0</td><td>52.6</td><td>57.4</td></tr><tr><td>HellaSwag</td><td>32.0</td><td>30.2</td><td>32.8</td><td>33.4</td></tr><tr><td>WinoGrande</td><td>54.6</td><td>48.2</td><td>51.0</td><td>56.4</td></tr><tr><td>Zeroshot average</td><td>47.9</td><td>45.8</td><td>45.5</td><td>49.1</td></tr></tbody></table>
+<p><strong>Important Notes:</strong></p>
+<ul>
+<li>C4 perplexity metrics were excluded from this analysis since the models were fine-tuned specifically on the WikiText dataset, making C4 comparisons less meaningful</li>
+</ul>
+<h3 id="12--training-precision-distribution">1.2  Training precision distribution</h3>
+<h3 id="121-on-accumulative-temperature-scaled-soft-max-distillation-method">1.2.1 On accumulative temperature scaled soft max distillation method</h3>
+<p>During the training process of switchable precision model, the self distillation formula is as follows:</p>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>L</mi><mi>q</mi></msub><mo>=</mo><msub><mi>α</mi><mn>1</mn></msub><msub><mi>D</mi><mrow><mi>K</mi><mi>L</mi></mrow></msub><mo stretchy="false">(</mo><mi>S</mi><mi>G</mi><mo stretchy="false">(</mo><msub><mi>p</mi><mi>r</mi></msub><mo stretchy="false">)</mo><mi mathvariant="normal">∣</mi><mi mathvariant="normal">∣</mi><msub><mi>p</mi><mrow><mi>q</mi><mi>q</mi></mrow></msub><mo stretchy="false">)</mo><mo>+</mo><msub><mi>α</mi><mn>2</mn></msub><munder><mo>∑</mo><mrow><mi>i</mi><mtext> </mtext><mi>i</mi><mi>n</mi><mtext> </mtext><mi>f</mi><mi>e</mi><mi>a</mi><mi>t</mi><mi>u</mi><mi>r</mi><mi>e</mi></mrow></munder><mi mathvariant="script">∣</mi><mi mathvariant="normal">∣</mi><msub><mi>f</mi><mrow><mi>i</mi><mi>r</mi></mrow></msub><mo>−</mo><msub><mi>f</mi><mrow><mi>i</mi><mi>q</mi></mrow></msub><mi mathvariant="normal">∣</mi><msubsup><mi mathvariant="normal">∣</mi><mn>2</mn><mn>2</mn></msubsup></mrow><annotation encoding="application/x-tex">L_q = \alpha_1 D_{KL}(SG(p_r)||p_{qq}) + \alpha_2 \sum_{i\ in\ feature} \mathcal||f_{ir} - f_{iq}||_2^2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9694em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal">L</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">q</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.0361em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0037em;">α</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0037em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.07153em;">K</span><span class="mord mathnormal mtight">L</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal">SG</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">p</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">r</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mord">∣∣</span><span class="mord"><span class="mord mathnormal">p</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">qq</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:2.4882em;vertical-align:-1.4382em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0037em;">α</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0037em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.05em;"><span style="top:-1.8479em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mspace mtight"><span class="mtight"> </span></span><span class="mord mathnormal mtight">in</span><span class="mspace mtight"><span class="mtight"> </span></span><span class="mord mathnormal mtight" style="margin-right:0.10764em;">f</span><span class="mord mathnormal mtight">e</span><span class="mord mathnormal mtight">a</span><span class="mord mathnormal mtight">t</span><span class="mord mathnormal mtight">u</span><span class="mord mathnormal mtight">re</span></span></span></span><span style="top:-3.05em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.4382em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">∣∣</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.1076em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mord mathnormal mtight" style="margin-right:0.02778em;">r</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.1502em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.1076em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">q</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mord">∣</span><span class="mord"><span class="mord">∣</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8641em;"><span style="top:-2.453em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.247em;"><span></span></span></span></span></span></span></span></span></span></span>
+<p>Where <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>p</mi><mi>r</mi></msub></mrow><annotation encoding="application/x-tex">p_{r}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathnormal">p</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">r</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> is the unquantized output distribution, <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>p</mi><mrow><mi>q</mi><mi>q</mi></mrow></msub></mrow><annotation encoding="application/x-tex">p_{qq}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7167em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal">p</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">qq</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span> is the quantized output distribution.</p>
+<ul>
+<li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th></th><th>4 bit model</th><th>5 bit model</th></tr></thead><tbody><tr><td>perplexity on WikiText2</td><td>56.5</td><td>35.1</td></tr><tr><td>perplexity on WikiText103</td><td>48.4</td><td>29.3</td></tr><tr><td>BoolQ</td><td>59.0</td><td>57.4</td></tr><tr><td>HellaSwag</td><td>30.2</td><td>33.4</td></tr><tr><td>WinoGrande</td><td>48.2</td><td>56.4</td></tr><tr><td>Zeroshot average</td><td>45.8</td><td>49.1</td></tr></tbody></table>
+</li>
+</ul>
+<p>​	<strong>All of them are using the log quantizer.</strong></p>
+<ul>
+<li>Activation bits changes accordingly to the current bit width during the training.</li>
+</ul>
+<h3 id="122-on-non-accumulative-temperature-scaled-soft-max-distillation-method-used-by-the-switchable-precision-paper">1.2.2 On non-accumulative temperature scaled soft max distillation method (used by the switchable precision paper)</h3>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>L</mi><mi>q</mi></msub><mo>=</mo><msub><mi>α</mi><mn>1</mn></msub><msub><mi>D</mi><mrow><mi>K</mi><mi>L</mi></mrow></msub><mo stretchy="false">(</mo><mi>S</mi><mi>G</mi><mo stretchy="false">(</mo><msub><mi>p</mi><mi>r</mi></msub><mo stretchy="false">)</mo><mi mathvariant="normal">∣</mi><mi mathvariant="normal">∣</mi><msub><mi>p</mi><mrow><mi>q</mi><mi>q</mi></mrow></msub><mo stretchy="false">)</mo><mo>+</mo><msub><mi>α</mi><mn>2</mn></msub><mi mathvariant="script">∣</mi><mi mathvariant="normal">∣</mi><msub><mi>f</mi><mi>r</mi></msub><mo>−</mo><msub><mi>f</mi><mi>q</mi></msub><mi mathvariant="normal">∣</mi><msubsup><mi mathvariant="normal">∣</mi><mn>2</mn><mn>2</mn></msubsup></mrow><annotation encoding="application/x-tex">L_q = \alpha_1 D_{KL}(SG(p_r)||p_{qq}) + \alpha_2 \mathcal||f_r - f_{q}||_2^2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9694em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal">L</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">q</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.0361em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0037em;">α</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0037em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.07153em;">K</span><span class="mord mathnormal mtight">L</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal">SG</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">p</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">r</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mord">∣∣</span><span class="mord"><span class="mord mathnormal">p</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">qq</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0037em;">α</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0037em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord">∣∣</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.1076em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">r</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.1502em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.1076em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">q</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mord">∣</span><span class="mord"><span class="mord">∣</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8641em;"><span style="top:-2.453em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.247em;"><span></span></span></span></span></span></span></span></span></span></span>
+<p>I also investigated a stochastic distillation variant where feature layers are randomly selected from the hidden states during training. Surprisingly, despite receiving guidance from only a subset of attention layers rather than all layers, the model’s accuracy improved rather than deteriorated, while the perplexity decreases as expected:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th></th><th>4 bit self distillation method with teaching from all the hidden states</th><th>4 bit self distillation method with teaching from a random hidden state</th></tr></thead><tbody><tr><td>perplexity on WikiText2</td><td>56.5</td><td>67.6</td></tr><tr><td>perplexity on WikiText103</td><td>48.4</td><td>dc ..68.8</td></tr><tr><td>BoolQ</td><td>59.0</td><td>60.0</td></tr><tr><td>HellaSwag</td><td>30.2</td><td>31.8</td></tr><tr><td>WinoGrande</td><td>48.2</td><td>49.8</td></tr><tr><td>Zeroshot average</td><td>45.8</td><td>47.2</td></tr></tbody></table>
+<p>These results raise an important question: which specific information within the hidden layers contributes most significantly to accuracy improvements? Understanding this could help optimize the distillation process further.</p>
+<h2 id="2-interesting-insight-on-optimizing-the-model-performance">2. Interesting insight on optimizing the model performance</h2>
+<h3 id="21-16-bits-is-extremely-similar-to-the-32-bits">2.1 16 bits is extremely similar to the 32 bits</h3>
+<p>Calibration logic need to be recalibrated after series of grad accumulation. With no calibration, <strong>16 bit has the same perplexity(0.8% degradation) as 32 bit</strong>, the degradation from not quantization is minimal.</p>
+<h3 id="22-merge-then-quant-or-the-other-way-around">2.2 Merge then quant or the other way around?</h3>
+<p>For lora, would it be better performing if we apply the AB and then do the quantization or do the quantization after AB? <a href="https://kaitchup.substack.com/p/training-loading-and-merging-qdora">Experiment from a blogger</a>  The inference time is so much longer, which is due to the huge tensor for dequantization. Meanwhile, I would think that it would take longer to train since the big tensor is harder to calibrate.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th></th><th>Merge after Quant: Q(W) + Q(A @ B)</th><th>Merge after Quant: Q(W) + Q(A )@ Q(B)</th></tr></thead><tbody><tr><td>Inference Speed</td><td>Faster</td><td>Slower</td></tr><tr><td>Accuracy</td><td>Same</td><td>Same</td></tr><tr><td>Calibration speed</td><td>Faster ( by a bit)</td><td>Slower</td></tr></tbody></table>
+<h3 id="23-per-channel--per-feature-or-per-token">2.3 Per channel , per feature or per token ?</h3>
+<p>My hypothesis is that quantization calibration should align with the <strong>semantic boundaries</strong> of tensor dimensions. Different layers encode information differently, and quantization should preserve these natural groupings. (But from the testing experiences, it seems that it actually not matter as much tho.) For Embedded layers, per channel calibration should be optimal, and for other layers like projection layers and those attention layers, per token calibration should be more optimal.</p>
+<h3 id="24-unexpected-minimal-impact-during-debugging">2.4 <strong>Unexpected minimal impact during debugging</strong>:</h3>
+<ul>
+<li>It just incredible that by changing the FP32 weight bit quantization for 32 bits to the matching precision reduce the perplexity from about 120 to 30 (approximately, since I was debugging the code).</li>
+<li>During the evaluation with input activation quantization, using pretrained input scale and zero point or recalibrate the input actually makes minimal perplexity and accuracy differences. Input activation distributions are stable across different datasets - pretrained calibration generalizes well.</li>
+</ul>
+<h3 id="25-the-root-cause-for-the-difference-cpt-and-progressive-precision-training">2.5 The root cause for the difference CPT and progressive precision training</h3>
+<p>The Reason why Progressive training works, might be similar to the distillation effect: we train with higher bit-width to understand the structure better and then pass the more precise understanding to the next lower bit-width. But what the reason why CPT is better than progressive training in lower bit quantization is that</p>
+<ul>
+<li><strong>Exploration matters more</strong> than exploitation at low precision</li>
+<li>Cycling provides <strong>escape mechanisms</strong> from bad local minima</li>
+</ul>
+<h2 id="4does-this-phenomenon-align-with-the-observations-in-cpt-iclr21-if-not-what-could-be-the-potential-reasons">4.<strong>Does this phenomenon align with the observations in CPT (ICLR’21)? If not, what could be the potential reasons?</strong></h2>
+<ul>
+<li>
+<p>The CPT model does help with reducing the cost. Since traditional method required distillation from teacher bit, these model will store and process at least two times the number of lora layer of a single model. But for CPT model, we would only need to store the lora layer of a model once and change precision during the flight. :</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Num of params</th><th>Cyclic Precision Training</th><th>Switchable Precision of</th></tr></thead><tbody><tr><td>Total parameters</td><td>166,212,880</td><td>257,097,984</td></tr><tr><td>Frozen parameters</td><td>162,998,784 (98.1%)</td><td>124,977,408 (48.6%)</td></tr><tr><td>Trainable (LoRA) parameters</td><td>3,214,096 (1.9%)</td><td>132,120,576 (51.4%)</td></tr></tbody></table>
+</li>
+<li>
+<p>The CPT does helps with training to gain a higher accuracy, even though CPT’s perplexity greatly degraded.</p>
+</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th></th><th>5 bit model trained with CPT</th><th>5 bit model trained with Switchable precision</th></tr></thead><tbody><tr><td>BoolQ</td><td>63.0</td><td>57.4</td></tr><tr><td>HellaSwag</td><td>32.4</td><td>33.4</td></tr><tr><td>WinoGrande</td><td>52.4</td><td>56.4</td></tr><tr><td>Average</td><td>49.3</td><td>49.1</td></tr></tbody></table>
+<h2 id="5step-6-does-this-phenomenon-align-with-the-observations-in-double-win-quant-icml21-if-not-what-could-be-the-potential-reasons">5.<strong>[Step 6] Does this phenomenon align with the observations in Double-Win Quant (ICML’21)? If not, what could be the potential reasons?</strong></h2>
+<p>It does show that</p>
+<ul>
+<li>Poor Adversarial transferability</li>
+<li>Random Precision Inference does works to increase the robustness</li>
+</ul>
+<h3 id="model-metrics">Model Metrics</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Metric</th><th>Value</th></tr></thead><tbody><tr><td><strong>Clean Accuracy</strong></td><td>27.66%</td></tr><tr><td><strong>Clean Perplexity</strong></td><td>74.01</td></tr><tr><td><strong>Clean Loss</strong></td><td>4.304</td></tr></tbody></table>
+<h3 id="attack-effectiveness">Attack Effectiveness</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Attack Type</th><th>Success Rate</th><th>Original Acc.</th><th>Adversarial Acc.</th><th>Accuracy Drop</th><th>Perturbation</th></tr></thead><tbody><tr><td><strong>TextFooler</strong></td><td>63.33%</td><td>26.95%</td><td>20.53%</td><td>-6.41%</td><td>11.86%</td></tr><tr><td><strong>BERT-Attack</strong></td><td>83.33%</td><td>26.95%</td><td>16.77%</td><td>-10.18%</td><td>15.83%</td></tr></tbody></table>
+<h3 id="rpi-implementation">RPI Implementation:</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Switching Probability</th><th>TextFooler Defense</th><th>BERT-Attack Defense</th><th>Average</th></tr></thead><tbody><tr><td><strong>0%</strong> (Baseline)</td><td>0.0%</td><td>0.0%</td><td>0.0%</td></tr><tr><td><strong>30%</strong></td><td>+36.8%</td><td>+48.0%</td><td>+42.4%</td></tr><tr><td><strong>50%</strong></td><td>+47.4%</td><td>+60.0%</td><td>+53.7%</td></tr><tr><td><strong>70%</strong></td><td>+47.4%</td><td>+60.0%</td><td>+53.7%</td></tr></tbody></table>
+<h2 id="6-based-on-your-explorations-of-switchable-and-dynamic-quantization-could-you-propose-some-promising-research-directions-or-questions-for-further-integrating-them-with-llms">6. <em>Based on your explorations of switchable and dynamic quantization, could you propose some promising research directions or questions for further integrating them with LLMs?</em>*</h2>
+<h3 id="6-1-intentionally-use-lower-precision-layer-normalization-than-the-current-training-bit-width-to-inject-beneficial-exploration-noise-or-maybe-employ-a-cyclic-schedule-for-precision-switching">6. 1 Intentionally use <strong>lower-precision layer normalization</strong> than the current training bit-width to inject beneficial exploration noise, or maybe employ a cyclic schedule for precision switching.</h3>
+<p>Would it be possible to use different precision batch norm for the current back propagating bit width? IN the CPT paper, the reason that lower bit width training actually improve on the accuracy is because <em>a lower precision that leads to a short-term poor accuracy might actually help the DNN exploration during training thanks to its associated larger quantization noise</em>. Then would it be possible to use a lower-than-current bit layer norm base on the CPT training (i.e. 4 bit layer norm for WA-6 / GE-8 and WA-7 / GE-8)</p>
+<h3 id="62-since-were-not-deploying-yet-just-training-with-fake-quantization-why-limit-ourselves-to-integer-bit-widths-use-continuous-real-valued-bit-widths-eg-47-bits-53-bits-would-it-make-cpt-more-powerful-would-it-helps-us-to-understand-what-happen-on-the-boundary-from-4-to-5-bits">6.2 Since we’re not deploying yet (just training with fake quantization), why limit ourselves to <strong>integer bit-widths</strong>? Use <strong>continuous, real-valued bit-widths</strong> (e.g., 4.7 bits, 5.3 bits). Would it make CPT more powerful? Would it helps us to understand what happen on the boundary from 4 to 5 bits?</h3>
+<p>For the cyclic training method, since the quantization is essentially fake, and we are not talking about deployment right now, so can’t we use real number quantization, instead of integer? What might a more continuous training schedule looks like?Precision-LR Coupling:** Is there an optimal mathematical relationship? <strong>Robustness Boundaries:</strong> How does training near precision boundaries affect model resilience?</p>
+<h3 id="63-equavalence-of-learning-rate-schedule-and-the-precision-schedule">6.3 Equavalence of Learning Rate Schedule and the Precision Schedule</h3>
+<p>Learning rate schedule is adjusting the step for each optimization, and think about the way CPT works, switching precisions between epochs. They looks quite different at the first glance, but the thing is that they are both changing optimizing steps. For LR schedule, it might be changing the step in a linear way, but precision backward basically integrate part of the sematic meaning (per Channel calibration ) into the optimizing stepping. Would there’s be a map from the precision switching schedule to the LR schedule, if so, can we literally replace the LR schedule and replace this with the CPT with better sematic interpretation?</p>
+<p>Could it be something like</p>
+<ul>
+<li>4-bit training ≈ high_lr * gradient + large_noise</li>
+<li>8-bit training ≈ medium_lr * gradient + medium_noise</li>
+<li>16-bit training ≈ low_lr * gradient + small_noise</li>
+</ul>  </div>  </div> </article> </main> <footer class="blog-footer" data-astro-cid-bvzihdzo> <div class="container" data-astro-cid-bvzihdzo> <a href="/blog" class="back-link" data-astro-cid-bvzihdzo>← Back to Blog</a> </div> </footer>  </main> <footer class="site-footer" data-astro-cid-37fxchfa> <div class="footer-content" data-astro-cid-37fxchfa> <p data-astro-cid-37fxchfa>&copy; 2025 Xiaoyou Wu. All rights reserved.</p> <div class="footer-links" data-astro-cid-37fxchfa> <a href="https://github.com/yourusername" target="_blank" rel="noopener noreferrer" data-astro-cid-37fxchfa>GitHub</a> <a href="https://linkedin.com/in/yourprofile" target="_blank" rel="noopener noreferrer" data-astro-cid-37fxchfa>LinkedIn</a> <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" data-astro-cid-37fxchfa>Resume</a> </div> </div> </footer> <!-- KaTeX JavaScript for Math Rendering --> <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js" integrity="sha384-cpW21h6RZv/phavutF+AuVYrr+dA8xD9zs6FwLpaCct6O9ctzYFfFr4dgmgccOTx" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous" onload="renderMathInDocument()"></script> <script>
+    function renderMathInDocument() {
+      if (typeof window.renderMathInElement !== 'undefined') {
+        window.renderMathInElement(document.body, {
+          delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false},
+            {left: '\\(', right: '\\)', display: false},
+            {left: '\\[', right: '\\]', display: true}
+          ],
+          throwOnError: false
+        });
+      }
+    }
+    
+    document.addEventListener("DOMContentLoaded", renderMathInDocument);
+  </script> <!-- Simple Mermaid Test Script --> <script type="module">
+    console.log('[Simple Mermaid Test] Starting...');
+
+    // Simple function to load and initialize Mermaid
+    async function loadAndTestMermaid() {
+      try {
+        console.log('[Simple Mermaid Test] Loading Mermaid from CDN...');
+        
+        // Load Mermaid if not already loaded
+        if (!window.mermaid) {
+          const script = document.createElement('script');
+          script.src = 'https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js';
+          
+          await new Promise((resolve, reject) => {
+            script.onload = resolve;
+            script.onerror = reject;
+            document.head.appendChild(script);
+          });
+          
+          console.log('[Simple Mermaid Test] Mermaid loaded from CDN');
+        } else {
+          console.log('[Simple Mermaid Test] Mermaid already available');
+        }
+
+        if (!window.mermaid) {
+          throw new Error('Mermaid not available after loading');
+        }
+
+        console.log('[Simple Mermaid Test] Initializing Mermaid...');
+        
+        // Initialize Mermaid with simple config
+        window.mermaid.initialize({
+          startOnLoad: false,
+          theme: 'neutral'
+        });
+
+        console.log('[Simple Mermaid Test] Finding diagram elements...');
+        
+        // Find all mermaid diagrams
+        const diagrams = document.querySelectorAll('.mermaid-diagram');
+        console.log(`[Simple Mermaid Test] Found ${diagrams.length} diagrams`);
+
+        // Process each diagram
+        for (let i = 0; i < diagrams.length; i++) {
+          const diagram = diagrams[i];
+          const id = diagram.id || `test-diagram-${i}`;
+          const codeElement = diagram.querySelector('.mermaid-code code');
+          
+          console.log(`[Simple Mermaid Test] Processing diagram ${id}`);
+          
+          if (codeElement) {
+            const code = codeElement.textContent.trim();
+            console.log(`[Simple Mermaid Test] Code for ${id}:`, code.substring(0, 100) + '...');
+            
+            try {
+              // Render the diagram
+              const { svg } = await window.mermaid.render(`${id}-render`, code);
+              console.log(`[Simple Mermaid Test] SVG generated for ${id}`);
+              
+              // Replace the loading text with the SVG
+              const container = diagram.querySelector('.mermaid-container');
+              if (container) {
+                container.innerHTML = svg;
+                console.log(`[Simple Mermaid Test] SVG inserted for ${id}`);
+              } else {
+                console.error(`[Simple Mermaid Test] No container found for ${id}`);
+              }
+              
+            } catch (renderError) {
+              console.error(`[Simple Mermaid Test] Render error for ${id}:`, renderError);
+              
+              const container = diagram.querySelector('.mermaid-container');
+              if (container) {
+                container.innerHTML = `<div style="color: red; padding: 1rem;">Error: ${renderError.message}</div>`;
+              }
+            }
+          } else {
+            console.error(`[Simple Mermaid Test] No code element found for ${id}`);
+          }
+        }
+
+        console.log('[Simple Mermaid Test] Completed processing all diagrams');
+        
+      } catch (error) {
+        console.error('[Simple Mermaid Test] Fatal error:', error);
+      }
+    }
+
+    // Run the test when DOM is ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', loadAndTestMermaid);
+    } else {
+      loadAndTestMermaid();
+    }
+
+    // Export for manual testing
+    window.testMermaid = loadAndTestMermaid;
+  </script> </body> </html>  

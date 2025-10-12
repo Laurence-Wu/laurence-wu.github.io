@@ -2,23 +2,15 @@
 import Layout from '../../components/Layout.astro';
 import SearchBar from '../../components/SearchBar.astro';
 import { getCollection } from 'astro:content';
+import { getUrl } from '../../utils/url';
 
 const allBlogPosts = await getCollection('blogs');
-
 const allProjects = await getCollection('projects');
 const publishedPosts = allBlogPosts
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
 // Get all unique tags
 const allTags = [...new Set(publishedPosts.flatMap(post => post.data.tags || []))];
-
-// Helper function to get proper URL with base path
-const baseUrl = import.meta.env.BASE_URL;
-function getUrl(path: string): string {
-  const cleanBaseUrl = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
-  const cleanPath = path.startsWith('/') ? path : `/${path}`;
-  return `${cleanBaseUrl}${cleanPath}`;
-}
 ---
 
 <Layout title="Blog - Laurence" description="Read my latest thoughts on technology, engineering, and various interests.">

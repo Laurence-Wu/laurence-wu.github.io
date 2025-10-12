@@ -125,51 +125,13 @@ import EvolvingSmudgeCanvas from '../components/EvolvingSmudgeCanvas.astro';
   <!-- Contact Section -->
   <div class="contact" id="contact-section">
     <div class="container">
-      <h1>Contact Me</h1>
-      
+      <h1>Contact</h1>
+
       <div class="contact-content">
-        <p>
-          I'm always excited to connect with fellow engineers, researchers, and anyone passionate about technology 
-          and innovation. Whether you're interested in collaboration, have questions about my projects, or simply 
-          want to discuss the latest developments in engineering, I'd love to hear from you.
-        </p>
-        
-        <div class="contact-methods">
-          <div class="contact-method">
-            <h3>📧 Email</h3>
-            <p>
-              For professional inquiries, research collaboration, or general questions:
-            </p>
-            <a href="mailto:xiaoyou.wu@gatech.edu" class="contact-link">xwu488@gatech.edu</a>
-          </div>
-          
-          <div class="contact-method">
-            <h3>🔗 LinkedIn</h3>
-            <p>
-              Connect with me on LinkedIn for professional networking:
-            </p>
-            <a href="https://linkedin.com/in/xiaoyou-wu" target="_blank" rel="noopener noreferrer" class="contact-link">
-              LinkedIn Profile
-            </a>
-          </div>
-          
-          <div class="contact-method">
-            <h3>💻 GitHub</h3>
-            <p>
-              Check out my code and contribute to open-source projects:
-            </p>
-            <a href="https://github.com/Laurence-Wu" target="_blank" rel="noopener noreferrer" class="contact-link">
-              GitHub Profile
-            </a>
-          </div>
-          
-          <div class="contact-method">
-            <h3>🎓 Academic</h3>
-            <p>
-              For academic collaboration or research opportunities:
-            </p>
-            <a href="mailto:xwu488@gatech.edu" class="contact-link">Research Inquiries</a>
-          </div>
+        <div class="contact-links">
+          <a href="mailto:xwu488@gatech.edu" class="contact-link">📧 xwu488@gatech.edu</a>
+          <a href="https://linkedin.com/in/xiaoyou-wu" target="_blank" rel="noopener noreferrer" class="contact-link">🔗 LinkedIn</a>
+          <a href="https://github.com/Laurence-Wu" target="_blank" rel="noopener noreferrer" class="contact-link">💻 GitHub</a>
         </div>
       </div>
     </div>
@@ -749,50 +711,32 @@ import EvolvingSmudgeCanvas from '../components/EvolvingSmudgeCanvas.astro';
     box-shadow: var(--shadow-medium);
   }
 
-  /* Contact methods */
-  .contact-methods {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  /* Contact links - simplified */
+  .contact-links {
+    display: flex;
+    justify-content: center;
     gap: 2rem;
-    margin: 3rem 0;
-  }
-
-  .contact-method {
-    background-color: var(--ivory);
-    border-radius: var(--border-radius-lg);
-    padding: 2rem;
-    box-shadow: var(--shadow-soft);
-    transition: all 0.3s ease;
-    text-align: left;
-  }
-
-  .contact-method:hover {
-    transform: translateY(-8px);
-    box-shadow: var(--shadow-medium);
-  }
-
-  .contact-method p {
-    margin-bottom: 1rem;
-    font-size: 1.1rem;
+    flex-wrap: wrap;
+    margin: 2rem 0;
   }
 
   .contact-link {
     display: inline-block;
     background-color: var(--sage-green);
     color: white;
-    padding: 0.8rem 1.5rem;
+    padding: 1rem 2rem;
     border-radius: 8px;
     text-decoration: none;
     font-family: var(--font-body);
     font-weight: 600;
     transition: all 0.3s ease;
-    margin-top: 0.5rem;
+    font-size: 1.1rem;
   }
 
   .contact-link:hover {
     background-color: var(--light-sage);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-soft);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-medium);
     color: white;
   }
 
@@ -819,7 +763,7 @@ import EvolvingSmudgeCanvas from '../components/EvolvingSmudgeCanvas.astro';
     .home h1 { font-size: 3.2rem; }
     .profile h1, .contact h1 { font-size: 2.8rem; }
     .skills-grid { grid-template-columns: 1fr; gap: 1.5rem; }
-    .contact-methods { grid-template-columns: 1fr; gap: 1.5rem; }
+    .contact-links { flex-direction: column; gap: 1rem; }
   }
 
   @media (max-width: 480px) {
