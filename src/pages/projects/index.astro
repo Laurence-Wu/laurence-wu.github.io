@@ -1,6 +1,5 @@
 ---
-import Layout from '../../components/Layout.astro';
-import ProjectTimeline from '../../components/ProjectTimeline.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 import { getUrl } from '../../utils/url';
 
@@ -10,190 +9,130 @@ const sortedProjects = allProjects.sort((a, b) =>
 );
 ---
 
-<Layout title="Projects - Laurence" description="Explore my engineering and software development projects.">
-  <ProjectTimeline allProjects={sortedProjects} />
+<BaseLayout title="Projects - Xiaoyou Wu" description="Engineering and software projects">
+  <div class="container">
+    <header class="page-header">
+      <h1>Projects</h1>
+    </header>
 
-  <section class="projects-content">
-    <div class="container">
-      <div class="projects-grid">
-        {sortedProjects.map(project => (
-          <article class="project-card">
-            <h3 class="project-title">
+    <div class="project-list">
+      {sortedProjects.map(project => (
+        <article class="project-item">
+          <header class="project-header">
+            <h3>
               <a href={getUrl(`/projects/${project.slug}/`)}>{project.data.title}</a>
             </h3>
-
-            <time class="project-date" datetime={project.data.pubDate.toISOString()}>
-              {project.data.pubDate.toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'short'
-              })}
-            </time>
-
-            <div class="project-tags">
-              {project.data.tags && project.data.tags.slice(0, 5).map((tag: string) => (
-                <span class="tag">{tag}</span>
-              ))}
+            <div class="project-links">
+               <a href={getUrl(`/projects/${project.slug}/`)} class="link-secondary">Read</a>
+               {project.data.githubLink && (
+                  <span class="separator">•</span>
+               )}
+               {project.data.githubLink && (
+                 <a href={project.data.githubLink} target="_blank" rel="noopener noreferrer" class="link-secondary">Code</a>
+               )}
             </div>
+          </header>
 
-            <div class="project-actions">
-              <a href={getUrl(`/projects/${project.slug}/`)} class="btn-details">View</a>
-              {project.data.githubLink && (
-                <a href={project.data.githubLink} class="btn-github" target="_blank" rel="noopener noreferrer">GitHub</a>
-              )}
-            </div>
-          </article>
-        ))}
-      </div>
+          <p class="project-description">{project.data.description}</p>
+
+          <div class="project-tags">
+            {project.data.tags?.map((tag: string) => (
+              <span class="tag">#{tag}</span>
+            ))}
+          </div>
+        </article>
+      ))}
     </div>
-  </section>
-</Layout>
+  </div>
+</BaseLayout>
 
 <style>
-  /* Compact, information-dense layout */
-  .container {
-    max-width: 1400px;
+  .page-header {
+    text-align: center;
+    margin-bottom: 4rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .page-header h1 {
+    font-size: 2.5rem;
+    color: var(--text-primary);
+  }
+
+  .project-list {
+    max-width: var(--max-width-text);
     margin: 0 auto;
-    padding: 0 1rem;
   }
 
-  /* Adjust layout for timeline on tablet and larger screens */
-  @media (min-width: 769px) and (max-width: 1200px) {
-    .projects-content .container {
-      margin-left: 320px;
-      margin-right: auto;
-      max-width: calc(100vw - 360px);
-    }
+  .project-item {
+    margin-bottom: 3.5rem;
   }
 
-  @media (min-width: 1201px) {
-    .projects-content .container {
-      margin-left: 360px;
-      margin-right: auto;
-      max-width: calc(100vw - 400px);
-    }
-  }
-
-  .projects-content {
-    padding: 2rem 0;
-    background: rgba(244, 232, 209, 0.2);
-  }
-
-  /* Dense grid - fit more cards on screen */
-  .projects-grid {
-    display: grid;
-    gap: 1.25rem;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  }
-
-  /* Compact card design */
-  .project-card {
-    background: white;
-    border-radius: 8px;
-    padding: 1.25rem;
-    border-left: 3px solid #8A9A7E;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    transition: all 0.2s ease;
+  .project-header {
     display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 0.5rem;
   }
 
-  .project-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
-    border-left-color: #D4AF37;
-  }
-
-  /* Title - compact and bold */
-  .project-title {
+  .project-header h3 {
     margin: 0;
-    font-size: 1.1rem;
-    line-height: 1.3;
+    font-size: 1.5rem;
+    font-weight: 600;
   }
 
-  .project-title a {
-    color: #2E3A59;
+  .project-header h3 a {
+    color: var(--text-primary);
     text-decoration: none;
-    font-weight: 700;
-    transition: color 0.2s;
+    border-bottom: none;
   }
 
-  .project-title a:hover {
-    color: #8A9A7E;
+  .project-header h3 a:hover {
+    color: var(--accent);
   }
 
-  /* Date - small and subtle */
-  .project-date {
-    display: block;
-    font-size: 0.8rem;
-    color: #718096;
-    font-weight: 500;
+  .project-links {
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
   }
 
-  /* Tags - inline, compact */
+  .link-secondary {
+    color: var(--text-secondary);
+    text-decoration: none;
+  }
+
+  .link-secondary:hover {
+    color: var(--accent);
+  }
+
+  .separator {
+    margin: 0 0.3rem;
+    color: var(--border-subtle);
+  }
+
+  .project-description {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.8rem;
+  }
+
   .project-tags {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.4rem;
+    gap: 0.8rem;
   }
 
   .tag {
-    background: #8A9A7E;
-    color: white;
-    padding: 0.2rem 0.6rem;
-    border-radius: 4px;
-    font-size: 0.7rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.3px;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--text-secondary);
   }
 
-  /* Actions - small buttons */
-  .project-actions {
-    display: flex;
-    gap: 0.5rem;
-    margin-top: auto;
-  }
-
-  .btn-details,
-  .btn-github {
-    flex: 1;
-    text-align: center;
-    padding: 0.5rem;
-    border-radius: 4px;
-    text-decoration: none;
-    font-size: 0.85rem;
-    font-weight: 600;
-    transition: all 0.2s;
-  }
-
-  .btn-details {
-    background: #8A9A7E;
-    color: white;
-  }
-
-  .btn-details:hover {
-    background: #75826b;
-  }
-
-  .btn-github {
-    background: #333;
-    color: white;
-  }
-
-  .btn-github:hover {
-    background: #555;
-  }
-
-  /* Mobile responsive */
-  @media (max-width: 768px) {
-    .projects-grid {
-      grid-template-columns: 1fr;
-      gap: 1rem;
-    }
-
-    .project-card {
-      padding: 1rem;
+  @media (max-width: 600px) {
+    .project-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
     }
   }
-</style> 
+</style>

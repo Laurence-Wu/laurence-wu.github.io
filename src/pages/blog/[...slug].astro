@@ -3,7 +3,7 @@ import { getCollection } from 'astro:content';
 import BlogPost from '../../layouts/BlogPost.astro';
 
 export async function getStaticPaths() {
-  const blogEntries = await getCollection('blogs');
+  const blogEntries = await getCollection('blog');
   
   return blogEntries.map(entry => ({
     params: { slug: entry.slug }, props: { entry },
@@ -17,10 +17,11 @@ const { Content } = await entry.render();
 let frontPicture: string | null = null;
 try {
   // Try to import front picture with common extensions
+  // Updated path to 'blog' (singular)
   const extensions = ['jpg', 'jpeg', 'png', 'webp', 'gif'];
   for (const ext of extensions) {
     try {
-      const imported = await import(`../../content/blogs/front-picture/front.${ext}`);
+      const imported = await import(`../../content/blog/front-picture/front.${ext}`);
       if (imported && imported.default) {
         frontPicture = imported.default.src || imported.default;
         break;
@@ -45,4 +46,4 @@ try {
   frontPicture={frontPicture}
 >
   <Content />
-</BlogPost> 
+</BlogPost>

@@ -1,484 +1,78 @@
 ---
-// About Page - Personal and non-academic content
+// About Page - Book Theme
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<BaseLayout title="About - Xiaoyou Wu" description="Learn about Xiaoyou Wu's personal side, unique perspective, and passions beyond academics.">
-  <div class="about">
-    <div class="container">
-      <h1>About Me:Xiaoyou Wu</h1>
+<BaseLayout title="About - Xiaoyou Wu" description="Personal side of Xiaoyou Wu">
+  <div class="container">
+    <article class="about-content">
+      <header class="page-header">
+        <h1>About</h1>
+      </header>
       
-      <div class="about-content">
-        <div class="question">
-          <p>
-            Why on earth we have both profile tab and about me tab?
-          </p>
-        </div>
-        <div class="answer">
-          <p> 
-            This one is about the non-academic part of me ~
-          </p>
-        </div>
+      <div class="prose">
+        <h3>Why do I have a Profile and an About page?</h3>
+        <p>This page is for the non-academic part of me.</p>
         
-        <h2 class="difference-section">What makes me different ?
-          <p class="difference-content">
-            I was born with a defect that after meeting a person or even knowing a person a fairly long time, I can't perfectly reconstruct their face. But I can still recognize them in a crowd. 
-            This structural difference enable me to appreciate the beauty of blurriness. By blurriness, I mean I get to awe at something without digging into the details. 
-            For engineers, the beauty originated from the understanding of the minutiae, the enlightenment that happens when the details are revealed. But, for me, the beauty can also lay on the fact of not revealing the details, just let the incredible engineering work stay there and I get to appreciate it all day.
-            Therefore, I'm more interested in architectural designs and systems, and able to generate unique perspectives towards architectures.
-          </p>
-        </h2>
+        <h3>What makes me different?</h3>
+        <p>
+          I was born with a defect that after meeting a person or even knowing a person a fairly long time, I can't perfectly reconstruct their face. But I can still recognize them in a crowd.
+        </p>
+        <p>
+          This structural difference enables me to appreciate the beauty of blurriness. By blurriness, I mean I get to awe at something without digging into the details.
+        </p>
+        <p>
+          For engineers, the beauty originates from the understanding of the minutiae, the enlightenment that happens when the details are revealed. But for me, the beauty can also lie in the fact of not revealing the details—just letting the incredible engineering work stay there so I get to appreciate it all day.
+        </p>
+        <p>
+          Therefore, I'm more interested in architectural designs and systems, and able to generate unique perspectives towards architectures.
+        </p>
 
-        <h2 class="passion-section">Passion I have ?
-          <p class="passion-content">
-              Raps ~
-              Writing magic realistic short stories in Chinese ~
-              Studying philosophy and psychology ~
-          </p>
-        </h2>
+        <h3>Passions</h3>
+        <ul>
+          <li>Raps</li>
+          <li>Writing magic realistic short stories in Chinese</li>
+          <li>Studying philosophy and psychology</li>
+        </ul>
       </div>
-    </div>
+    </article>
   </div>
 </BaseLayout>
 
 <style>
-  /* About Page Styles - Enhanced with Animated Waves */
-  .about {
-    background: linear-gradient(135deg, 
-      rgba(34, 197, 94, 0.05) 0%,   /* Light Green */
-      rgba(59, 130, 246, 0.05) 35%, /* Light Blue */
-      rgba(251, 191, 36, 0.05) 70%, /* Light Yellow */
-      rgba(34, 197, 94, 0.05) 100%  /* Light Green */
-    );
-    color: var(--color-text);
-    font-family: var(--font-body);
-    padding: var(--section-spacing) 0;
+  .page-header {
     text-align: center;
-    position: relative;
-    overflow: hidden;
-    min-height: 100vh;
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--border-subtle);
   }
 
-  /* Ensure content is above the animated waves */
-  .about .container {
-    position: relative;
-    z-index: 3;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 2rem;
+  .page-header h1 {
+    font-size: 2.5rem;
+    color: var(--text-primary);
   }
 
-  /* Premium heading with luxury styling */
-  .about h1 {
-    color: var(--color-dark);
-    display: inline-block;
-    font-family: var(--font-heading);
-    font-size: 3.5rem;
-    font-weight: 700;
-    letter-spacing: 0.02em;
-    line-height: 1.2;
-    margin-bottom: 2rem;
-    position: relative;
-    text-rendering: optimizeLegibility;
-    animation: titleReveal 1.2s ease-out;
-  }
-
-  @keyframes titleReveal {
-    0% {
-      opacity: 0;
-      transform: translateY(-30px);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  /* Elegant heading underline */
-  .about h1::after {
-    background: linear-gradient(to right, var(--color-gold), var(--color-gold-light));
-    bottom: -10px;
-    content: '';
-    height: 3px;
-    left: 50%;
-    position: absolute;
-    transform: translateX(-50%) scaleX(0);
-    width: 80px;
-    animation: underlineGrow 0.8s ease-out 0.6s forwards;
-  }
-
-  @keyframes underlineGrow {
-    0% {
-      transform: translateX(-50%) scaleX(0);
-    }
-    100% {
-      transform: translateX(-50%) scaleX(1);
-    }
-  }
-
-  /* Content container with premium styling */
   .about-content {
-    background-color: var(--color-card-bg);
-    border-radius: var(--border-radius-lg);
-    box-shadow: var(--shadow-soft);
-    margin: 2rem auto;
-    max-width: 850px;
-    padding: var(--card-padding);
-    position: relative;
-    transition: var(--transition-standard);
-    animation: contentFadeIn 1s ease-out 0.3s both;
-  }
-
-  @keyframes contentFadeIn {
-    0% {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  .about-content:hover {
-    box-shadow: var(--shadow-medium);
-  }
-
-  /* Elegant side accent */
-  .about-content::before {
-    background: linear-gradient(to bottom, var(--color-gold), var(--color-gold-light));
-    content: '';
-    height: 100%;
-    left: 0;
-    position: absolute;
-    top: 0;
-    width: 4px;
-    border-radius: var(--border-radius-lg) 0 0 var(--border-radius-lg);
-    animation: accentGrow 1.2s ease-out 0.8s both;
-  }
-
-  @keyframes accentGrow {
-    0% {
-      height: 0;
-    }
-    100% {
-      height: 100%;
-    }
-  }
-
-  /* Question styling - curious and inquisitive */
-  .question {
-    display: block;
-    background: linear-gradient(135deg, #e8f4fd, #f0f9ff);
-    border-left: 4px solid #3b82f6;
-    border-radius: 12px;
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
-    position: relative;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    animation: questionPulse 2s infinite;
-  }
-
-  .question::before {
-    content: "?";
-    position: absolute;
-    top: -10px;
-    right: 15px;
-    font-size: 2rem;
-    color: #3b82f6;
-    font-weight: bold;
-    animation: questionMark 1.5s ease-in-out infinite;
-  }
-
-  .question:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.15);
-    background: linear-gradient(135deg, #dbeafe, #eff6ff);
-  }
-
-  .question p {
-    color: #1e40af;
-    font-style: italic;
-    font-weight: 900;
-    margin: 0;
-    text-align: center;
-  }
-
-  @keyframes questionPulse {
-    0%, 100% {
-      box-shadow: 0 4px 15px rgba(59, 130, 246, 0.1);
-    }
-    50% {
-      box-shadow: 0 4px 20px rgba(59, 130, 246, 0.2);
-    }
-  }
-
-  @keyframes questionMark {
-    0%, 100% {
-      transform: scale(1) rotate(0deg);
-    }
-    25% {
-      transform: scale(1.1) rotate(-5deg);
-    }
-    75% {
-      transform: scale(1.1) rotate(5deg);
-    }
-  }
-
-  /* Answer styling - gentle and revealing */
-  .answer {
-    display: block;
-    background: linear-gradient(135deg, #f0fdf4, #f7fee7);
-    border-left: 4px solid #22c55e;
-    border-radius: 12px;
-    padding: 1.5rem;
-    margin-bottom: 2rem;
-    font-weight: 900;
-    position: relative;
-    cursor: pointer;
-    transition: all 0.4s ease;
-    animation: answerReveal 0.8s ease-out 0.5s both;
-  }
-
-  .answer::before {
-    content: "✓";
-    position: absolute;
-    top: -8px;
-    right: 15px;
-    font-size: 1.8rem;
-    color: #22c55e;
-    font-weight: bold;
-    animation: checkMark 1s ease-out 1s both;
-  }
-
-  .answer:hover {
-    transform: translateX(8px);
-    background: linear-gradient(135deg, #dcfce7, #f0fdf4);
-    box-shadow: 0 6px 20px rgba(34, 197, 94, 0.15);
-  }
-
-  .answer p {
-    color: #15803d;
-    font-weight: 500;
-    margin: 0;
-    text-align: center;
-  }
-
-  @keyframes answerReveal {
-    0% {
-      opacity: 0;
-      transform: translateX(-30px);
-    }
-    100% {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-
-  @keyframes checkMark {
-    0% {
-      opacity: 0;
-      transform: scale(0);
-    }
-    50% {
-      transform: scale(1.2);
-    }
-    100% {
-      opacity: 1;
-      transform: scale(1);
-    }
-  }
-
-  /* Difference section - unique and blurred effect */
-  .difference-section {
-    color: var(--color-gold);
-    font-family: var(--font-heading);
-    font-size: 2.2rem;
-    font-weight: 600;
-    letter-spacing: 0.01em;
-    margin-top: 2.5rem;
-    margin-bottom: 1.5rem;
-    text-align: left;
-    position: relative;
-    transition: all 0.3s ease;
-    animation: sectionSlideIn 0.8s ease-out 1.5s both;
-  }
-
-  .difference-section:hover {
-    transform: translateX(10px);
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-  }
-
-  .difference-content {
-    background: linear-gradient(135deg, #fff7ed, #ffedd5);
-    border-left: 4px solid #f59e0b;
-    border-radius: 12px;
-    padding: 1.5rem;
-    position: relative;
-    transition: all 0.4s ease;
-    animation: contentBlur 0.8s ease-out 2s both;
-  }
-
-  .difference-content:hover {
-    background: linear-gradient(135deg, #fef3c7, #fff7ed);
-    box-shadow: 0 8px 25px rgba(245, 158, 11, 0.15);
-    transform: translateY(-2px);
-  }
-
-  @keyframes contentBlur {
-    0% {
-      filter: blur(2px);
-      opacity: 0.7;
-    }
-    100% {
-      filter: blur(0px);
-      opacity: 1;
-    }
-  }
-
-  /* Passion section - energetic and vibrant */
-  .passion-section {
-    color: var(--color-gold);
-    font-family: var(--font-heading);
-    font-size: 2.2rem;
-    font-weight: 600;
-    letter-spacing: 0.01em;
-    margin-top: 2.5rem;
-    margin-bottom: 1.5rem;
-    text-align: left;
-    position: relative;
-    animation: passionPulse 2.5s ease-in-out infinite;
-  }
-
-  .passion-content {
-    background: linear-gradient(135deg, #fef2f2, #fce7e7);
-    border-left: 4px solid #ef4444;
-    border-radius: 12px;
-    padding: 1.5rem;
-    position: relative;
-    transition: all 0.3s ease;
-    animation: passionGlow 1s ease-out 2.5s both;
-  }
-
-  .passion-content:hover {
-    background: linear-gradient(135deg, #fee2e2, #fef2f2);
-    box-shadow: 0 0 20px rgba(239, 68, 68, 0.2);
-    transform: scale(1.02);
-  }
-
-  @keyframes passionPulse {
-    0%, 100% {
-      text-shadow: 0 0 5px rgba(239, 68, 68, 0.3);
-    }
-    50% {
-      text-shadow: 0 0 15px rgba(239, 68, 68, 0.5);
-    }
-  }
-
-  @keyframes passionGlow {
-    0% {
-      opacity: 0;
-      box-shadow: 0 0 0px rgba(239, 68, 68, 0);
-    }
-    100% {
-      opacity: 1;
-      box-shadow: 0 4px 15px rgba(239, 68, 68, 0.1);
-    }
-  }
-
-  @keyframes sectionSlideIn {
-    0% {
-      opacity: 0;
-      transform: translateX(-50px);
-    }
-    100% {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-
-  .about h2 {
-    color: var(--color-gold);
-    font-family: var(--font-heading);
-    font-size: 2.2rem;
-    font-weight: 600;
-    letter-spacing: 0.01em;
-    margin-top: 2.5rem;
-    margin-bottom: 1.5rem;
-    text-align: left;
-    position: relative;
-  }
-
-  .about h2::after {
-    background-color: var(--color-gold);
-    bottom: -5px;
-    content: '';
-    height: 2px;
-    left: 0;
-    position: absolute;
-    width: 60px;
-    animation: underlineSlide 0.6s ease-out 0.3s both;
-  }
-
-  @keyframes underlineSlide {
-    0% {
-      width: 0;
-    }
-    100% {
-      width: 60px;
-    }
-  }
-
-  .about p {
-    color: var(--color-text);
-    font-family: var(--font-accent);
-    font-size: 1.2rem;
+    max-width: var(--max-width-text);
+    margin: 0 auto;
+    font-size: 1.1rem;
     line-height: 1.8;
+  }
+
+  .prose h3 {
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    font-family: var(--font-sans);
+    font-size: 1.3rem;
+    color: var(--text-primary);
+  }
+
+  .prose ul {
+    margin-left: 1.5rem;
     margin-bottom: 1.5rem;
-    text-align: left;
   }
 
-  /* Responsive design */
-  @media (max-width: 768px) {
-    .about {
-      padding: 2.5rem 0;
-    }
-    
-    .about h1 {
-      font-size: 2.8rem;
-    }
-    
-    .about h2 {
-      font-size: 1.9rem;
-    }
-    
-    .about-content {
-      padding: 2rem;
-      margin: 1.5rem;
-    }
+  .prose li {
+    margin-bottom: 0.5rem;
   }
-
-  @media (max-width: 480px) {
-    .about {
-      padding: 2rem 0;
-    }
-    
-    .about h1 {
-      font-size: 2.4rem;
-    }
-    
-    .about h2 {
-      font-size: 1.6rem;
-    }
-    
-    .about p {
-      font-size: 1.1rem;
-    }
-    
-    .about-content {
-      padding: 1.8rem;
-      margin: 1rem;
-    }
-  }
-</style> 
+</style>

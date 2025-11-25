@@ -1,7 +1,6 @@
 ---
-// BaseLayout.astro - Unified Base Layout
+// BaseLayout.astro - Clean Book Theme
 import Navigation from '../components/Navigation.astro';
-import AnimatedBackground from '../components/AnimatedBackground.astro';
 
 export interface Props {
   title: string;
@@ -13,7 +12,7 @@ export interface Props {
 
 const {
   title,
-  description = "Xiaoyou Wu - Computer Engineering Student at Georgia Tech specializing in soft robotics, avionics, and embedded systems",
+  description = "Xiaoyou Wu - Computer Engineering Student",
   image = "/assets/profile-image.jpg",
   type = "website",
   showFooter = true
@@ -28,7 +27,7 @@ const {
   <title>{title}</title>
   <meta name="description" content={description}>
   
-  <!-- Open Graph / Facebook -->
+  <!-- Open Graph -->
   <meta property="og:type" content={type}>
   <meta property="og:url" content={Astro.url}>
   <meta property="og:title" content={title}>
@@ -37,33 +36,23 @@ const {
 
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image">
-  <meta property="twitter:url" content={Astro.url}>
   <meta property="twitter:title" content={title}>
   <meta property="twitter:description" content={description}>
-  <meta property="twitter:image" content={image}>
-
-  <!-- KaTeX CSS for Math Rendering -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css" integrity="sha384-GvrOXuhMATgEsSwCs4smul74iXGOixntILdUW9XmUC6+HX0sLNAK3q71HotJqlAn" crossorigin="anonymous">
-  
-  <!-- Google Fonts - Preserved Typography System -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&family=Cormorant+Garamond:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  
-  <!-- Fira Code for code blocks -->
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   
   <link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL}favicon.svg`}>
   
-  <!-- Global CSS Import -->
+  <!-- KaTeX CSS for Math Rendering -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css" integrity="sha384-GvrOXuhMATgEsSwCs4smul74iXGOixntILdUW9XmUC6+HX0sLNAK3q71HotJqlAn" crossorigin="anonymous">
+
+  <!-- Book Theme CSS -->
+  <link rel="stylesheet" href="/src/styles/book.css">
+
   <style is:global>
-    @import '../styles/global.css';
-    @import '../styles/custom-overrides.css';
+    @import '../styles/book.css';
   </style>
 </head>
 <body>
   <Navigation />
-  <AnimatedBackground type="full" />
 
   <main class="main-content">
     <slot />
@@ -71,18 +60,17 @@ const {
 
   {showFooter && (
     <footer class="site-footer">
-      <div class="footer-content">
-        <p>&copy; 2025 Xiaoyou Wu. All rights reserved.</p>
-        <div class="footer-links">
-          <a href="https://github.com/yourusername" target="_blank" rel="noopener noreferrer">GitHub</a>
-          <a href="https://linkedin.com/in/yourprofile" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-          <a href={`${import.meta.env.BASE_URL}resume.pdf`} target="_blank" rel="noopener noreferrer">Resume</a>
+      <div class="container">
+        <p>&copy; {new Date().getFullYear()} Xiaoyou Wu. All rights reserved.</p>
+        <div style="margin-top: 1rem;">
+          <a href="https://github.com/yourusername" target="_blank" style="margin: 0 10px;">GitHub</a>
+          <a href="https://linkedin.com/in/yourprofile" target="_blank" style="margin: 0 10px;">LinkedIn</a>
         </div>
       </div>
     </footer>
   )}
 
-  <!-- KaTeX JavaScript for Math Rendering -->
+  <!-- KaTeX -->
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js" integrity="sha384-cpW21h6RZv/phavutF+AuVYrr+dA8xD9zs6FwLpaCct6O9ctzYFfFr4dgmgccOTx" crossorigin="anonymous"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous" onload="renderMathInDocument()"></script>
   <script is:inline>
@@ -99,215 +87,7 @@ const {
         });
       }
     }
-    
     document.addEventListener("DOMContentLoaded", renderMathInDocument);
-  </script>
-
-  <!-- Simple Mermaid Test Script -->
-  <script type="module">
-    console.log('[Simple Mermaid Test] Starting...');
-
-    // Simple function to load and initialize Mermaid
-    async function loadAndTestMermaid() {
-      try {
-        console.log('[Simple Mermaid Test] Loading Mermaid from CDN...');
-        
-        // Load Mermaid if not already loaded
-        if (!window.mermaid) {
-          const script = document.createElement('script');
-          script.src = 'https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js';
-          
-          await new Promise((resolve, reject) => {
-            script.onload = resolve;
-            script.onerror = reject;
-            document.head.appendChild(script);
-          });
-          
-          console.log('[Simple Mermaid Test] Mermaid loaded from CDN');
-        } else {
-          console.log('[Simple Mermaid Test] Mermaid already available');
-        }
-
-        if (!window.mermaid) {
-          throw new Error('Mermaid not available after loading');
-        }
-
-        console.log('[Simple Mermaid Test] Initializing Mermaid...');
-        
-        // Initialize Mermaid with simple config
-        window.mermaid.initialize({
-          startOnLoad: false,
-          theme: 'neutral'
-        });
-
-        console.log('[Simple Mermaid Test] Finding diagram elements...');
-        
-        // Find all mermaid diagrams
-        const diagrams = document.querySelectorAll('.mermaid-diagram');
-        console.log(`[Simple Mermaid Test] Found ${diagrams.length} diagrams`);
-
-        // Process each diagram
-        for (let i = 0; i < diagrams.length; i++) {
-          const diagram = diagrams[i];
-          const id = diagram.id || `test-diagram-${i}`;
-          const codeElement = diagram.querySelector('.mermaid-code code');
-          
-          console.log(`[Simple Mermaid Test] Processing diagram ${id}`);
-          
-          if (codeElement) {
-            const code = codeElement.textContent.trim();
-            console.log(`[Simple Mermaid Test] Code for ${id}:`, code.substring(0, 100) + '...');
-            
-            try {
-              // Render the diagram
-              const { svg } = await window.mermaid.render(`${id}-render`, code);
-              console.log(`[Simple Mermaid Test] SVG generated for ${id}`);
-              
-              // Replace the loading text with the SVG
-              const container = diagram.querySelector('.mermaid-container');
-              if (container) {
-                container.innerHTML = svg;
-                console.log(`[Simple Mermaid Test] SVG inserted for ${id}`);
-              } else {
-                console.error(`[Simple Mermaid Test] No container found for ${id}`);
-              }
-              
-            } catch (renderError) {
-              console.error(`[Simple Mermaid Test] Render error for ${id}:`, renderError);
-              
-              const container = diagram.querySelector('.mermaid-container');
-              if (container) {
-                container.innerHTML = `<div style="color: red; padding: 1rem;">Error: ${renderError.message}</div>`;
-              }
-            }
-          } else {
-            console.error(`[Simple Mermaid Test] No code element found for ${id}`);
-          }
-        }
-
-        console.log('[Simple Mermaid Test] Completed processing all diagrams');
-        
-      } catch (error) {
-        console.error('[Simple Mermaid Test] Fatal error:', error);
-      }
-    }
-
-    // Run the test when DOM is ready
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', loadAndTestMermaid);
-    } else {
-      loadAndTestMermaid();
-    }
-
-    // Export for manual testing
-    window.testMermaid = loadAndTestMermaid;
   </script>
 </body>
 </html>
-
-<style>
-  /* Animations moved to global.css - removed duplication */
-
-  /* Preserved global styling from legacy frontend */
-  body {
-    margin: 0;
-    font-family: var(--font-body);
-    background-color: var(--warm-neutral); /* #F4E9D8 - restored original background */
-    color: var(--deep-navy); /* #2E3A59 - preserved */
-    line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
-
-  .main-content {
-    min-height: calc(100vh - 160px); /* Account for navbar and footer */
-    padding: var(--section-spacing) 0;
-    padding-top: 0; /* Remove duplicate padding - handled by body padding */
-    position: relative;
-    z-index: 1;
-  }
-
-  .main-content > * {
-    position: relative;
-    z-index: 2;
-  }
-
-  /* Background animations now handled by AnimatedBackground component */
-
-  .site-footer {
-    background-color: var(--sage-green); /* Preserved sage green */
-    color: rgb(255, 255, 255);
-    padding: 1.5rem 0; /* Reduced padding for compactness */
-    text-align: center;
-    margin-top: 0; /* Remove top margin to close gap */
-    font-family: var(--font-body);
-    position: relative;
-    z-index: 10; /* Ensure footer appears above moving grid background */
-  }
-
-  .footer-content {
-    max-width: var(--content-max-width);
-    margin: 0 auto;
-    padding: 0 2rem;
-  }
-
-  .footer-content p {
-    color: white;
-    font-family: var(--font-body);
-    margin-bottom: 1rem;
-  }
-
-  .footer-links {
-    margin-top: 1rem;
-    display: flex;
-    justify-content: center;
-    gap: 2rem;
-  }
-
-  .footer-links a {
-    color: white;
-    text-decoration: none;
-    transition: var(--transition-standard);
-    font-family: var(--font-body);
-    font-weight: 500;
-  }
-
-  .footer-links a:hover {
-    color: var(--gold-accent);
-    transform: translateY(-2px);
-  }
-
-  .footer-links a::after {
-    display: none; /* Remove the underline effect for footer links */
-  }
-
-  /* Responsive design */
-  @media (max-width: 768px) {
-    .main-content {
-      padding: 2rem 0;
-      padding-top: 60px; /* Account for mobile navbar height */
-    }
-
-    .footer-links {
-      flex-direction: column;
-      gap: 1rem;
-    }
-  }
-
-  @media (max-width: 480px) {
-    .main-content {
-      padding: 1.5rem 0;
-      padding-top: 55px; /* Account for smaller mobile navbar */
-    }
-
-    .footer-content {
-      padding: 0 1rem;
-    }
-  }
-
-  @media (max-width: 360px) {
-    .main-content {
-      padding-top: 50px; /* Account for even smaller navbar */
-    }
-  }
-</style> 
