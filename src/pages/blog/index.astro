@@ -1,11 +1,9 @@
 ---
-import Layout from '../../components/Layout.astro';
-import SearchBar from '../../components/SearchBar.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 import { getUrl } from '../../utils/url';
 
-const allBlogPosts = await getCollection('blogs');
-const allProjects = await getCollection('projects');
+const allBlogPosts = await getCollection('blog');
 const publishedPosts = allBlogPosts
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
@@ -13,281 +11,167 @@ const publishedPosts = allBlogPosts
 const allTags = [...new Set(publishedPosts.flatMap(post => post.data.tags || []))];
 ---
 
-<Layout title="Blog - Laurence" description="Read my latest thoughts on technology, engineering, and various interests.">
-  <div class="blog-header">
-    <div class="container">
-      <h1>Blog</h1>
-      <p>My thoughts on technology, engineering, and life</p>
-    </div>
-  </div>
+<BaseLayout title="Writing - Xiaoyou Wu" description="Thoughts on technology and engineering.">
+  <div class="container">
+    <header class="page-header">
+      <h1>Writing</h1>
+    </header>
 
-  <section class="blog-content">
-    <div class="container">
-      <div class="blog-sidebar">
-        <div class="sidebar-section">
-          <h3>Search</h3>
-          <SearchBar allBlogPosts={publishedPosts} allProjects={allProjects} />
-        </div>
-        
-        <div class="sidebar-section">
-          <h3>Categories</h3>
-          <div class="tag-cloud">
-            {allTags.map(tag => (
-              <a href={getUrl(`/blog/tag/${tag}/`)} class="tag-filter">{tag}</a>
-            ))}
-          </div>
-        </div>
-      </div>
+    <div class="blog-layout">
+      {/* Sidebar with Categories */}
+      <aside class="blog-sidebar">
+        <h3>Categories</h3>
+        <ul class="category-list">
+          {allTags.map(tag => (
+            <li>
+              <a href={getUrl(`/blog/tag/${tag}/`)} class="category-link">#{tag}</a>
+            </li>
+          ))}
+        </ul>
+      </aside>
 
-      <div class="blog-posts">
+      {/* Main Post List */}
+      <div class="post-feed">
         {publishedPosts.length > 0 ? (
           publishedPosts.map(post => (
-            <article class="blog-post-card">
+            <article class="post-preview">
               <header>
-                <h2>
-                  <a href={getUrl(`/blog/${post.slug}/`)}>{post.data.title}</a>
-                </h2>
-                <div class="post-meta">
+                <div class="post-meta-line">
                   <time datetime={post.data.pubDate.toISOString()}>
                     {post.data.pubDate.toLocaleDateString('en-US', {
                       year: 'numeric',
-                      month: 'long',
+                      month: 'short',
                       day: 'numeric'
                     })}
                   </time>
-                  <span class="author">by {post.data.author}</span>
+                  <span class="meta-separator">•</span>
+                  <div class="post-tags-inline">
+                     {post.data.tags?.slice(0, 2).map(tag => (
+                        <span>#{tag}</span>
+                     ))}
+                  </div>
                 </div>
+                <h2>
+                  <a href={getUrl(`/blog/${post.slug}/`)}>{post.data.title}</a>
+                </h2>
               </header>
               
               {post.data.description && (
-                <p class="post-description">{post.data.description}</p>
+                <p class="post-excerpt">{post.data.description}</p>
               )}
-              
-              <div class="post-tags">
-                {post.data.tags?.map(tag => (
-                  <a href={getUrl(`/blog/tag/${tag}/`)} class="tag">{tag}</a>
-                ))}
-              </div>
-              
-              <a href={getUrl(`/blog/${post.slug}/`)} class="read-more">
-                Read more →
-              </a>
             </article>
           ))
         ) : (
-          <div class="no-posts">
-            <h2>No blog posts yet</h2>
-            <p>Check back soon for new content!</p>
-          </div>
+          <p>No posts yet.</p>
         )}
       </div>
     </div>
-  </section>
-</Layout>
+  </div>
+</BaseLayout>
 
 <style>
-  .blog-header {
-    background: linear-gradient(135deg, #8A9A7E 0%, #39647c 50%, #2E3A59 100%);
-    color: white;
-    padding: 4rem 0 2rem;
-    text-align: center;
+  .page-header {
+    margin-bottom: 4rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border-subtle);
   }
-  
-  .blog-header h1 {
-    font-size: 3rem;
-    margin-bottom: 0.5rem;
-  }
-  
-  .blog-header p {
-    font-size: 1.25rem;
-    opacity: 0.9;
-    color: #d7ad7d;
-  }
-  
-  .blog-content {
-    padding: 4rem 0;
-  }
-  
-  .container {
+
+  .blog-layout {
     display: grid;
-    grid-template-columns: 250px 1fr;
-    gap: 3rem;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 2rem;
+    grid-template-columns: 200px 1fr;
+    gap: 4rem;
   }
-  
-  .blog-sidebar {
-    position: sticky;
-    top: 100px;
-    height: fit-content;
+
+  /* Sidebar */
+  .blog-sidebar h3 {
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-secondary);
+    margin-top: 0;
+    margin-bottom: 1.5rem;
   }
-  
-  .sidebar-section {
-    background: white;
-    padding: 1.5rem;
-    border-radius: 0.5rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin-bottom: 2rem;
+
+  .category-list {
+    list-style: none;
+    padding: 0;
   }
-  
-  .sidebar-section h3 {
-    margin-bottom: 1rem;
-    color: #333;
-    border-bottom: 2px solid #39647c;
-    padding-bottom: 0.5rem;
+
+  .category-list li {
+    margin-bottom: 0.8rem;
   }
-  
-  .tag-cloud {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-  }
-  
-  .tag-filter {
-    background: rgba(138, 154, 126, 0.1);
-    color: #2E3A59;
-    padding: 0.4rem 0.8rem;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    font-weight: 600;
-    text-decoration: none;
-    border: 1px solid rgba(138, 154, 126, 0.2);
-    transition: all 0.3s ease;
-    font-family: var(--font-body, 'Montserrat', sans-serif);
-    display: inline-block;
-  }
-  
-  .tag-filter:hover {
-    background: linear-gradient(135deg, #8A9A7E 0%, #39647c 100%);
-    color: white;
-    border-color: #8A9A7E;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(138, 154, 126, 0.3);
-  }
-  
-  .blog-posts {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-  }
-  
-  .blog-post-card {
-    background: white;
-    padding: 2rem;
-    border-radius: 0.5rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
-  }
-  
-  .blog-post-card:hover {
-    transform: translateY(-2px);
-  }
-  
-  .blog-post-card h2 {
-    margin-bottom: 0.5rem;
-  }
-  
-  .blog-post-card h2 a {
-    color: #333;
-    text-decoration: none;
-  }
-  
-  .blog-post-card h2 a:hover {
-    color: #39647c;
-  }
-  
-  .post-meta {
-    color: #666;
+
+  .category-link {
+    color: var(--text-secondary);
+    font-family: var(--font-sans);
     font-size: 0.9rem;
-    margin-bottom: 1rem;
+    text-decoration: none;
+    transition: color 0.2s;
+    border-bottom: none;
+  }
+
+  .category-link:hover {
+    color: var(--accent);
+  }
+
+  /* Post Feed */
+  .post-preview {
+    margin-bottom: 3.5rem;
+  }
+
+  .post-meta-line {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
     display: flex;
-    gap: 1rem;
     align-items: center;
-  }
-  
-  .post-meta time {
-    font-weight: 500;
-  }
-  
-  .post-description {
-    color: #555;
-    line-height: 1.7;
-    margin-bottom: 1rem;
-  }
-  
-  .post-tags {
-    display: flex;
     gap: 0.5rem;
-    flex-wrap: wrap;
+  }
+
+  .meta-separator {
+    color: var(--border-subtle);
+  }
+
+  .post-tags-inline span {
+    margin-right: 0.5rem;
+    color: var(--text-secondary);
+  }
+
+  .post-preview h2 {
+    margin-top: 0.5rem;
     margin-bottom: 1rem;
+    font-size: 1.8rem;
+    line-height: 1.3;
   }
-  
-  .tag {
-    background: rgba(138, 154, 126, 0.1);
-    color: #2E3A59;
-    padding: 0.3rem 0.6rem;
-    border-radius: 15px;
-    font-size: 0.8rem;
-    font-weight: 600;
+
+  .post-preview h2 a {
+    color: var(--text-primary);
     text-decoration: none;
-    border: 1px solid rgba(138, 154, 126, 0.2);
-    transition: all 0.3s ease;
-    font-family: var(--font-body, 'Montserrat', sans-serif);
-    display: inline-block;
+    border-bottom: none;
   }
-  
-  .tag:hover {
-    background: rgba(138, 154, 126, 0.2);
-    border-color: #8A9A7E;
-    transform: translateY(-1px);
-    box-shadow: 0 2px 8px rgba(138, 154, 126, 0.3);
-    color: #39647c;
+
+  .post-preview h2 a:hover {
+    color: var(--accent);
   }
-  
-  .read-more {
-    color: #667eea;
-    text-decoration: none;
-    font-weight: 500;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.25rem;
+
+  .post-excerpt {
+    color: var(--text-secondary);
+    font-size: 1.05rem;
+    line-height: 1.7;
+    margin-bottom: 0;
   }
-  
-  .read-more:hover {
-    text-decoration: underline;
-  }
-  
-  .no-posts {
-    text-align: center;
-    padding: 4rem 2rem;
-    color: #666;
-  }
-  
-  .no-posts h2 {
-    margin-bottom: 1rem;
-    color: #333;
-  }
-  
+
   @media (max-width: 768px) {
-    .blog-header h1 {
-      font-size: 2rem;
-    }
-    
-    .container {
+    .blog-layout {
       grid-template-columns: 1fr;
-      gap: 2rem;
+      gap: 3rem;
     }
-    
+
     .blog-sidebar {
-      position: static;
-      order: 2;
-    }
-    
-    .tag-cloud {
-      justify-content: center;
+      order: 2; /* Move sidebar to bottom on mobile, or top if preferred */
+      border-top: 1px solid var(--border-subtle);
+      padding-top: 2rem;
     }
   }
 </style>
-
- 

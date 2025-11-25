@@ -8,16 +8,6 @@ import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 import remarkGfm from 'remark-gfm';
 
-// Import MD to MDX compilation plugin with error handling
-let createMDToMDXPlugin = null;
-try {
-  const plugin = await import('./src/build/md-to-mdx-plugin.js');
-  createMDToMDXPlugin = plugin.createMDToMDXPlugin;
-  console.log('[Astro Config] MD to MDX plugin loaded successfully');
-} catch (error) {
-  console.warn('[Astro Config] Failed to load MD to MDX plugin, continuing without it:', error.message);
-}
-
 // Import Typora-compatible remark plugins with error handling
 let remarkTyporaMermaid = null;
 let remarkTyporaImages = null;
@@ -115,29 +105,11 @@ export default defineConfig({
   },
   
   vite: {
-    plugins: [
-      // Add MD to MDX compilation plugin if available
-      ...(createMDToMDXPlugin ? [createMDToMDXPlugin({
-        contentDir: 'src/content',
-        outputDir: 'src/content',
-        processors: {
-          mermaid: {
-            enabled: true,
-            componentPath: '../../components/Mermaid.astro'
-          },
-          math: {
-            enabled: true
-          },
-          tables: {
-            enabled: true
-          }
-        }
-      })] : [])
-    ],
+    // Removed MD to MDX plugin config as the file was missing
     css: {
       preprocessorOptions: {
         scss: {
-          additionalData: `@import "src/styles/global.css";`
+          additionalData: `@import "src/styles/book.css";` // Updated to point to new CSS or just remove if not using SCSS
         }
       }
     }

@@ -1,5 +1,5 @@
 ---
-// Navigation.astro - Preserved Legacy Frontend Styling
+// Navigation.astro - Simple Book Theme
 import { getUrl, isActive } from '../utils/url';
 
 export interface Props {
@@ -9,220 +9,72 @@ export interface Props {
 const { currentPath = Astro.url.pathname } = Astro.props;
 ---
 
-<nav class="navbar">
-  <div class="navbar-brand">Xiaoyou Wu</div>
-  
-  <a href={getUrl('/')} class={`navbar-link ${isActive('/', currentPath) ? 'active' : ''}`}>
-    Home
-  </a>
-  
-  <a href={getUrl('/blog')} class={`navbar-link ${isActive('/blog', currentPath) ? 'active' : ''}`}>
-    Blog
-  </a>
-  
-  <a href={getUrl('/projects')} class={`navbar-link ${isActive('/projects', currentPath) ? 'active' : ''}`}>
-    Projects
-  </a>
+<nav class="site-nav">
+  <div class="nav-container">
+    <a href={getUrl('/')} class="site-title">Xiaoyou Wu</a>
 
-  <a href={getUrl('/about')} class={`navbar-link ${isActive('/about', currentPath) ? 'active' : ''}`}>
-    About
-  </a>
+    <div class="nav-links">
+      <a href={getUrl('/blog')} class={`nav-link ${isActive('/blog', currentPath) ? 'active' : ''}`}>
+        Writing
+      </a>
+
+      <a href={getUrl('/projects')} class={`nav-link ${isActive('/projects', currentPath) ? 'active' : ''}`}>
+        Projects
+      </a>
+
+      <a href={getUrl('/about')} class={`nav-link ${isActive('/about', currentPath) ? 'active' : ''}`}>
+        About
+      </a>
+    </div>
+  </div>
 </nav>
 
 <style>
-  /* Compact Floating Navbar - Modernized for floating design */
-  .navbar {
-    font-family: var(--font-body);
-    background: rgba(138, 154, 126, 0.95); /* Semi-transparent sage green */
-    backdrop-filter: blur(20px); /* Modern glass effect */
-    -webkit-backdrop-filter: blur(20px); /* Safari support */
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    overflow: hidden;
+  .site-nav {
+    padding: 2.5rem 0;
+    border-bottom: 1px solid var(--border-subtle);
+    background-color: var(--bg-paper);
+  }
+
+  .nav-container {
     display: flex;
-    justify-content: space-around;
-    text-align: center;
+    justify-content: space-between;
     align-items: center;
-    padding: 8px 0; /* Reduced from 15px to 8px for compactness */
-    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.15), 0 1px 4px rgba(0, 0, 0, 0.1); /* Enhanced floating shadow */
-    height: 60px; /* Reduced from 100px to 60px for compactness */
-    
-    /* Fixed positioning for true floating effect */
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    width: 100%;
-    z-index: 1000; /* Higher z-index to ensure it stays on top */
-    
-    /* Prevent dragging and selection */
-    user-select: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    pointer-events: auto; /* Allow clicking but prevent dragging */
-    -webkit-user-drag: none;
-    -khtml-user-drag: none;
-    -moz-user-drag: none;
-    -o-user-drag: none;
-    user-drag: none;
-    
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    max-width: var(--max-width-layout);
+    margin: 0 auto;
+    padding: 0 1.5rem;
   }
 
-  /* Prevent text selection on all navbar elements */
-  .navbar * {
-    user-select: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    -webkit-user-drag: none;
-    user-drag: none;
-  }
-
-  .navbar-brand {
-    font-family: var(--font-heading);
-    font-size: 18px; /* Slightly reduced from 20px */
-    color: var(--deep-navy);
-    text-transform: uppercase;
+  .site-title {
+    font-family: var(--font-sans);
     font-weight: 700;
-    padding: 0 20px; /* Slightly reduced from 25px */
-    white-space: nowrap; /* Prevent text wrapping */
-  }
-
-  .navbar-link {
-    color: var(--terracotta);
+    font-size: 1.1rem;
+    color: var(--text-primary);
     text-decoration: none;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    font-size: 14px; /* Reduced from 16px for compactness */
-    letter-spacing: 0.8px; /* Slightly reduced from 1px */
-    text-transform: uppercase;
-    font-weight: 700;
-    padding: 8px 16px; /* Reduced padding for compactness */
-    border-bottom: 2px solid transparent;
-    border-radius: 6px; /* Added subtle border radius */
-    position: relative;
-    white-space: nowrap; /* Prevent text wrapping */
-    
-    /* Prevent dragging */
-    -webkit-user-drag: none;
-    user-drag: none;
+    letter-spacing: -0.02em;
+    border-bottom: none;
   }
 
-  .navbar-link:hover,
-  .navbar-link.active {
-    color: var(--gold-accent);
-    border-bottom: 2px solid var(--gold-accent);
-    transform: translateY(-1px); /* Subtle lift effect instead of scale */
-    background-color: rgba(68, 68, 68, 0.8); /* Semi-transparent dark background */
-    backdrop-filter: blur(10px);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  .site-title:hover {
+    color: var(--text-primary);
+    border-bottom: none;
   }
 
-  /* Add a subtle scroll effect */
-  .navbar.scrolled {
-    background: rgba(138, 154, 126, 0.98);
-    backdrop-filter: blur(25px);
-    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.2), 0 2px 8px rgba(0, 0, 0, 0.15);
+  .nav-links {
+    display: flex;
+    gap: 2rem;
   }
 
-  /* Enhanced Responsive design for mobile flexibility */
-  @media (max-width: 768px) {
-    .navbar {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      grid-template-rows: repeat(2, 1fr);
-      gap: 4px; /* Reduced gap */
-      height: auto;
-      min-height: 50px; /* Minimum height for mobile */
-      padding: 8px 6px; /* Reduced padding */
-      justify-items: center;
-      align-items: center;
-    }
-    
-    .navbar-brand {
-      display: none;
-    }
-    
-    .navbar-link {
-      margin: 0;
-      padding: 8px 6px; /* Reduced padding */
-      width: 100%;
-      text-align: center;
-      border-radius: 4px;
-      font-size: 13px; /* Slightly smaller on mobile */
-      transition: all 0.3s ease;
-    }
+  .nav-link {
+    color: var(--text-secondary);
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    text-decoration: none;
+    transition: color 0.2s;
+    border-bottom: none;
   }
 
-  @media (max-width: 480px) {
-    .navbar {
-      padding: 6px 4px; /* Further reduced padding */
-      gap: 3px;
-      min-height: 45px;
-    }
-    
-    .navbar-link {
-      font-size: 12px; /* Smaller font on small screens */
-      padding: 6px 4px;
-      letter-spacing: 0.5px;
-    }
-  }
-
-  @media (max-width: 360px) {
-    .navbar {
-      padding: 5px 3px;
-      gap: 2px;
-      min-height: 40px;
-    }
-    
-    .navbar-link {
-      font-size: 11px;
-      padding: 5px 3px;
-      letter-spacing: 0.3px;
-    }
-  }
-
-  @media (max-width: 320px) {
-    .navbar {
-      padding: 4px 2px;
-      gap: 2px;
-      min-height: 38px;
-    }
-    
-    .navbar-link {
-      font-size: 10px;
-      padding: 4px 2px;
-      letter-spacing: 0.2px;
-    }
-  }
-
-  /* Smooth scrolling for the whole document */
-  html {
-    scroll-behavior: smooth;
+  .nav-link:hover, .nav-link.active {
+    color: var(--accent);
   }
 </style>
-
-<script>
-  // Add scroll effect to navbar
-  function handleNavbarScroll() {
-    const navbar = document.querySelector('.navbar');
-    if (window.scrollY > 50) {
-      navbar?.classList.add('scrolled');
-    } else {
-      navbar?.classList.remove('scrolled');
-    }
-  }
-
-  // Add event listener for scroll
-  window.addEventListener('scroll', handleNavbarScroll);
-  
-  // Prevent context menu on navbar to enhance undraggable experience
-  document.querySelector('.navbar')?.addEventListener('contextmenu', (e) => {
-    e.preventDefault();
-  });
-  
-  // Prevent drag start on all navbar elements
-  document.querySelector('.navbar')?.addEventListener('dragstart', (e) => {
-    e.preventDefault();
-  });
-</script> 
