@@ -1,14 +1,12 @@
-<!DOCTYPE html><html lang="en" data-astro-cid-37fxchfa> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>VIP Progress Journal - SystemVerilog Learning</title><meta name="description" content="Weekly progress journal documenting my journey learning SystemVerilog, including module structures, always blocks, and FSM implementations"><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://laurence-wu.github.io/blog/vip_progress/"><meta property="og:title" content="VIP Progress Journal - SystemVerilog Learning"><meta property="og:description" content="Weekly progress journal documenting my journey learning SystemVerilog, including module structures, always blocks, and FSM implementations"><meta property="og:image" content="/assets/profile-image.jpg"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://laurence-wu.github.io/blog/vip_progress/"><meta property="twitter:title" content="VIP Progress Journal - SystemVerilog Learning"><meta property="twitter:description" content="Weekly progress journal documenting my journey learning SystemVerilog, including module structures, always blocks, and FSM implementations"><meta property="twitter:image" content="/assets/profile-image.jpg"><!-- KaTeX CSS for Math Rendering --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css" integrity="sha384-GvrOXuhMATgEsSwCs4smul74iXGOixntILdUW9XmUC6+HX0sLNAK3q71HotJqlAn" crossorigin="anonymous"><!-- Google Fonts - Preserved Typography System --><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&family=Cormorant+Garamond:wght@300;400;500;600;700&display=swap" rel="stylesheet"><!-- Fira Code for code blocks --><link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap" rel="stylesheet"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Global CSS Import --><link rel="stylesheet" href="/_astro/_slug_.CaX6V1Dz.css">
-<link rel="stylesheet" href="/_astro/index.BRcr8Vd7.css">
-<link rel="stylesheet" href="/_astro/_slug_.CDIrPqxW.css"></head> <body data-astro-cid-37fxchfa> <nav class="navbar" data-astro-cid-pux6a34n> <div class="navbar-brand" data-astro-cid-pux6a34n>Xiaoyou Wu</div> <a href="/" class="navbar-link " data-astro-cid-pux6a34n>
-Home
-</a> <a href="/blog" class="navbar-link active" data-astro-cid-pux6a34n>
-Blog
-</a> <a href="/projects" class="navbar-link " data-astro-cid-pux6a34n>
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>VIP Progress Journal - SystemVerilog Learning</title><meta name="description" content="Weekly progress journal documenting my journey learning SystemVerilog, including module structures, always blocks, and FSM implementations"><!-- Open Graph --><meta property="og:type" content="website"><meta property="og:url" content="https://laurence-wu.github.io/blog/vip_progress/"><meta property="og:title" content="VIP Progress Journal - SystemVerilog Learning"><meta property="og:description" content="Weekly progress journal documenting my journey learning SystemVerilog, including module structures, always blocks, and FSM implementations"><meta property="og:image" content="/assets/profile-image.jpg"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:title" content="VIP Progress Journal - SystemVerilog Learning"><meta property="twitter:description" content="Weekly progress journal documenting my journey learning SystemVerilog, including module structures, always blocks, and FSM implementations"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- KaTeX CSS for Math Rendering --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css" integrity="sha384-GvrOXuhMATgEsSwCs4smul74iXGOixntILdUW9XmUC6+HX0sLNAK3q71HotJqlAn" crossorigin="anonymous"><!-- Book Theme CSS --><link rel="stylesheet" href="/src/styles/book.css"><style>.site-nav[data-astro-cid-pux6a34n]{padding:2.5rem 0;border-bottom:1px solid var(--border-subtle);background-color:var(--bg-paper)}.nav-container[data-astro-cid-pux6a34n]{display:flex;justify-content:space-between;align-items:center;max-width:var(--max-width-layout);margin:0 auto;padding:0 1.5rem}.site-title[data-astro-cid-pux6a34n]{font-family:var(--font-sans);font-weight:700;font-size:1.1rem;color:var(--text-primary);text-decoration:none;letter-spacing:-.02em;border-bottom:none}.site-title[data-astro-cid-pux6a34n]:hover{color:var(--text-primary);border-bottom:none}.nav-links[data-astro-cid-pux6a34n]{display:flex;gap:2rem}.nav-link[data-astro-cid-pux6a34n]{color:var(--text-secondary);font-family:var(--font-sans);font-size:.95rem;text-decoration:none;transition:color .2s;border-bottom:none}.nav-link[data-astro-cid-pux6a34n]:hover,.nav-link[data-astro-cid-pux6a34n].active{color:var(--accent)}:root{--bg-paper: #fdfbf7;--bg-card: #ffffff;--text-primary: #2c2c2c;--text-secondary: #595959;--accent: #2e59a7;--accent-hover: #1a3c7a;--border-subtle: #e6e6e6;--font-serif: "Georgia", "Times New Roman", serif;--font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;--font-mono: "Menlo", "Consolas", "Monaco", monospace;--line-height-body: 1.8;--line-height-heading: 1.3;--spacing-container: 1.5rem;--max-width-text: 68ch;--max-width-layout: 800px}*,*:before,*:after{box-sizing:border-box;margin:0;padding:0}body{background-color:var(--bg-paper);color:var(--text-primary);font-family:var(--font-serif);line-height:var(--line-height-body);font-size:18px;-webkit-font-smoothing:antialiased}h1,h2,h3,h4,h5,h6{font-family:var(--font-sans);font-weight:600;line-height:var(--line-height-heading);color:#1a1a1a;margin-top:2.5rem;margin-bottom:1rem}h1{font-size:2.5rem;letter-spacing:-.5px}h2{font-size:1.8rem;border-bottom:1px solid var(--border-subtle);padding-bottom:.5rem}h3{font-size:1.4rem}p{margin-bottom:1.5rem}a{color:var(--accent);text-decoration:none;border-bottom:1px solid transparent;transition:border-color .2s}a:hover{color:var(--accent-hover);border-bottom-color:var(--accent-hover)}.container{max-width:var(--max-width-layout);margin:0 auto;padding:0 var(--spacing-container)}.main-content{padding:4rem 0}pre{background:#f5f5f5;padding:1rem;border-radius:4px;overflow-x:auto;font-family:var(--font-mono);font-size:.9em;margin:1.5rem 0;border:1px solid var(--border-subtle)}code{font-family:var(--font-mono);background:#0000000d;padding:.2em .4em;border-radius:3px;font-size:.85em}pre code{background:none;padding:0}img{max-width:100%;height:auto;display:block;margin:2rem auto;border-radius:4px}blockquote{border-left:3px solid var(--accent);margin:2rem 0;padding-left:1.5rem;font-style:italic;color:var(--text-secondary)}.site-nav{padding:2rem 0;border-bottom:1px solid var(--border-subtle);margin-bottom:2rem}.nav-container{display:flex;justify-content:space-between;align-items:center;max-width:var(--max-width-layout);margin:0 auto;padding:0 var(--spacing-container)}.site-title{font-family:var(--font-sans);font-weight:700;font-size:1.2rem;color:var(--text-primary);text-decoration:none}.nav-links{display:flex;gap:1.5rem}.nav-link{color:var(--text-secondary);font-family:var(--font-sans);font-size:.95rem}.nav-link:hover,.nav-link.active{color:var(--accent)}.site-footer{margin-top:4rem;padding:3rem 0;border-top:1px solid var(--border-subtle);text-align:center;font-size:.9rem;color:var(--text-secondary)}
+.post-header[data-astro-cid-bvzihdzo]{text-align:center;margin-bottom:3rem;padding-bottom:2rem;border-bottom:1px solid var(--border-subtle)}.post-header[data-astro-cid-bvzihdzo] h1[data-astro-cid-bvzihdzo]{font-size:2.5rem;margin-bottom:.5rem;color:var(--text-primary)}.post-meta[data-astro-cid-bvzihdzo]{color:var(--text-secondary);font-size:.95rem;font-family:var(--font-sans)}.tags[data-astro-cid-bvzihdzo]{margin-top:1rem;display:flex;justify-content:center;gap:.8rem}.tag[data-astro-cid-bvzihdzo]{color:var(--accent);font-size:.9rem;font-family:var(--font-sans);text-decoration:none}.tag[data-astro-cid-bvzihdzo]:hover{text-decoration:underline}.post-content[data-astro-cid-bvzihdzo]{max-width:var(--max-width-text);margin:0 auto;font-size:1.1rem}.post-hero-image[data-astro-cid-bvzihdzo] img[data-astro-cid-bvzihdzo]{max-height:400px;-o-object-fit:cover;object-fit:cover;width:100%;margin-bottom:3rem}.post-footer[data-astro-cid-bvzihdzo]{margin-top:4rem;padding-top:2rem;border-top:1px solid var(--border-subtle);text-align:center}.back-link[data-astro-cid-bvzihdzo]{font-family:var(--font-sans);color:var(--text-secondary)}.back-link[data-astro-cid-bvzihdzo]:hover{color:var(--accent)}
+</style></head> <body> <nav class="site-nav" data-astro-cid-pux6a34n> <div class="nav-container" data-astro-cid-pux6a34n> <a href="/" class="site-title" data-astro-cid-pux6a34n>Xiaoyou Wu</a> <div class="nav-links" data-astro-cid-pux6a34n> <a href="/blog" class="nav-link active" data-astro-cid-pux6a34n>
+Writing
+</a> <a href="/projects" class="nav-link " data-astro-cid-pux6a34n>
 Projects
-</a> <a href="/about" class="navbar-link " data-astro-cid-pux6a34n>
+</a> <a href="/about" class="nav-link " data-astro-cid-pux6a34n>
 About
-</a> </nav>  <script type="module">function r(){const e=document.querySelector(".navbar");window.scrollY>50?e?.classList.add("scrolled"):e?.classList.remove("scrolled")}window.addEventListener("scroll",r);document.querySelector(".navbar")?.addEventListener("contextmenu",e=>{e.preventDefault()});document.querySelector(".navbar")?.addEventListener("dragstart",e=>{e.preventDefault()});</script> <div class="animated-background full" aria-hidden="true" data-astro-cid-5a2bynky></div>  <main class="main-content" data-astro-cid-37fxchfa>  <main class="blog-post" data-astro-cid-bvzihdzo> <article data-astro-cid-bvzihdzo> <header class="post-header" data-astro-cid-bvzihdzo> <h1 data-astro-cid-bvzihdzo>VIP Progress Journal - SystemVerilog Learning</h1> <div class="post-meta" data-astro-cid-bvzihdzo> <time datetime="2024-08-25T00:00:00.000Z" data-astro-cid-bvzihdzo> August 24, 2024 </time> <span class="author" data-astro-cid-bvzihdzo>by Xiaoyou Wu</span>  </div> <div class="tags" data-astro-cid-bvzihdzo> <a href="/blog/tag/SystemVerilog/" class="tag" data-astro-cid-bvzihdzo>SystemVerilog</a><a href="/blog/tag/hardware/" class="tag" data-astro-cid-bvzihdzo>hardware</a><a href="/blog/tag/FPGA/" class="tag" data-astro-cid-bvzihdzo>FPGA</a><a href="/blog/tag/digital-design/" class="tag" data-astro-cid-bvzihdzo>digital-design</a><a href="/blog/tag/learning-journal/" class="tag" data-astro-cid-bvzihdzo>learning-journal</a> </div> </header> <div id="table-of-contents" class="toc-container" data-astro-cid-xvrfupwn> <div class="toc-header" data-astro-cid-xvrfupwn> <div class="toc-title-area" data-astro-cid-xvrfupwn> <span class="drag-handle" title="Drag to move" data-astro-cid-xvrfupwn>⋮⋮</span> <h3 data-astro-cid-xvrfupwn>Table of Contents</h3> </div> <button id="toc-toggle" class="toc-toggle" aria-label="Toggle table of contents" data-astro-cid-xvrfupwn> <span class="toggle-icon" data-astro-cid-xvrfupwn>←</span> </button> </div> <nav class="toc-nav" aria-label="Table of contents" data-astro-cid-xvrfupwn> <ul id="toc-list" class="toc-list" data-astro-cid-xvrfupwn> <!-- TOC items will be populated by JavaScript --> </ul> </nav> </div>  <script type="module" src="/_astro/TableOfContents.astro_astro_type_script_index_0_lang.ZAa9MuU5.js"></script> <div class="content-with-sidebar" data-astro-cid-bvzihdzo> <div class="post-content main-content" data-astro-cid-bvzihdzo>  <h2 id="week-1-aug-25---aug-31">Week 1: Aug 25 - Aug 31</h2>
+</a> </div> </div> </nav>  <main class="main-content">  <div class="container" data-astro-cid-bvzihdzo> <article class="blog-post" data-astro-cid-bvzihdzo> <header class="post-header" data-astro-cid-bvzihdzo> <h1 data-astro-cid-bvzihdzo>VIP Progress Journal - SystemVerilog Learning</h1> <div class="post-meta" data-astro-cid-bvzihdzo> <time datetime="2024-08-25T00:00:00.000Z" data-astro-cid-bvzihdzo> August 25, 2024 </time> <span class="author" data-astro-cid-bvzihdzo> • Xiaoyou Wu</span>  </div> <div class="tags" data-astro-cid-bvzihdzo> <a href="/blog/tag/SystemVerilog/" class="tag" data-astro-cid-bvzihdzo>#SystemVerilog</a><a href="/blog/tag/hardware/" class="tag" data-astro-cid-bvzihdzo>#hardware</a><a href="/blog/tag/FPGA/" class="tag" data-astro-cid-bvzihdzo>#FPGA</a><a href="/blog/tag/digital-design/" class="tag" data-astro-cid-bvzihdzo>#digital-design</a><a href="/blog/tag/learning-journal/" class="tag" data-astro-cid-bvzihdzo>#learning-journal</a> </div> </header>   <div class="post-content" data-astro-cid-bvzihdzo>  <h2 id="week-1-aug-25---aug-31">Week 1: Aug 25 - Aug 31</h2>
 <h3 id="foundation--basic-structures">Foundation &#x26; Basic Structures</h3>
 <h4 id="module-structure">Module Structure</h4>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>module ModuleName (</span></span>
@@ -341,7 +339,7 @@ About
 <li>Route the WIFI first, and the UART, for its the high speed route.</li>
 <li>Modify the Rule checks for proper impedance matching</li>
 <li>Make sure the layout first.</li>
-</ol>  </div>  </div> </article> </main> <footer class="blog-footer" data-astro-cid-bvzihdzo> <div class="container" data-astro-cid-bvzihdzo> <a href="/blog" class="back-link" data-astro-cid-bvzihdzo>← Back to Blog</a> </div> </footer>  </main> <footer class="site-footer" data-astro-cid-37fxchfa> <div class="footer-content" data-astro-cid-37fxchfa> <p data-astro-cid-37fxchfa>&copy; 2025 Xiaoyou Wu. All rights reserved.</p> <div class="footer-links" data-astro-cid-37fxchfa> <a href="https://github.com/yourusername" target="_blank" rel="noopener noreferrer" data-astro-cid-37fxchfa>GitHub</a> <a href="https://linkedin.com/in/yourprofile" target="_blank" rel="noopener noreferrer" data-astro-cid-37fxchfa>LinkedIn</a> <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" data-astro-cid-37fxchfa>Resume</a> </div> </div> </footer> <!-- KaTeX JavaScript for Math Rendering --> <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js" integrity="sha384-cpW21h6RZv/phavutF+AuVYrr+dA8xD9zs6FwLpaCct6O9ctzYFfFr4dgmgccOTx" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous" onload="renderMathInDocument()"></script> <script>
+</ol>  </div> </article> <div class="post-footer" data-astro-cid-bvzihdzo> <a href="/blog" class="back-link" data-astro-cid-bvzihdzo>← Back to Blog</a> </div> </div>  </main> <footer class="site-footer"> <div class="container"> <p>&copy; 2025 Xiaoyou Wu. All rights reserved.</p> <div style="margin-top: 1rem;"> <a href="https://github.com/yourusername" target="_blank" style="margin: 0 10px;">GitHub</a> <a href="https://linkedin.com/in/yourprofile" target="_blank" style="margin: 0 10px;">LinkedIn</a> </div> </div> </footer> <!-- KaTeX --> <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js" integrity="sha384-cpW21h6RZv/phavutF+AuVYrr+dA8xD9zs6FwLpaCct6O9ctzYFfFr4dgmgccOTx" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous" onload="renderMathInDocument()"></script> <script>
     function renderMathInDocument() {
       if (typeof window.renderMathInElement !== 'undefined') {
         window.renderMathInElement(document.body, {
@@ -355,103 +353,5 @@ About
         });
       }
     }
-    
     document.addEventListener("DOMContentLoaded", renderMathInDocument);
-  </script> <!-- Simple Mermaid Test Script --> <script type="module">
-    console.log('[Simple Mermaid Test] Starting...');
-
-    // Simple function to load and initialize Mermaid
-    async function loadAndTestMermaid() {
-      try {
-        console.log('[Simple Mermaid Test] Loading Mermaid from CDN...');
-        
-        // Load Mermaid if not already loaded
-        if (!window.mermaid) {
-          const script = document.createElement('script');
-          script.src = 'https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js';
-          
-          await new Promise((resolve, reject) => {
-            script.onload = resolve;
-            script.onerror = reject;
-            document.head.appendChild(script);
-          });
-          
-          console.log('[Simple Mermaid Test] Mermaid loaded from CDN');
-        } else {
-          console.log('[Simple Mermaid Test] Mermaid already available');
-        }
-
-        if (!window.mermaid) {
-          throw new Error('Mermaid not available after loading');
-        }
-
-        console.log('[Simple Mermaid Test] Initializing Mermaid...');
-        
-        // Initialize Mermaid with simple config
-        window.mermaid.initialize({
-          startOnLoad: false,
-          theme: 'neutral'
-        });
-
-        console.log('[Simple Mermaid Test] Finding diagram elements...');
-        
-        // Find all mermaid diagrams
-        const diagrams = document.querySelectorAll('.mermaid-diagram');
-        console.log(`[Simple Mermaid Test] Found ${diagrams.length} diagrams`);
-
-        // Process each diagram
-        for (let i = 0; i < diagrams.length; i++) {
-          const diagram = diagrams[i];
-          const id = diagram.id || `test-diagram-${i}`;
-          const codeElement = diagram.querySelector('.mermaid-code code');
-          
-          console.log(`[Simple Mermaid Test] Processing diagram ${id}`);
-          
-          if (codeElement) {
-            const code = codeElement.textContent.trim();
-            console.log(`[Simple Mermaid Test] Code for ${id}:`, code.substring(0, 100) + '...');
-            
-            try {
-              // Render the diagram
-              const { svg } = await window.mermaid.render(`${id}-render`, code);
-              console.log(`[Simple Mermaid Test] SVG generated for ${id}`);
-              
-              // Replace the loading text with the SVG
-              const container = diagram.querySelector('.mermaid-container');
-              if (container) {
-                container.innerHTML = svg;
-                console.log(`[Simple Mermaid Test] SVG inserted for ${id}`);
-              } else {
-                console.error(`[Simple Mermaid Test] No container found for ${id}`);
-              }
-              
-            } catch (renderError) {
-              console.error(`[Simple Mermaid Test] Render error for ${id}:`, renderError);
-              
-              const container = diagram.querySelector('.mermaid-container');
-              if (container) {
-                container.innerHTML = `<div style="color: red; padding: 1rem;">Error: ${renderError.message}</div>`;
-              }
-            }
-          } else {
-            console.error(`[Simple Mermaid Test] No code element found for ${id}`);
-          }
-        }
-
-        console.log('[Simple Mermaid Test] Completed processing all diagrams');
-        
-      } catch (error) {
-        console.error('[Simple Mermaid Test] Fatal error:', error);
-      }
-    }
-
-    // Run the test when DOM is ready
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', loadAndTestMermaid);
-    } else {
-      loadAndTestMermaid();
-    }
-
-    // Export for manual testing
-    window.testMermaid = loadAndTestMermaid;
-  </script> </body> </html>  
+  </script> </body> </html>
