@@ -138,7 +138,7 @@ try {
   }
   
   .project-header {
-    background: var(--deep-navy);
+    background: linear-gradient(135deg, var(--deep-navy), #1a3a68);
     color: var(--warm-neutral);
     padding: 6rem 0 5rem;
     position: relative;
@@ -151,16 +151,17 @@ try {
     line-height: 1.1;
     text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
     font-weight: 800;
+    color: var(--warm-neutral);
   }
 
   .project-thumbnail-section {
     text-align: center;
-    margin-top: -3rem; /* Pull up to overlap header slightly */
-    margin-bottom: 3rem;
+    margin-top: 3rem; /* Adjusted to push it down from the header */
+    margin-bottom: 0;
   }
 
   .project-thumbnail-image {
-    max-width: 80%;
+    max-width: 70%; /* Reduced max-width for a slightly smaller image */
     height: auto;
     border-radius: 12px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
@@ -254,7 +255,7 @@ try {
   }
   
   .project-content {
-    padding: 5rem 0;
+    padding: 2rem 0;
     max-width: 900px;
     margin: 0 auto;
   }
