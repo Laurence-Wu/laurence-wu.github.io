@@ -9,28 +9,28 @@
 :root {
   /* ===== PRESERVED COLOR PALETTE ===== */
   /* Primary Colors */
-  --sage-green: #8A9A7E;           /* Navbar background - preserved */
-  --warm-neutral: #F4E9D8;         /* Body background - preserved */
-  --deep-navy: #2E3A59;            /* Primary text - preserved */
-  --gold-accent: #FFD700;          /* Hover states and highlights - preserved */
+  --sage-green: #0A2342;           /* Updated to Prussian Blue for consistency */
+  --warm-neutral: #F8F7F4;         /* Updated to Off-white */
+  --deep-navy: #0A2342;            /* Updated to Prussian Blue */
+  --gold-accent: #A98743;          /* Updated to Muted Gold */
   
   /* Premium Colors */
-  --color-dark: #0f172a;           /* Deep navy blue for primary text and accents */
-  --color-gold: #d4af37;           /* Classic gold for premium accents */
-  --color-gold-light: #e6c55a;    /* Lighter gold for hover states */
-  --ivory: #f8f1e3;               /* Warm ivory for subtle backgrounds */
-  --color-text: #1e293b;          /* Deep slate for primary text */
-  --color-text-light: #64748b;    /* Lighter text for secondary content */
-  --color-background: #f8fafc;    /* Light background with subtle warmth */
-  --color-card-bg: #ffffff;       /* Pure white for card elements */
-  --color-border: rgba(15, 23, 42, 0.06); /* Subtle border color */
+  --color-dark: #0A2342;           /* Updated to Prussian Blue */
+  --color-gold: #A98743;           /* Updated to Muted Gold */
+  --color-gold-light: #C2A46C;    /* Lighter Muted Gold for hover states */
+  --ivory: #f8f1e3;               /* Keeping ivory as a subtle background option */
+  --color-text: #0A2342;          /* Updated to Prussian Blue */
+  --color-text-light: #555;    /* Darker gray for better contrast */
+  --color-background: #f8fafc;    /* Keeping as a light background */
+  --color-card-bg: #ffffff;       /* Keeping pure white for card elements */
+  --color-border: rgba(10, 35, 66, 0.06); /* Adjusted border color to match new dark color */
   
   /* Additional Preserved Colors */
-  --terracotta: #39647c;          /* Preserved from navbar links */
-  --warm-brown: #A87C5D;          /* Preserved from various elements */
-  --light-sage: #75826b;          /* Darker variant of sage green */
-  --premium-bg: #ffdd8e;          /* Feature card backgrounds */
-  --card-border: #cdba7d;         /* Feature card borders */
+  --terracotta: #4A5A53;          /* Updated to a neutral shade */
+  --warm-brown: #A87C5D;          /* Keeping as is for potential accent */
+  --light-sage: #4A5A53;          /* Updated to a neutral shade */
+  --premium-bg: #f8f7f4;          /* Adjusted for simpler background */
+  --card-border: #A98743;         /* Updated to Muted Gold */
   
   /* ===== TYPOGRAPHY SYSTEM - PRESERVED ===== */
   --font-heading: 'Playfair Display', serif;    /* For elegant titles - preserved */

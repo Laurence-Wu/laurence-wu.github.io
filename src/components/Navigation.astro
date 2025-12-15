@@ -24,105 +24,84 @@ const { currentPath = Astro.url.pathname } = Astro.props;
     Projects
   </a>
 
-  <a href={getUrl('/about')} class={`navbar-link ${isActive('/about', currentPath) ? 'active' : ''}`}>
-    About
-  </a>
 </nav>
 
 <style>
   /* Compact Floating Navbar - Modernized for floating design */
-  .navbar {
+.navbar {
     font-family: var(--font-body);
-    background: rgba(138, 154, 126, 0.95); /* Semi-transparent sage green */
-    backdrop-filter: blur(20px); /* Modern glass effect */
-    -webkit-backdrop-filter: blur(20px); /* Safari support */
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(240, 240, 240, 0.95); /* Very light grey, semi-transparent */
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     overflow: hidden;
     display: flex;
     justify-content: space-around;
     text-align: center;
     align-items: center;
-    padding: 8px 0; /* Reduced from 15px to 8px for compactness */
-    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.15), 0 1px 4px rgba(0, 0, 0, 0.1); /* Enhanced floating shadow */
-    height: 60px; /* Reduced from 100px to 60px for compactness */
-    
-    /* Fixed positioning for true floating effect */
+    padding: 8px 0;
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08), 0 1px 4px rgba(0, 0, 0, 0.05);
+    height: 60px;
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     width: 100%;
-    z-index: 1000; /* Higher z-index to ensure it stays on top */
-    
-    /* Prevent dragging and selection */
+    z-index: 1000;
     user-select: none;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
-    pointer-events: auto; /* Allow clicking but prevent dragging */
+    pointer-events: auto;
     -webkit-user-drag: none;
     -khtml-user-drag: none;
     -moz-user-drag: none;
     -o-user-drag: none;
     user-drag: none;
-    
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  /* Prevent text selection on all navbar elements */
-  .navbar * {
-    user-select: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    -webkit-user-drag: none;
-    user-drag: none;
   }
 
   .navbar-brand {
     font-family: var(--font-heading);
-    font-size: 18px; /* Slightly reduced from 20px */
-    color: var(--deep-navy);
+    font-size: 18px;
+    color: var(--deep-navy); /* Prussian Blue */
     text-transform: uppercase;
     font-weight: 700;
-    padding: 0 20px; /* Slightly reduced from 25px */
-    white-space: nowrap; /* Prevent text wrapping */
+    padding: 0 20px;
+    white-space: nowrap;
   }
 
   .navbar-link {
-    color: var(--terracotta);
+    color: var(--deep-navy); /* Prussian Blue */
     text-decoration: none;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    font-size: 14px; /* Reduced from 16px for compactness */
-    letter-spacing: 0.8px; /* Slightly reduced from 1px */
+    font-size: 14px;
+    letter-spacing: 0.8px;
     text-transform: uppercase;
     font-weight: 700;
-    padding: 8px 16px; /* Reduced padding for compactness */
+    padding: 8px 16px;
     border-bottom: 2px solid transparent;
-    border-radius: 6px; /* Added subtle border radius */
+    border-radius: 6px;
     position: relative;
-    white-space: nowrap; /* Prevent text wrapping */
-    
-    /* Prevent dragging */
+    white-space: nowrap;
     -webkit-user-drag: none;
     user-drag: none;
   }
 
   .navbar-link:hover,
   .navbar-link.active {
-    color: var(--gold-accent);
+    color: var(--gold-accent); /* Muted Gold */
     border-bottom: 2px solid var(--gold-accent);
-    transform: translateY(-1px); /* Subtle lift effect instead of scale */
-    background-color: rgba(68, 68, 68, 0.8); /* Semi-transparent dark background */
-    backdrop-filter: blur(10px);
+    transform: translateY(-1px);
+    background-color: rgba(169, 135, 67, 0.1); /* Light transparent gold background */
+    backdrop-filter: blur(5px);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  /* Add a subtle scroll effect */
   .navbar.scrolled {
-    background: rgba(138, 154, 126, 0.98);
+    background: rgba(248, 247, 244, 0.98); /* Off-white background on scroll */
     backdrop-filter: blur(25px);
-    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.2), 0 2px 8px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.1), 0 2px 8px rgba(0, 0, 0, 0.08);
   }
 
   /* Enhanced Responsive design for mobile flexibility */

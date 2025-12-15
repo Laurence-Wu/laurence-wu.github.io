@@ -3,7 +3,8 @@ title: "Lip-to-Speech Communication Device"
 description: "An assistive technology device that converts lip movements to speech using computer vision, AI models, and vibration feedback."
 pubDate: 2025-07-31
 githubLink: https://github.com/Laurence-Wu/LipToSpeech.git
-tags: ["Assistive Technology", "Computer Vision", "AI/ML", "ESP32", "Speech Synthesis", "Accessibility"]
+tags: ["Assistive Technology", "Computer Vision", "AI/ML", "ESP32", "Speech Synthesis", "Accessibility", "research"]
+thumbnail: "https://picsum.photos/seed/lips-to-speech/400/300"
 ---
 
 ## Technical Implementation: 

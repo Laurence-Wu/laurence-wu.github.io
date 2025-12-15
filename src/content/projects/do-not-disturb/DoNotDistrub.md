@@ -3,7 +3,8 @@ title: "Do Not Disturb Robotics Arm Project"
 description: "A brain-computer interface and computer vision powered robotic arm that intelligently prevents interruptions during deep focus."
 pubDate: 2025-07-31
 githubLink: https://github.com/Laurence-Wu/RoboticsArmControl.git
-tags: ["Robotics", "BCI", "Computer Vision", "Raspberry Pi", "PID Control", "Python"]
+tags: ["Robotics", "BCI", "Computer Vision", "Raspberry Pi", "PID Control", "Python", "research"]
+thumbnail: "https://picsum.photos/seed/do-not-disturb/400/300"
 ---
 
 ## My feelings to this project

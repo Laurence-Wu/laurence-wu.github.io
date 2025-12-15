@@ -43,6 +43,11 @@ const allTags = [...new Set(publishedPosts.flatMap(post => post.data.tags || [])
         {publishedPosts.length > 0 ? (
           publishedPosts.map(post => (
             <article class="blog-post-card">
+              {post.data.thumbnail && (
+                <a href={getUrl(`/blog/${post.slug}/`)}>
+                  <img src={post.data.thumbnail} alt={post.data.title} class="thumbnail" />
+                </a>
+              )}
               <header>
                 <h2>
                   <a href={getUrl(`/blog/${post.slug}/`)}>{post.data.title}</a>
@@ -183,6 +188,14 @@ const allTags = [...new Set(publishedPosts.flatMap(post => post.data.tags || [])
   .blog-post-card:hover {
     transform: translateY(-2px);
   }
+
+  .thumbnail {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 0.5rem 0.5rem 0 0;
+  }
+  
   
   .blog-post-card h2 {
     margin-bottom: 0.5rem;
@@ -289,5 +302,14 @@ const allTags = [...new Set(publishedPosts.flatMap(post => post.data.tags || [])
     }
   }
 </style>
+
+<script define:vars={{ allTags }}>
+  allTags.forEach(tag => {
+    if (tag.includes('/')) {
+      console.warn(`[Tag Warning] The tag "${tag}" contains a slash, which may cause issues with URL routing. Please consider using a different separator like a hyphen (-).`);
+    }
+  });
+</script>
+
 
  

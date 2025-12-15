@@ -10,6 +10,7 @@ const blogs = defineCollection({
     author: z.string().optional(),
     tags: z.array(z.string()).optional(),
     image: z.string().optional(),
+    thumbnail: z.string().optional(),
   }),
 });
 
@@ -23,6 +24,7 @@ const projects = defineCollection({
     image: z.string().optional(),
     tags: z.array(z.string()).optional(),
     githubLink: z.string().optional(),
+    thumbnail: z.string().optional(),
   }),
 });
 

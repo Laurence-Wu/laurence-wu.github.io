@@ -18,6 +18,11 @@ const sortedProjects = allProjects.sort((a, b) =>
       <div class="projects-grid">
         {sortedProjects.map(project => (
           <article class="project-card">
+            {project.data.thumbnail && (
+              <a href={getUrl(`/projects/${project.slug}/`)}>
+                <img src={project.data.thumbnail} alt={project.data.title} class="thumbnail" />
+              </a>
+            )}
             <h3 class="project-title">
               <a href={getUrl(`/projects/${project.slug}/`)}>{project.data.title}</a>
             </h3>
@@ -90,7 +95,6 @@ const sortedProjects = allProjects.sort((a, b) =>
     background: white;
     border-radius: 8px;
     padding: 1.25rem;
-    border-left: 3px solid #8A9A7E;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     transition: all 0.2s ease;
     display: flex;
@@ -98,10 +102,17 @@ const sortedProjects = allProjects.sort((a, b) =>
     gap: 0.75rem;
   }
 
+  .thumbnail {
+    width: calc(100% + 2.5rem);
+    height: 150px;
+    object-fit: cover;
+    border-radius: 8px 8px 0 0;
+    margin: -1.25rem -1.25rem 1.25rem -1.25rem;
+  }
+  
   .project-card:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
-    border-left-color: #D4AF37;
   }
 
   /* Title - compact and bold */

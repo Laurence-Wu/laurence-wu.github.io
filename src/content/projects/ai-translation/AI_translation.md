@@ -4,6 +4,7 @@ description: "A smart, AI-powered platform for perfect PDF-to-Word and multi-for
 pubDate: 2025-07-31
 githubLink: https://laurence-wu.github.io/projects/
 tags: ["AI", "Translation", "PDF", "DOCX", "Next.js", "Python", "Startup"]
+thumbnail: "https://picsum.photos/seed/ai-translation/400/300"
 ---
 
 ## My feelings to this project

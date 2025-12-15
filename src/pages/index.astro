@@ -1,893 +1,281 @@
 ---
-// Home Page - Preserved Legacy Frontend Design
 import BaseLayout from '../layouts/BaseLayout.astro';
-import EvolvingSmudgeCanvas from '../components/EvolvingSmudgeCanvas.astro';
+import { getCollection } from 'astro:content';
+import { getUrl } from '../utils/url';
+
+const allBlogPosts = await getCollection('blogs');
+const researchPosts = allBlogPosts
+  .filter(post => post.data.tags && post.data.tags.includes('research'))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3); // Display top 3 most recent research posts
 ---
 
-<BaseLayout title="Xiaoyou Wu - Computer Engineering">
-  <!-- Preload critical resources for faster loading -->
-  <link rel="preload" href="/HomeImage.jpg" as="image" type="image/jpeg">
-  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Yellowtail&display=swap" as="style">
-  
-  <div class="home" id="home-container">
-    <!-- Loading overlay for smooth initial load -->
-    <div class="loading-overlay" id="loading-overlay">
-      <div class="loading-spinner"></div>
-    </div>
-    
-    <!-- Upper grid section -->
-    <div class="home-upper-grid">
-      <div class="home-left">
-        <div class="home-header">
-          <h1 class="fade-in-element">Xiaoyou Wu</h1>
-        </div>
-        
-        <div class="home-main">
-          <div class="typewriter-container fade-in-element" style="animation-delay: 0.4s;">
-            <span class="typewriter-text" id="typewriter-text">Welcome to my engineering journey...</span>
-            <span class="cursor" id="cursor">|</span>
-          </div>
-        </div>
+<BaseLayout title="Xiaoyou Wu - Research Portfolio">
+  <div class="container research-home-container">
+    <section class="hero-section">
+      <h1>Xiaoyou Wu</h1>
+      <p class="tagline">Computer Engineering Student | Research in Low-Level ML Optimization</p>
+      <p class="introduction">
+        Welcome to my research portfolio. I am a Computer Engineering student at Georgia Tech,
+        passionately exploring the intersection of hardware and software with a focus on
+        optimizing machine learning models at a low level.
+      </p>
+      <div class="contact-links">
+        <a href="mailto:xwu488@gatech.edu" class="contact-link">📧 Email</a>
+        <a href="https://linkedin.com/in/xiaoyou-wu" target="_blank" rel="noopener noreferrer" class="contact-link">🔗 LinkedIn</a>
+        <a href="https://github.com/Laurence-Wu" target="_blank" rel="noopener noreferrer" class="contact-link">💻 GitHub</a>
       </div>
-      
-      <div class="home-right">
-        <EvolvingSmudgeCanvas />
-      </div>
-    </div>
-    
-    <div class="home-features">
-      <div class="feature-card fade-in-element" style="animation-delay: 0.8s;">
-        <div class="face">Why Avionics</div>
-        <h3>Flight PCB Design</h3>
-        <p>Creatures that can fly live a different life than that can only walk</p>
-      </div>
-      
-      <div class="feature-card fade-in-element" style="animation-delay: 1.0s;">
-        <div class="face">Why Web</div>
-        <h3>Full Stack development</h3>
-        <p>AI can never replace an excellent web architect</p>
-      </div>
-      
-      <div class="feature-card fade-in-element" style="animation-delay: 1.2s;">
-        <div class="face">Why ML</div>
-        <h3>positional encoding research</h3>
-        <p>Incredible Architecture fused the hardware and software</p>
-      </div>
-    </div>
-  </div>
+    </section>
 
-  <!-- Profile Section -->
-  <div class="profile" id="profile-section">
-    <div class="container">
-      <h1>Profile</h1>
-      <div class="profile-content">
-        <div class="profile-text">
-          <h2>Introduction</h2>
-          <p>
-            I'm a Computer Engineering student at Georgia Tech, passionate about the intersection of hardware and software. 
-            My interests span machine learning, avionics systems, and web development.
-          </p>
-          
-          <h3>Education</h3>
-          <p>
-            <strong>Georgia Institute of Technology</strong><br>
-            Bachelor of Science in Computer Engineering<br>
-            Expected Graduation: 2026
-          </p>
-          
-          <h3>Technical Skills</h3>
-          <div class="skills-grid">
-            <div class="skill-category">
-              <h4>Programming Languages</h4>
-              <ul>
-                <li>Java</li>
-                <li>C/C++</li>
-                <li>Python</li>
-                <li>MATLAB</li>
-                <li>JavaScript</li>
-              </ul>
-            </div>
-            <div class="skill-category">
-              <h4>Hardware & Design</h4>
-              <ul>
-                <li>Altrium / KiCad</li>
-                <li>Embedded Systems</li>
-                <li>SOLIDWORKS</li>
-              </ul>
-            </div>
-            <div class="skill-category">
-              <h4>Technologies</h4>
-              <ul>
-                <li>React</li>
-                <li>MySQL</li>
-                <li>Git</li>
-              </ul>
-            </div>
-          </div>
-          
-          <h3>Research Interests</h3>
-          <p>
-            My research focuses on improving the efficiency of machine learning models with low level programming.
-          </p>
-        </div>
-        
-        <div class="resume-section">
-          <h3>Resume</h3>
-          <p>Download my complete resume to learn more about my experience and achievements.</p>
-          <a href={`${import.meta.env.BASE_URL}resume.pdf`} class="resume-download" target="_blank" rel="noopener noreferrer">
-            Download Resume (PDF)
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
+    <section class="research-interests-section">
+      <h2>Research Interests</h2>
+      <ul>
+        <li>🔬 Efficient Machine Learning Hardware Accelerators</li>
+        <li>💻 Low-Level Programming for AI/ML Performance</li>
+        <li>⚙️ Compiler Optimizations for Deep Learning</li>
+        <li>🚀 High-Performance Computing Architectures</li>
+      </ul>
+    </section>
 
-  <!-- Contact Section -->
-  <div class="contact" id="contact-section">
-    <div class="container">
-      <h1>Contact</h1>
+    <section class="currently-thinking-section">
+      <h2>Currently Thinking</h2>
+      <ul>
+        <li>Exploring new architectures for quantization-aware training. 🧠</li>
+        <li>Improving data loading efficiency in large-scale ML models. ⚙️</li>
+        <li>Optimizing GPU kernel performance for scientific computing. 💻</li>
+        <li>Understanding the implications of 6G on edge AI. 📡</li>
+      </ul>
+    </section>
 
-      <div class="contact-content">
-        <div class="contact-links">
-          <a href="mailto:xwu488@gatech.edu" class="contact-link">📧 xwu488@gatech.edu</a>
-          <a href="https://linkedin.com/in/xiaoyou-wu" target="_blank" rel="noopener noreferrer" class="contact-link">🔗 LinkedIn</a>
-          <a href="https://github.com/Laurence-Wu" target="_blank" rel="noopener noreferrer" class="contact-link">💻 GitHub</a>
+
+    {researchPosts.length > 0 && (
+      <section class="featured-research-section">
+        <h2>Featured Research & Publications</h2>
+        <div class="research-posts-grid">
+          {researchPosts.map(post => (
+            <article class="research-post-card">
+              <h3><a href={getUrl(`/blog/${post.slug}/`)}>{post.data.title}</a></h3>
+              <p class="post-description">{post.data.description}</p>
+              <time datetime={post.data.pubDate.toISOString()}>
+                {post.data.pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+              </time>
+              <a href={getUrl(`/blog/${post.slug}/`)} class="read-more">Read More →</a>
+            </article>
+          ))}
         </div>
-      </div>
-    </div>
+        <p class="all-research-link">
+          <a href={getUrl('/blog/')}>View All Research & Blog Posts →</a>
+        </p>
+      </section>
+    )}
+
+    <section class="education-section">
+      <h2>Education</h2>
+      <p>
+        <strong>Georgia Institute of Technology</strong><br>
+        Bachelor of Science in Computer Engineering<br>
+        Expected Graduation: 2026
+      </p>
+    </section>
   </div>
 </BaseLayout>
 
 <style>
-  /* Performance optimizations with CSS containment */
-  * {
-    box-sizing: border-box;
-  }
-  
-  /* Smooth loading overlay */
-  .loading-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, rgba(248, 181, 11, 0.9), rgba(221, 227, 132, 0.9));
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 9999;
-    opacity: 1;
-    visibility: visible;
-    transition: opacity 0.6s ease, visibility 0.6s ease;
-  }
-  
-  .loading-overlay.hidden {
-    opacity: 0;
-    visibility: hidden;
-  }
-  
-  .loading-spinner {
-    width: 50px;
-    height: 50px;
-    border: 4px solid rgba(255, 255, 255, 0.3);
-    border-top: 4px solid #fff;
-    border-radius: 50%;
-    animation: spin 1s ease-in-out infinite;
-    will-change: transform;
-  }
-  
-  @keyframes spin {
-    to { transform: rotate(360deg); }
-  }
-  
-  /* Optimized fade-in animation */
-  .fade-in-element {
-    opacity: 0;
-    transform: translateY(30px);
-    animation: fadeInUp 0.8s ease forwards;
-    will-change: opacity, transform;
-  }
-  
-  @keyframes fadeInUp {
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  
-  /* Optimized grid wave animations */
-  @keyframes gridWave {
-    0%, 100% {
-      transform: translateX(0) translateY(0);
-      opacity: 0.6;
-    }
-    50% {
-      transform: translateX(15px) translateY(-8px);
-      opacity: 0.4;
-    }
-  }
-
-  @keyframes gridWaveReverse {
-    0%, 100% {
-      transform: translateX(0) translateY(0);
-      opacity: 0.4;
-    }
-    50% {
-      transform: translateX(-12px) translateY(10px);
-      opacity: 0.7;
-    }
-  }
-  
-  /* Home Page Styles - Performance optimized */
-  .home {
-    display: grid;
-    grid-template-areas: "upper upper" "features features";
-    grid-template-rows: 1fr auto;
-    gap: var(--section-spacing);
-    max-width: var(--content-max-width);
-    margin: 0 auto;
-    padding: var(--section-spacing) 5%;
-    position: relative;
-    min-height: 80vh;
-    contain: layout style;
-    
-    /* Optimized background */
-    background: url('/HomeImage.jpg') center/cover no-repeat local;
-    border-radius: 25px;
-    box-shadow: 
-      0 0 30px rgba(0, 0, 0, 0.15),
-      0 0 60px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    will-change: transform;
-    transform: translateZ(0);
-  }
-
-  /* Grid backgrounds with reduced complexity */
-  .home::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.15);
-    z-index: 1;
-    pointer-events: none;
-  }
-
-  .home::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image: 
-      linear-gradient(rgba(138, 154, 126, 0.12) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(138, 154, 126, 0.12) 1px, transparent 1px);
-    background-size: 40px 40px;
-    animation: gridWave 25s ease-in-out infinite;
-    z-index: 2;
-    pointer-events: none;
-    will-change: transform, opacity;
-  }
-
-  .home-upper-grid {
-    grid-area: upper;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem;
-    align-items: start;
-    min-height: 60vh;
-    position: relative;
-    z-index: 3;
-  }
-
-  .home-upper-grid::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image: 
-      linear-gradient(rgba(212, 175, 55, 0.06) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(212, 175, 55, 0.06) 1px, transparent 1px);
-    background-size: 80px 80px;
-    animation: gridWaveReverse 35s ease-in-out infinite;
-    z-index: 1;
-    pointer-events: none;
-    will-change: transform, opacity;
-  }
-
-  /* Content sections */
-  .home-left {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    gap: 1rem;
-    position: relative;
-    z-index: 2;
-  }
-
-  .home-right {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100%;
-    position: relative;
-    z-index: 2;
-  }
-
-  /* Header styling */
-  .home-header {
-    padding-bottom: 1rem;
-    position: relative;
-  }
-
-  .home-header::after {
-    background: linear-gradient(to right, transparent, rgba(212, 175, 55, 0.6) 50%, transparent);
-    bottom: 0;
-    content: '';
-    height: 1px;
-    left: 0;
-    position: absolute;
-    width: 100%;
-  }
-
-  .home h1 {
-    color: var(--color-dark);
-    font-family: var(--font-heading);
-    font-size: 4.2rem;
-    font-weight: 700;
-    letter-spacing: 0.02em;
-    line-height: 1.2;
-    margin-bottom: 1.2rem;
-    position: relative;
-    text-rendering: optimizeLegibility;
-    will-change: transform;
-    transform: translateZ(0);
-  }
-
-  .home h1::after {
-    background: linear-gradient(to right, var(--color-gold), var(--color-gold-light));
-    bottom: -10px;
-    content: '';
-    height: 15px;
-    left: 0;
-    position: absolute;
-    width: 300px;
-  }
-
-  /* Typewriter container */
-  .home-main {
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    z-index: 1;
-    min-height: 200px;
-  }
-
-  .typewriter-container {
-    align-self: flex-start;
-    background-color: var(--color-card-bg);
-    border-radius: var(--border-radius);
-    box-shadow: var(--shadow-soft);
-    margin: 0;
-    max-width: 100%;
-    overflow: hidden;
-    padding: 2rem;
-    position: relative;
-    transition: all 0.3s ease;
-    will-change: transform, box-shadow;
-    transform: translateZ(0);
-  }
-
-  .typewriter-container:hover {
-    box-shadow: var(--shadow-medium);
-    transform: translateZ(0) translateY(-5px);
-  }
-
-  .typewriter-text {
-    color: var(--color-dark);
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 2.6rem;
-    font-weight: bold;
-    letter-spacing: 0.02em;
-    line-height: 1.6;
-    position: relative;
-    min-width: 20px;
-  }
-  
-  .cursor {
-    color: var(--color-gold);
-    font-size: 2.6rem;
-    font-weight: bold;
-    animation: blink 1.2s ease infinite;
-    will-change: opacity;
-  }
-  
-  @keyframes blink {
-    0%, 50% { opacity: 1; }
-    51%, 100% { opacity: 0; }
-  }
-
-  /* Feature cards - optimized */
-  .home-features {
-    display: grid;
-    gap: 2rem;
-    grid-area: features;
-    grid-template-columns: repeat(3, 1fr);
-    margin-top: 3.5rem;
-    padding-bottom: 100px;
-    position: relative;
-    z-index: 3;
-  }
-
-  .feature-card {
-    background-color: var(--premium-bg);
-    border: 6px solid var(--card-border);
-    border-radius: var(--border-radius);
-    box-shadow: var(--shadow-soft);
-    overflow: hidden;
-    padding: 1.8rem;
-    position: relative;
-    transition: all 0.3s ease;
-    will-change: transform, box-shadow;
-    transform: translateZ(0);
-  }
-
-  .feature-card .face {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(to right, #f8b50b, #dde384);
-    transition: transform 0.4s ease;
-    z-index: 2;
-    font-size: 2.5rem;
-    will-change: transform;
-    transform: translateZ(0);
-  }
-
-  .feature-card:hover .face {
-    transform: translateZ(0) translateX(-100%);
-  }
-
-  .feature-card:hover {
-    box-shadow: var(--shadow-medium);
-    transform: translateZ(0) translateY(-15px);
-  }
-
-  .feature-card h3 {
-    color: var(--color-dark);
-    font-family: var(--font-heading);
-    font-size: 1.8rem;
-    font-weight: 600;
-    letter-spacing: 0.01em;
-    margin-bottom: 1.2rem;
-    margin-top: 0;
-    padding-bottom: 0.6rem;
-    position: relative;
-  }
-
-  .feature-card h3::after {
-    background-color: var(--color-gold);
-    bottom: 0;
-    content: '';
-    height: 5px;
-    left: 0;
-    position: absolute;
-    width: 40px;
-  }
-
-  .feature-card p {
-    color: var(--terracotta);
-    font-family: var(--font-accent);
-    font-size: 1.2rem;
-    font-weight: bold;
-    line-height: 1.6;
-    margin: 0;
-    text-align: center;
-    opacity: 0;
-    transition: opacity 0.4s ease;
-    will-change: opacity;
-  }
-
-  .feature-card:hover p {
-    opacity: 1;
-  }
-
-  /* Shared section styles */
-  .profile,
-  .contact {
-    color: var(--color-text);
+  .research-home-container {
+    max-width: 800px;
+    margin: 4rem auto;
+    padding: 0 1.5rem;
     font-family: var(--font-body);
-    padding: var(--section-spacing) 0;
-    position: relative;
+    color: var(--deep-navy);
+    line-height: 1.7;
+  }
+
+  .hero-section {
     text-align: center;
-    overflow: hidden;
+    margin-bottom: 4rem;
   }
 
-  .profile::before,
-  .contact::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image: 
-      linear-gradient(rgba(138, 154, 126, 0.08) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(138, 154, 126, 0.08) 1px, transparent 1px);
-    background-size: 45px 45px;
-    animation: gridWave 30s ease-in-out infinite;
-    z-index: 1;
-    pointer-events: none;
-    will-change: transform, opacity;
+  .hero-section h1 {
+    font-size: 3rem;
+    color: var(--deep-navy);
+    margin-bottom: 0.5rem;
+    font-weight: 700;
   }
 
-  .profile::after,
-  .contact::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: transparent;
-    z-index: 2;
-    pointer-events: none;
+  .tagline {
+    font-size: 1.2rem;
+    color: var(--color-text-light);
+    margin-bottom: 1.5rem;
   }
 
-  .profile .container,
-  .contact .container {
-    position: relative;
-    z-index: 3;
-  }
-
-  /* Section headings */
-  .profile h1,
-  .contact h1 {
-    font-family: var(--font-heading);
-    font-size: 3.5rem;
+  .introduction {
+    font-size: 1.1rem;
+    color: var(--color-text);
     margin-bottom: 2rem;
-    font-weight: 700;
-    color: var(--color-dark);
-    position: relative;
-    text-rendering: optimizeLegibility;
   }
 
-  .profile h1::after,
-  .contact h1::after {
-    background: linear-gradient(to right, var(--color-gold), var(--color-gold-light));
-    bottom: -10px;
-    content: '';
-    height: 3px;
-    left: 50%;
-    position: absolute;
-    transform: translateX(-50%);
-    width: 80px;
-  }
-
-  /* Content containers */
-  .profile-content,
-  .contact-content {
-    background-color: var(--color-card-bg);
-    border-radius: var(--border-radius-lg);
-    box-shadow: var(--shadow-soft);
-    margin: 2rem auto;
-    max-width: 900px;
-    padding: var(--card-padding);
-    position: relative;
-    transition: box-shadow 0.3s ease;
-  }
-
-  .profile-content:hover,
-  .contact-content:hover {
-    box-shadow: var(--shadow-medium);
-  }
-
-  .profile-content::before,
-  .contact-content::before {
-    background: linear-gradient(to bottom, var(--color-gold), var(--color-gold-light));
-    content: '';
-    height: 100%;
-    left: 0;
-    position: absolute;
-    top: 0;
-    width: 4px;
-    border-radius: var(--border-radius-lg) 0 0 var(--border-radius-lg);
-  }
-
-  /* Typography */
-  .profile h2,
-  .contact h2 {
-    color: var(--color-dark);
-    font-family: var(--font-heading);
-    font-size: 2.5rem;
-    font-weight: 600;
-    margin-bottom: 1.5rem;
-    margin-top: 0;
-  }
-
-  .profile h3,
-  .contact h3 {
-    color: var(--color-gold);
-    font-family: var(--font-heading);
-    font-size: 2rem;
-    font-weight: 600;
-    margin-top: 2rem;
-    margin-bottom: 1rem;
-  }
-
-  .profile h4 {
-    color: var(--sage-green);
-    font-family: var(--font-heading);
-    font-size: 1.4rem;
-    font-weight: 600;
-    margin-bottom: 0.8rem;
-    margin-top: 0;
-  }
-
-  .profile p,
-  .contact p {
-    color: var(--color-text);
-    font-family: var(--font-accent);
-    font-size: 1.2rem;
-    line-height: 1.8;
-    margin-bottom: 1.5rem;
-    text-align: left;
-  }
-
-  /* Skills grid */
-  .skills-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2rem;
-    margin: 2rem 0;
-  }
-
-  .skill-category {
-    background-color: var(--ivory);
-    border-radius: var(--border-radius-lg);
-    padding: 1.5rem;
-    box-shadow: var(--shadow-soft);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-
-  .skill-category:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-medium);
-  }
-
-  .skill-category ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-
-  .skill-category li {
-    background-color: var(--sage-green);
-    color: white;
-    padding: 0.5rem 1rem;
-    margin: 0.5rem 0;
-    border-radius: 20px;
-    font-family: var(--font-body);
-    font-weight: 500;
-    transition: all 0.3s ease;
-  }
-
-  .skill-category li:hover {
-    background-color: var(--light-sage);
-    transform: scale(1.05);
-  }
-
-  /* Resume section */
-  .resume-section {
-    background-color: var(--sage-green);
-    border-radius: var(--border-radius-lg);
-    padding: 2rem;
-    margin-top: 3rem;
-    text-align: center;
-    color: white;
-  }
-
-  .resume-section h3 {
-    color: white;
-    margin-top: 0;
-    margin-bottom: 1rem;
-  }
-
-  .resume-section p {
-    color: white;
-    margin-bottom: 1.5rem;
-  }
-
-  .resume-download {
-    display: inline-block;
-    background-color: var(--color-gold);
-    color: var(--color-dark);
-    padding: 1rem 2rem;
-    border-radius: 8px;
-    text-decoration: none;
-    font-family: var(--font-body);
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    transition: all 0.3s ease;
-    box-shadow: var(--shadow-soft);
-  }
-
-  .resume-download:hover {
-    background-color: var(--color-gold-light);
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-medium);
-  }
-
-  /* Contact links - simplified */
   .contact-links {
     display: flex;
     justify-content: center;
     gap: 2rem;
     flex-wrap: wrap;
-    margin: 2rem 0;
   }
 
   .contact-link {
-    display: inline-block;
-    background-color: var(--sage-green);
-    color: white;
-    padding: 1rem 2rem;
-    border-radius: 8px;
+    color: var(--gold-accent);
     text-decoration: none;
-    font-family: var(--font-body);
     font-weight: 600;
-    transition: all 0.3s ease;
-    font-size: 1.1rem;
   }
 
   .contact-link:hover {
-    background-color: var(--light-sage);
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-medium);
-    color: white;
+    text-decoration: underline;
+    color: var(--color-gold-light);
   }
 
-  /* Responsive design - simplified */
-  @media (max-width: 1024px) {
-    .home {
-      gap: 3rem;
-      padding: 3rem 5%;
-    }
-    .home h1 { font-size: 3.8rem; }
+  h2 {
+    font-size: 2rem;
+    color: var(--deep-navy);
+    margin-top: 3rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    border-bottom: 2px solid var(--color-border);
+    padding-bottom: 0.5rem;
+  }
+
+  .research-interests-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .research-interests-section li {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    color: var(--color-text);
+  }
+
+  .featured-research-section {
+    margin-bottom: 4rem;
+  }
+
+  .research-posts-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .research-post-card {
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .research-post-card h3 {
+    font-size: 1.3rem;
+    color: var(--deep-navy);
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+  }
+
+  .research-post-card h3 a {
+    text-decoration: none;
+    color: var(--deep-navy);
+  }
+
+  .research-post-card h3 a:hover {
+    color: var(--gold-accent);
+  }
+
+  .post-description {
+    font-size: 1rem;
+    color: var(--color-text-light);
+    margin-bottom: 0.5rem;
+  }
+
+  .research-post-card time {
+    font-size: 0.9rem;
+    color: var(--color-text-light);
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .read-more {
+    color: var(--gold-accent);
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .read-more:hover {
+    text-decoration: underline;
+    color: var(--color-gold-light);
+  }
+
+  .all-research-link {
+    text-align: center;
+    margin-top: 2rem;
+  }
+  
+  .all-research-link a {
+    color: var(--gold-accent);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  
+  .all-research-link a:hover {
+    text-decoration: underline;
+    color: var(--color-gold-light);
+  }
+
+  .education-section {
+    text-align: center;
+    margin-top: 4rem;
+  }
+
+  .education-section p {
+    font-size: 1.1rem;
+    color: var(--color-text);
+    margin: 0;
+  }
+
+  .currently-thinking-section {
+    margin-top: 4rem;
+    margin-bottom: 4rem;
+  }
+
+  .currently-thinking-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .currently-thinking-section li {
+    background-color: var(--warm-neutral);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 1.2rem;
+    font-size: 1rem;
+    color: var(--deep-navy);
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+
+  .education-section strong {
+    color: var(--deep-navy);
   }
 
   @media (max-width: 768px) {
-    .home {
-      gap: 2.5rem;
-      padding: 2.5rem 5%;
+    .hero-section h1 {
+      font-size: 2.5rem;
     }
-    .home-upper-grid {
-      grid-template-columns: 1fr;
-      gap: 1.5rem;
-      min-height: auto;
+    .tagline {
+      font-size: 1.1rem;
     }
-    .home-features { grid-template-columns: 1fr; }
-    .home h1 { font-size: 3.2rem; }
-    .profile h1, .contact h1 { font-size: 2.8rem; }
-    .skills-grid { grid-template-columns: 1fr; gap: 1.5rem; }
-    .contact-links { flex-direction: column; gap: 1rem; }
-  }
-
-  @media (max-width: 480px) {
-    .home {
-      padding: 2rem 1.5rem;
+    h2 {
+      font-size: 1.8rem;
     }
-    .home h1 { font-size: 2.8rem; }
-    .typewriter-container { padding: 2rem; }
-    .profile h1, .contact h1 { font-size: 2.4rem; }
-    .profile-content, .contact-content { padding: 2rem; margin: 1.5rem; }
-  }
-  
-  /* Reduce motion for accessibility */
-  @media (prefers-reduced-motion: reduce) {
-    .fade-in-element,
-    .feature-card,
-    .typewriter-container {
-      animation: none;
-      transition: none;
-    }
-    .cursor { animation: none; opacity: 1; }
   }
 </style>
-
-<script>
-  // Optimized animation management
-  class PageAnimationManager {
-    private isLoaded = false;
-    private typewriterText = "Try your first impressionist painting";
-    private currentIndex = 0;
-    private typewriterElement: HTMLElement | null = null;
-    private cursorElement: HTMLElement | null = null;
-    private loadingOverlay: HTMLElement | null = null;
-    
-    constructor() {
-      this.init();
-    }
-    
-    private init(): void {
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', () => this.setupPage());
-      } else {
-        this.setupPage();
-      }
-    }
-    
-    private setupPage(): void {
-      this.typewriterElement = document.getElementById("typewriter-text");
-      this.cursorElement = document.getElementById("cursor");
-      this.loadingOverlay = document.getElementById("loading-overlay");
-      
-      this.preloadResources().then(() => {
-        this.hideLoadingOverlay();
-        this.startAnimations();
-      });
-    }
-    
-    private async preloadResources(): Promise<void> {
-      const promises: Promise<void>[] = [];
-      
-      // Preload background image
-      const imagePromise = new Promise<void>((resolve, reject) => {
-        const img = new Image();
-        img.onload = () => resolve();
-        img.onerror = () => reject();
-        img.src = '/HomeImage.jpg';
-      });
-      
-             promises.push(imagePromise, document.fonts.ready.then(() => {}));
-      
-      try {
-        await Promise.all(promises);
-        await new Promise(resolve => setTimeout(resolve, 300));
-      } catch (error) {
-        await new Promise(resolve => setTimeout(resolve, 500));
-      }
-    }
-    
-    private hideLoadingOverlay(): void {
-      if (this.loadingOverlay) {
-        this.loadingOverlay.classList.add('hidden');
-        setTimeout(() => {
-          this.loadingOverlay?.remove();
-        }, 600);
-      }
-    }
-    
-    private startAnimations(): void {
-      setTimeout(() => this.startTypewriter(), 800);
-      this.startFadeInAnimations();
-    }
-    
-    private startFadeInAnimations(): void {
-      const elements = document.querySelectorAll('.fade-in-element');
-      elements.forEach((element, index) => {
-        (element as HTMLElement).style.animationDelay = `${index * 200}ms`;
-      });
-    }
-    
-    private startTypewriter(): void {
-      if (!this.typewriterElement) return;
-      
-      this.typewriterElement.textContent = "";
-      this.currentIndex = 0;
-      this.typeNextCharacter();
-    }
-    
-    private typeNextCharacter(): void {
-      if (this.currentIndex < this.typewriterText.length && this.typewriterElement) {
-        this.typewriterElement.textContent = this.typewriterText.slice(0, this.currentIndex + 1);
-        this.currentIndex++;
-        
-        const delay = 50 + Math.random() * 30 + (this.typewriterText[this.currentIndex - 1] === ' ' ? 100 : 0);
-        setTimeout(() => this.typeNextCharacter(), delay);
-      } else {
-        setTimeout(() => {
-          if (this.cursorElement) {
-            this.cursorElement.style.display = 'none';
-          }
-        }, 2000);
-      }
-    }
-  }
-  
-  // Initialize the animation manager
-  new PageAnimationManager();
-</script>

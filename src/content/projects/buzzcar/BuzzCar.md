@@ -4,6 +4,7 @@ description: "A custom-designed autonomous vehicle with advanced power managemen
 pubDate: 2025-07-31
 githubLink: https://github.com/Laurence-Wu/BuzzRacer-V2.git
 tags: ["Autonomous Vehicles", "Arduino", "LiDAR", "PCB Design", "Power Management", "Embedded Systems"]
+thumbnail: "https://picsum.photos/seed/buzzcar/400/300"
 ---
 
 ## My feelings about this project

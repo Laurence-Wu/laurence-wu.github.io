@@ -43,6 +43,12 @@ const { title, description, pubDate, updatedDate, author = 'Laurence', image, ta
           </div>
         )}
       </header>
+
+      {image && (
+        <div class="post-image">
+          <img src={image} alt={title} />
+        </div>
+      )}
       
       <TableOfContents />
       
@@ -71,36 +77,30 @@ const { title, description, pubDate, updatedDate, author = 'Laurence', image, ta
       <a href="/blog" class="back-link">← Back to Blog</a>
     </div>
   </footer>
+<script define:vars={{ tags }}>
+  tags.forEach(tag => {
+    if (tag.includes('/')) {
+      console.warn(`[Tag Warning] The tag "${tag}" contains a slash, which may cause issues with URL routing. Please consider using a different separator like a hyphen (-).`);
+    }
+  });
+</script>
+
 </BaseLayout>
 
 <style>
   .blog-post {
     max-width: 800px;
     margin: 0 auto;
-    padding: 1rem 1rem; /* Reduced top padding for compactness */
-    margin-top: -1rem; /* Pull closer to navbar */
-    min-height: calc(100vh - 180px); /* Adjusted for compact layout */
-    
-    /* Comfortable reading background */
-    background: linear-gradient(135deg, 
-      #fefefe 0%, 
-      #f8f6f0 25%, 
-      #f4f1e8 50%, 
-      #f0ede4 75%, 
-      #ede9e0 100%);
-    
-    /* Subtle texture pattern for reading comfort */
-    background-image: 
-      radial-gradient(circle at 25% 25%, rgba(244, 232, 209, 0.3) 0%, transparent 50%),
-      radial-gradient(circle at 75% 75%, rgba(244, 232, 209, 0.2) 0%, transparent 50%);
+    padding: 1rem 1rem;
+    margin-top: -1rem;
+    min-height: calc(100vh - 180px);
   }
   
-  /* Adjust layout for TOC on larger screens */
   @media (min-width: 1201px) {
     .blog-post {
-      margin-left: 340px; /* Increased margin for new TOC width + spacing */
+      margin-left: 340px;
       margin-right: auto;
-      max-width: calc(100vw - 380px); /* Responsive max-width */
+      max-width: calc(100vw - 380px);
     }
     
     .blog-footer .container {
@@ -110,39 +110,23 @@ const { title, description, pubDate, updatedDate, author = 'Laurence', image, ta
   }
   
   .post-header {
-    margin-bottom: 1rem; /* Reduced margin for compactness */
-    margin-top: 0.5rem; /* Small top margin for navbar gap closure */
-    border-bottom: 1px solid rgba(138, 154, 126, 0.3);
+    margin-bottom: 1rem;
+    margin-top: 0.5rem;
+    border-bottom: 1px solid var(--color-border);
     padding-bottom: 1rem;
-    background: rgba(255, 255, 255, 0.8);
-    padding: 1.5rem; /* Reduced padding for compactness */
+    padding: 1.5rem;
     border-radius: 12px;
-    box-shadow: 0 2px 10px rgba(138, 154, 126, 0.1);
   }
   
   .blog-footer {
-    background: linear-gradient(135deg, #8A9A7E 0%, #39647c 50%, #2E3A59 100%);
-    padding: 1.5rem 0; /* Reduced padding for compactness */
-    border-top: 3px solid rgba(138, 154, 126, 0.3);
-    margin-top: 1rem; /* Reduced margin for compactness */
-    margin-bottom: -1rem; /* Negative margin to close gap with site footer */
+    background: var(--deep-navy);
+    padding: 1.5rem 0;
+    border-top: 3px solid var(--color-border);
+    margin-top: 1rem;
+    margin-bottom: -1rem;
     position: relative;
     overflow: hidden;
     width: 100%;
-  }
-  
-  .blog-footer::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: 
-      radial-gradient(circle at 20% 20%, rgba(244, 232, 209, 0.1) 0%, transparent 50%),
-      radial-gradient(circle at 80% 80%, rgba(212, 175, 55, 0.08) 0%, transparent 50%);
-    pointer-events: none;
-    z-index: 1;
   }
   
   .container {
@@ -154,94 +138,53 @@ const { title, description, pubDate, updatedDate, author = 'Laurence', image, ta
   }
   
   .back-link {
-    color: #F4E8D1;
+    color: var(--warm-neutral);
     text-decoration: none;
     font-weight: 600;
     font-size: 1.1rem;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.8rem;
-    transition: all 0.3s ease;
-    font-family: var(--font-body, 'Montserrat', sans-serif);
-    padding: 1rem 2rem;
-    border-radius: 12px;
-    background: rgba(244, 232, 209, 0.1);
-    border: 2px solid rgba(244, 232, 209, 0.3);
-    position: relative;
-    overflow: hidden;
   }
-  
-  .back-link::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba(244, 232, 209, 0.2),
-      transparent
-    );
-    transition: left 0.5s ease;
-  }
-  
-  .back-link:hover::before {
-    left: 100%;
-  }
-  
-  .back-link:hover {
-    color: #ffffff;
-    background: rgba(244, 232, 209, 0.2);
-    border-color: #F4E8D1;
-    transform: translateX(-8px) translateY(-2px);
-    box-shadow: 
-      0 8px 20px rgba(46, 58, 89, 0.3),
-      0 4px 10px rgba(138, 154, 126, 0.2);
-  }
-  
-  .back-link::after {
-    content: '←';
-    font-size: 1.2rem;
-    transition: transform 0.3s ease;
-    margin-right: 0.5rem;
-  }
-  
-  .back-link:hover::after {
-    transform: translateX(-4px);
-  }
-  
+
   .post-header h1 {
-    font-size: 2.5rem;
+    font-size: 2rem;
     margin-bottom: 0.5rem;
     line-height: 1.2;
-    color: var(--deep-navy, #2E3A59);
-    font-family: var(--font-heading, 'Playfair Display', serif);
+    color: var(--deep-navy);
+    font-family: var(--font-heading);
+  }
+
+  .post-image {
+    margin: 2rem 0;
+    text-align: center;
+  }
+
+  .post-image img {
+    max-width: 100%;
+    border-radius: 8px;
   }
   
+  
   .post-meta {
-    color: #666;
+    color: var(--color-text-light);
     font-size: 0.9rem;
     margin-bottom: 1rem;
-    font-family: var(--font-body, 'Montserrat', sans-serif);
+    font-family: var(--font-body);
   }
   
   .post-meta time {
     font-weight: 500;
-    color: var(--sage-green, #8A9A7E);
+    color: var(--color-text-light);
   }
   
   .author {
     margin-left: 1rem;
-    color: var(--terracotta, #39647c);
+    color: var(--color-text-light);
     font-weight: 500;
   }
   
   .updated {
     margin-left: 1rem;
     font-style: italic;
-    color: var(--warm-brown, #A87C5D);
+    color: var(--color-text-light);
   }
   
   .tags {
@@ -252,67 +195,46 @@ const { title, description, pubDate, updatedDate, author = 'Laurence', image, ta
   }
   
   .tag {
-    background: linear-gradient(135deg, rgba(138, 154, 126, 0.1) 0%, rgba(212, 175, 55, 0.1) 100%);
-    color: var(--deep-navy, #2E3A59);
+    background: rgba(10, 35, 66, 0.05);
+    color: var(--deep-navy);
     padding: 0.4rem 0.8rem;
     border-radius: 20px;
     font-size: 0.8rem;
     font-weight: 600;
-    border: 1px solid rgba(138, 154, 126, 0.3);
-    transition: all 0.3s ease;
-    font-family: var(--font-body, 'Montserrat', sans-serif);
+    border: 1px solid var(--color-border);
+    font-family: var(--font-body);
     text-decoration: none;
     display: inline-block;
   }
   
   .tag:hover {
-    background: linear-gradient(135deg, rgba(138, 154, 126, 0.2) 0%, rgba(212, 175, 55, 0.2) 100%);
-    transform: translateY(-1px);
-    box-shadow: 0 2px 8px rgba(138, 154, 126, 0.3);
-    color: var(--terracotta, #39647c);
+    background: rgba(10, 35, 66, 0.1);
+    color: var(--gold-accent);
   }
   
   .post-content {
     line-height: 1.8;
-    color: #2c3e50;
-    font-family: var(--font-accent, 'Cormorant Garamond', serif);
+    color: var(--deep-navy);
+    font-family: var(--font-accent);
     font-size: 1.1rem;
-    
-    /* Enhanced content styling for comfortable reading */
-    background: rgba(255, 255, 255, 0.9);
     padding: 2.5rem;
-    border-radius: 16px;
     margin: 2rem 0;
-    border: 1px solid rgba(138, 154, 126, 0.2);
-    box-shadow: 
-      0 4px 20px rgba(0, 0, 0, 0.08),
-      0 2px 8px rgba(138, 154, 126, 0.1);
-    
-    /* Better text rendering for reading comfort */
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-rendering: optimizeLegibility;
-    
-    /* Improved text spacing for reading */
-    letter-spacing: 0.01em;
-    word-spacing: 0.05em;
   }
   
-  /* Enhanced typography for blog content */
   .post-content :global(h2) {
-    color: var(--deep-navy, #2E3A59);
-    font-family: var(--font-heading, 'Playfair Display', serif);
+    color: var(--deep-navy);
+    font-family: var(--font-heading);
     font-size: 1.8rem;
     margin-top: 2.5rem;
     margin-bottom: 1rem;
-    border-bottom: 2px solid rgba(138, 154, 126, 0.3);
+    border-bottom: 2px solid var(--color-border);
     padding-bottom: 0.5rem;
     line-height: 1.3;
   }
   
   .post-content :global(h3) {
-    color: var(--terracotta, #39647c);
-    font-family: var(--font-heading, 'Playfair Display', serif);
+    color: var(--deep-navy);
+    font-family: var(--font-heading);
     font-size: 1.4rem;
     margin-top: 2rem;
     margin-bottom: 0.8rem;
@@ -322,8 +244,8 @@ const { title, description, pubDate, updatedDate, author = 'Laurence', image, ta
   .post-content :global(h4),
   .post-content :global(h5),
   .post-content :global(h6) {
-    color: var(--warm-brown, #A87C5D);
-    font-family: var(--font-heading, 'Playfair Display', serif);
+    color: var(--deep-navy);
+    font-family: var(--font-heading);
     margin-top: 1.5rem;
     margin-bottom: 0.8rem;
     line-height: 1.4;
@@ -332,30 +254,29 @@ const { title, description, pubDate, updatedDate, author = 'Laurence', image, ta
   .post-content :global(p) {
     margin-bottom: 1.5rem;
     line-height: 1.8;
-    color: #34495e;
+    color: var(--deep-navy);
   }
   
   .post-content :global(a) {
-    color: var(--sage-green, #8A9A7E);
+    color: var(--gold-accent);
     font-weight: 600;
-    transition: color 0.3s ease;
     text-decoration: underline;
-    text-decoration-color: rgba(138, 154, 126, 0.3);
+    text-decoration-color: rgba(169, 135, 67, 0.3);
     text-underline-offset: 3px;
   }
   
   .post-content :global(a:hover) {
-    color: var(--terracotta, #39647c);
-    text-decoration-color: rgba(57, 100, 124, 0.6);
+    color: var(--color-gold-light);
+    text-decoration-color: rgba(169, 135, 67, 0.6);
   }
   
   .post-content :global(blockquote) {
-    border-left: 4px solid var(--sage-green, #8A9A7E);
+    border-left: 4px solid var(--gold-accent);
     padding-left: 1.5rem;
     margin: 2rem 0;
     font-style: italic;
-    color: var(--warm-brown, #A87C5D);
-    background: rgba(138, 154, 126, 0.05);
+    color: var(--color-text-light);
+    background: rgba(169, 135, 67, 0.05);
     padding: 1.5rem;
     border-radius: 0 12px 12px 0;
     font-size: 1.05em;
@@ -371,12 +292,12 @@ const { title, description, pubDate, updatedDate, author = 'Laurence', image, ta
   
   .post-content :global(li) {
     margin-bottom: 0.8rem;
-    color: #34495e;
+    color: var(--deep-navy);
   }
   
   .post-content :global(code) {
-    background: rgba(138, 154, 126, 0.1);
-    color: #2E3A59;
+    background: rgba(10, 35, 66, 0.05);
+    color: var(--deep-navy);
     padding: 0.2em 0.4em;
     border-radius: 4px;
     font-family: 'Fira Code', monospace;
@@ -384,8 +305,8 @@ const { title, description, pubDate, updatedDate, author = 'Laurence', image, ta
   }
   
   .post-content :global(pre) {
-    background: #2c3e50;
-    color: #ecf0f1;
+    background: #0A2342;
+    color: #F8F7F4;
     padding: 1.5rem;
     border-radius: 8px;
     margin: 1.5rem 0;
@@ -399,7 +320,6 @@ const { title, description, pubDate, updatedDate, author = 'Laurence', image, ta
     padding: 0;
   }
   
-  /* Image styling for blog content */
   .post-content :global(img) {
     max-width: 100%;
     height: auto;
@@ -407,37 +327,9 @@ const { title, description, pubDate, updatedDate, author = 'Laurence', image, ta
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     margin: 1.5rem auto;
     display: block;
-    
-    /* Limit maximum size for large images */
-    max-height: 500px;
-    width: auto;
-    
-    /* Ensure images don't overflow container */
     object-fit: contain;
   }
   
-  /* Special styling for images that should be smaller */
-  .post-content :global(img[src*="grouped_vs_row_major_ordering"]) {
-    max-width: 600px;
-    max-height: 400px;
-  }
-  
-  /* General styling for diagram images */
-  .post-content :global(img[alt*="ordering"]),
-  .post-content :global(img[alt*="diagram"]),
-  .post-content :global(img[alt*="architecture"]) {
-    max-width: 700px;
-    max-height: 450px;
-  }
-  
-  /* Hover effect for images */
-  .post-content :global(img:hover) {
-    transform: scale(1.02);
-    transition: transform 0.3s ease;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-  }
-  
-  /* Content with sidebar layout */
   .content-with-sidebar {
     display: flex;
     gap: 3rem;
@@ -451,25 +343,17 @@ const { title, description, pubDate, updatedDate, author = 'Laurence', image, ta
 
   .front-picture-sidebar {
     flex: 0 0 300px; /* Fixed width sidebar */
-    background: rgba(255, 255, 255, 0.95);
-    padding: 2rem;
-    border-radius: 16px;
-    box-shadow: 
-      0 8px 32px rgba(0, 0, 0, 0.12),
-      0 4px 16px rgba(138, 154, 126, 0.1);
-    border: 1px solid rgba(138, 154, 126, 0.2);
     position: sticky;
     top: 2rem;
-    backdrop-filter: blur(8px);
   }
 
   .front-picture-sidebar h4 {
-    color: #2E3A59;
-    font-family: var(--font-heading, 'Playfair Display', serif);
+    color: var(--deep-navy);
+    font-family: var(--font-heading);
     font-size: 1.2rem;
     margin: 0 0 1.5rem 0;
     text-align: center;
-    border-bottom: 2px solid rgba(138, 154, 126, 0.3);
+    border-bottom: 2px solid var(--color-border);
     padding-bottom: 0.8rem;
   }
 
@@ -478,17 +362,9 @@ const { title, description, pubDate, updatedDate, author = 'Laurence', image, ta
     height: auto;
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
 
-  .front-picture-image:hover {
-    transform: scale(1.03);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-  }
-
-  /* Responsive adjustments for sidebar */
   @media (max-width: 1024px) {
-    /* Stack sidebar below main content on smaller screens */
     .content-with-sidebar {
       flex-direction: column;
       gap: 2rem;
@@ -502,21 +378,20 @@ const { title, description, pubDate, updatedDate, author = 'Laurence', image, ta
     }
   }
 
-  /* Mobile optimizations */
   @media (max-width: 768px) {
     .blog-post {
-      padding: 0.5rem 0.5rem; /* More compact on mobile */
-      margin-top: -0.5rem; /* Closer to navbar on mobile */
+      padding: 0.5rem 0.5rem;
+      margin-top: -0.5rem;
     }
     
     .post-header {
-      padding: 1rem; /* Reduced padding */
-      margin: 0.5rem 0; /* Reduced margins */
+      padding: 1rem;
+      margin: 0.5rem 0;
     }
     
     .post-content {
-      padding: 1rem; /* Reduced padding */
-      margin: 0.5rem 0; /* Reduced margins */
+      padding: 1rem;
+      margin: 0.5rem 0;
       font-size: 1rem;
       line-height: 1.7;
     }
@@ -526,7 +401,7 @@ const { title, description, pubDate, updatedDate, author = 'Laurence', image, ta
     }
     
     .blog-footer {
-      padding: 1rem 0; /* More compact on mobile */
+      padding: 1rem 0;
       margin-top: 0.5rem;
       margin-bottom: -0.5rem;
     }
@@ -539,30 +414,6 @@ const { title, description, pubDate, updatedDate, author = 'Laurence', image, ta
       padding: 1.5rem;
       max-width: none;
     }
-    
-    /* Mobile image optimizations */
-    .post-content :global(img) {
-      max-height: 300px; /* Smaller on mobile */
-      margin: 1rem auto; /* Reduced margins */
-    }
-    
-    .post-content :global(img[src*="grouped_vs_row_major_ordering"]) {
-      max-width: 90%; /* More responsive on mobile */
-      max-height: 250px;
-    }
-    
-    /* Mobile styling for diagram images */
-    .post-content :global(img[alt*="ordering"]),
-    .post-content :global(img[alt*="diagram"]),
-    .post-content :global(img[alt*="architecture"]) {
-      max-width: 90%;
-      max-height: 280px;
-    }
-    
-    /* Disable hover effects on mobile */
-    .post-content :global(img:hover) {
-      transform: none;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    }
   }
-</style> 
+</style>
+ 

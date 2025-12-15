@@ -4,6 +4,7 @@ description: "A sophisticated flight computer for rockets featuring STM32MP1 pro
 pubDate: 2025-07-31
 githubLink: https://github.com/Laurence-Wu/RocketFlightComputer.git
 tags: ["Aerospace", "STM32", "Flight Control", "Embedded Systems", "Sensors", "Real-time Systems"]
+thumbnail: "https://picsum.photos/seed/flight-computer/400/300"
 ---
 
 ## Technical Implementation: How It Works
