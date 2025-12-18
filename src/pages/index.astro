@@ -14,14 +14,13 @@ const researchPosts = allBlogPosts
   <div class="container research-home-container">
     <section class="hero-section">
       <h1>Xiaoyou Wu</h1>
-      <p class="tagline">Computer Engineering Student | Research in Low-Level ML Optimization</p>
+      <p class="tagline">Computer Engineering @GaTech | Research in Efficient LLM & robot localization</p>
       <p class="introduction">
         Welcome to my research portfolio. I am a Computer Engineering student at Georgia Tech,
-        passionately exploring the intersection of hardware and software with a focus on
-        optimizing machine learning models at a low level.
+        passionately exploring efficient LLM inference, signal processing and high-speed PCB design
       </p>
       <div class="contact-links">
-        <a href="mailto:xwu488@gatech.edu" class="contact-link">📧 Email</a>
+        <a href="mailto:xwu488@gatech.edu" class="contact-link">📧: xwu488@gatech.edu</a>
         <a href="https://linkedin.com/in/xiaoyou-wu" target="_blank" rel="noopener noreferrer" class="contact-link">🔗 LinkedIn</a>
         <a href="https://github.com/Laurence-Wu" target="_blank" rel="noopener noreferrer" class="contact-link">💻 GitHub</a>
       </div>
@@ -30,27 +29,54 @@ const researchPosts = allBlogPosts
     <section class="research-interests-section">
       <h2>Research Interests</h2>
       <ul>
-        <li>🔬 Efficient Machine Learning Hardware Accelerators</li>
-        <li>💻 Low-Level Programming for AI/ML Performance</li>
-        <li>⚙️ Compiler Optimizations for Deep Learning</li>
-        <li>🚀 High-Performance Computing Architectures</li>
+        <li>Efficient NLP : LLM Quantization, Diffusion LLM, Speculative decoding</li>
+        <li>Robot Localization: Particle Filters, SLAM</li>
+        <li>Advanced PCB Design: High-Speed Layout, Signal Integrity, analog circuit design</li>
+        <li>Signal Processing and Control theory: root locus, Autocorrection, Nyquist Plot</li>
       </ul>
     </section>
 
     <section class="currently-thinking-section">
-      <h2>Currently Thinking</h2>
-      <ul>
-        <li>Exploring new architectures for quantization-aware training. 🧠</li>
-        <li>Improving data loading efficiency in large-scale ML models. ⚙️</li>
-        <li>Optimizing GPU kernel performance for scientific computing. 💻</li>
-        <li>Understanding the implications of 6G on edge AI. 📡</li>
-      </ul>
+        <h2>Currently Thinking</h2>
+        <ul id="thinking-list">
+            <!-- Thinking Item 1 -->
+            <li class="thinking-item">
+                <p class="static-text">The relationship between transfer function and electric field?</p>
+                <div class="animated-text-container">
+                    <span class="animated-text" data-content="A transfer function $H(s)$ is more than a ratio; it is the signature of a medium’s soul. In electromagnetics, space acts as a processor—a spatial filter where $E_{out}(s) = H(s) \cdot E_{in}(s)$. Permittivity $\epsilon(\omega)$ is the material's personality, governing how it breathes in response to the pressure of an external field."></span>
+                </div>
+            </li>
+
+            <!-- Thinking Item 2 -->
+            <li class="thinking-item">
+                <p class="static-text">How does Diffusion Blocks changes the inference and what factor determine the most efficient block size ?</p>
+                <div class="animated-text-container">
+                    <span class="animated-text" data-content="Diffusion Blocks are architectural heartbeats. Larger blocks offer contextual depth for global alignment but demand heavy GPU tolls. Efficiency is found at the Information Bottleneck: matching the block's receptive field to the Latent Resolution to ensure every FLOP sculpts meaning rather than redundant noise."></span>
+                </div>
+            </li>
+
+            <!-- Thinking Item 3 -->
+            <li class="thinking-item">
+                <p class="static-text">Why Circuits have relatively larger LTI range than other field (language, material science, etc.)?</p>
+                <div class="animated-text-container">
+                    <span class="animated-text" data-content="Circuits enjoy mathematical grace because we manufacture them to obey our symbols. Through negative feedback, we create 'linear islands' in a non-linear sea. Unlike language, where context is volatile, circuits thrive on Superposition—where the response is blissfully indifferent to surrounding signals."></span>
+                </div>
+            </li>
+
+            <!-- Thinking Item 4 -->
+            <li class="thinking-item">
+                <p class="static-text">How to develop sharp intuition on the electrical components work ?</p>
+                <div class="animated-text-container">
+                    <span class="animated-text" data-content="To 'see' electricity, look for where the energy is hiding. See Voltage as the desperate urge of electrons to find peace and Current as their kinetic rush. Intuition is forged in the sandbox of failure, understanding that electricity is a fluid, living force seeking equilibrium."></span>
+                </div>
+            </li>
+        </ul>
     </section>
 
 
     {researchPosts.length > 0 && (
       <section class="featured-research-section">
-        <h2>Featured Research & Publications</h2>
+        <h2>Featured Research Ideas</h2>
         <div class="research-posts-grid">
           {researchPosts.map(post => (
             <article class="research-post-card">
@@ -69,14 +95,6 @@ const researchPosts = allBlogPosts
       </section>
     )}
 
-    <section class="education-section">
-      <h2>Education</h2>
-      <p>
-        <strong>Georgia Institute of Technology</strong><br>
-        Bachelor of Science in Computer Engineering<br>
-        Expected Graduation: 2026
-      </p>
-    </section>
   </div>
 </BaseLayout>
 
@@ -258,9 +276,25 @@ const researchPosts = allBlogPosts
     font-size: 1rem;
     color: var(--deep-navy);
     display: flex;
-    align-items: center;
+    flex-direction: column;
     gap: 0.8rem;
     box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+  }
+
+  .currently-thinking-section li:hover,
+  .currently-thinking-section li.is-hovered {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    background-color: #fffaf0; /* Light orange */
+  }
+
+  .animated-text-container {
+    display: none;
+  }
+
+  .currently-thinking-section li.is-hovered .animated-text-container {
+    display: block;
   }
 
   .education-section strong {
@@ -279,3 +313,42 @@ const researchPosts = allBlogPosts
     }
   }
 </style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const thinkingItems = document.querySelectorAll('.thinking-item');
+    let typingTimeout;
+
+    thinkingItems.forEach(item => {
+      const animatedTextContainer = item.querySelector('.animated-text');
+      const animatedText = animatedTextContainer.getAttribute('data-content');
+
+      item.addEventListener('mouseenter', () => {
+        if (typingTimeout) clearTimeout(typingTimeout);
+        animatedTextContainer.innerHTML = ''; // Use innerHTML for KaTeX
+        item.classList.add('is-hovered');
+        
+        let i = 0;
+        function typeWriter() {
+          if (i < animatedText.length) {
+            animatedTextContainer.textContent += animatedText.charAt(i);
+            i++;
+            typingTimeout = setTimeout(typeWriter, 25); // Faster typing speed
+          } else {
+            // Render LaTeX after typing is complete
+            katex.render(animatedTextContainer.textContent, animatedTextContainer, {
+              throwOnError: false
+            });
+          }
+        }
+        typeWriter();
+      });
+
+      item.addEventListener('mouseleave', () => {
+        if (typingTimeout) clearTimeout(typingTimeout);
+        animatedTextContainer.innerHTML = '';
+        item.classList.remove('is-hovered');
+      });
+    });
+  });
+</script>
