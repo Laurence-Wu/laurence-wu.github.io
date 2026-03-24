@@ -1,0 +1,106 @@
+---
+export interface ThinkingItem {
+  question: string;
+  answer: string;
+}
+
+export interface Props {
+  items: ThinkingItem[];
+}
+
+const { items } = Astro.props;
+---
+
+<section class="currently-thinking-section">
+  <h2>Currently Thinking</h2>
+  <ul id="thinking-list">
+    {items.map(item => (
+      <li class="thinking-item">
+        <p class="static-text">{item.question}</p>
+        <p class="answer-text">{item.answer}</p>
+      </li>
+    ))}
+  </ul>
+</section>
+
+<style>
+  .currently-thinking-section {
+    margin-top: 4rem;
+    margin-bottom: 4rem;
+  }
+
+  .currently-thinking-section h2 {
+    font-size: 2rem;
+    color: var(--deep-navy);
+    margin-top: 3rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    border-bottom: 2px solid var(--color-border);
+    padding-bottom: 0.5rem;
+  }
+
+  .currently-thinking-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .currently-thinking-section li {
+    background-color: var(--warm-neutral);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 1.2rem;
+    font-size: 1rem;
+    color: var(--deep-navy);
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+  }
+
+  .currently-thinking-section li:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    background-color: #fffaf0;
+  }
+
+  .static-text {
+    font-weight: 600;
+    margin: 0;
+  }
+
+  .answer-text {
+    margin: 0;
+    color: var(--color-text-light);
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+</style>
+
+<script is:inline>
+  // Render LaTeX math in ThinkingSection answer text
+  function renderThinkingMath() {
+    if (typeof renderMathInElement === 'function') {
+      const section = document.querySelector('.currently-thinking-section');
+      if (section) {
+        renderMathInElement(section, {
+          delimiters: [
+            { left: '$$', right: '$$', display: true },
+            { left: '$', right: '$', display: false },
+            { left: '\\(', right: '\\)', display: false },
+            { left: '\\[', right: '\\]', display: true }
+          ],
+          throwOnError: false
+        });
+      }
+    } else {
+      // KaTeX not loaded yet, retry after a short delay
+      setTimeout(renderThinkingMath, 200);
+    }
+  }
+  document.addEventListener('DOMContentLoaded', renderThinkingMath);
+</script>

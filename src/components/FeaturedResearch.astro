@@ -1,0 +1,119 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { getUrl } from '../utils/url';
+import { formatDate } from '../utils/date';
+
+export interface Props {
+  posts: CollectionEntry<'blogs'>[];
+  viewAllHref?: string;
+}
+
+const { posts, viewAllHref = '/blog/' } = Astro.props;
+---
+
+{posts.length > 0 && (
+  <section class="featured-research-section">
+    <h2>Featured Research Ideas</h2>
+    <div class="research-posts-grid">
+      {posts.map(post => (
+        <article class="research-post-card">
+          <h3><a href={getUrl(`/blog/${post.slug}/`)}>{post.data.title}</a></h3>
+          <p class="post-description">{post.data.description}</p>
+          <time datetime={post.data.pubDate.toISOString()}>
+            {formatDate(post.data.pubDate)}
+          </time>
+          <a href={getUrl(`/blog/${post.slug}/`)} class="read-more">Read More →</a>
+        </article>
+      ))}
+    </div>
+    <p class="all-research-link">
+      <a href={getUrl(viewAllHref)}>View All Research & Blog Posts →</a>
+    </p>
+  </section>
+)}
+
+<style>
+  .featured-research-section {
+    margin-bottom: 4rem;
+  }
+
+  .featured-research-section h2 {
+    font-size: 2rem;
+    color: var(--deep-navy);
+    margin-top: 3rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    border-bottom: 2px solid var(--color-border);
+    padding-bottom: 0.5rem;
+  }
+
+  .research-posts-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .research-post-card {
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .research-post-card h3 {
+    font-size: 1.3rem;
+    color: var(--deep-navy);
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+  }
+
+  .research-post-card h3 a {
+    text-decoration: none;
+    color: var(--deep-navy);
+    transition: color 0.2s ease;
+  }
+
+  .research-post-card h3 a:hover {
+    color: var(--gold-accent);
+  }
+
+  .post-description {
+    font-size: 1rem;
+    color: var(--color-text-light);
+    margin-bottom: 0.5rem;
+  }
+
+  .research-post-card time {
+    font-size: 0.9rem;
+    color: var(--color-text-light);
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .read-more {
+    color: var(--gold-accent);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s ease;
+  }
+
+  .read-more:hover {
+    text-decoration: underline;
+    color: var(--color-gold-light);
+  }
+
+  .all-research-link {
+    text-align: center;
+    margin-top: 2rem;
+  }
+
+  .all-research-link a {
+    color: var(--gold-accent);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s ease;
+  }
+
+  .all-research-link a:hover {
+    text-decoration: underline;
+    color: var(--color-gold-light);
+  }
+</style>

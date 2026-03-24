@@ -1,0 +1,18 @@
+---
+export interface Props {
+  label: string;
+  href?: string;
+  active?: boolean;
+}
+
+const { label, href, active = false } = Astro.props;
+---
+
+{href ? (
+  <a
+    href={href}
+    class:list={['tag-pill', { active }]}
+  >{label}</a>
+) : (
+  <span class:list={['tag-pill', { active }]}>{label}</span>
+)}

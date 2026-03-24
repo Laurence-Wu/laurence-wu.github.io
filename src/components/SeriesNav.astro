@@ -1,0 +1,110 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { getUrl } from '../utils/url';
+
+export interface Props {
+  series: string;
+  currentOrder: number;
+  posts: CollectionEntry<'blogs'>[];
+}
+
+const { series, currentOrder, posts } = Astro.props;
+const total = posts.length;
+const prev = posts.find(p => p.data.seriesOrder === currentOrder - 1);
+const next = posts.find(p => p.data.seriesOrder === currentOrder + 1);
+---
+
+<nav class="series-nav" aria-label={`${series} series navigation`}>
+  <div class="series-label">
+    <span class="series-name">{series}</span>
+    <span class="series-progress">Part {currentOrder} of {total}</span>
+  </div>
+
+  <div class="series-links">
+    {prev ? (
+      <a href={getUrl(`/blog/${prev.slug}/`)} class="series-link prev">
+        <span class="direction">← Previous</span>
+        <span class="post-title">{prev.data.title}</span>
+      </a>
+    ) : <span />}
+
+    {next && (
+      <a href={getUrl(`/blog/${next.slug}/`)} class="series-link next">
+        <span class="direction">Next →</span>
+        <span class="post-title">{next.data.title}</span>
+      </a>
+    )}
+  </div>
+</nav>
+
+<style>
+  .series-nav {
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    margin: 2rem 0;
+    background: rgba(10, 35, 66, 0.03);
+  }
+
+  .series-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+  }
+
+  .series-name {
+    font-weight: 700;
+    color: var(--deep-navy);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .series-progress {
+    color: var(--color-text-light);
+  }
+
+  .series-links {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .series-link {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    text-decoration: none;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    border: 1px solid var(--color-border);
+    transition: var(--transition-standard);
+    max-width: 48%;
+  }
+
+  .series-link:hover {
+    border-color: var(--gold-accent);
+    background: rgba(169, 135, 67, 0.05);
+  }
+
+  .series-link.next {
+    text-align: right;
+    margin-left: auto;
+  }
+
+  .direction {
+    font-size: 0.8rem;
+    color: var(--gold-accent);
+    font-family: var(--font-body);
+    font-weight: 600;
+  }
+
+  .post-title {
+    font-size: 0.9rem;
+    color: var(--deep-navy);
+    font-family: var(--font-heading);
+    font-weight: 500;
+  }
+</style>

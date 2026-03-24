@@ -1,0 +1,163 @@
+---
+import Layout from '../../../components/Layout.astro';
+import PostCard from '../../../components/PostCard.astro';
+import { getCollection } from 'astro:content';
+import { getUrl } from '../../../utils/url';
+import { filterDrafts, getSeriesPosts, extractUniqueSeries } from '../../../utils/collections';
+
+export async function getStaticPaths() {
+  const allBlogPosts = await getCollection('blogs');
+  const published = filterDrafts(allBlogPosts);
+  const series = extractUniqueSeries(published);
+
+  return series.map(s => ({
+    params: { series: s },
+    props: {
+      seriesName: s,
+      posts: getSeriesPosts(published, s),
+    },
+  }));
+}
+
+const { seriesName, posts } = Astro.props;
+const total = posts.length;
+---
+
+<Layout
+  title={`${seriesName} — Series - Laurence`}
+  description={`All ${total} posts in the "${seriesName}" series, in order.`}
+>
+  <div class="series-header">
+    <div class="container-header">
+      <nav class="breadcrumb">
+        <a href={getUrl('/blog/')}>Blog</a>
+        <span>→</span>
+        <span>Series</span>
+      </nav>
+      <h1>{seriesName}</h1>
+      <p>{total} part{total !== 1 ? 's' : ''} in this series</p>
+    </div>
+  </div>
+
+  <section class="series-content">
+    <div class="container">
+      <ol class="series-list">
+        {posts.map((post, idx) => (
+          <li class="series-entry">
+            <span class="part-label">Part {post.data.seriesOrder ?? idx + 1}</span>
+            <PostCard
+              title={post.data.title}
+              description={post.data.description}
+              pubDate={post.data.pubDate}
+              tags={post.data.tags}
+              slug={post.slug}
+              thumbnail={post.data.thumbnail}
+              author={post.data.author}
+              type="blog"
+            />
+          </li>
+        ))}
+      </ol>
+
+      <div class="back-to-blog">
+        <a href={getUrl('/blog/')} class="back-link">← Back to all posts</a>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .series-header {
+    background: var(--gradient-primary);
+    color: white;
+    padding: 3rem 0 2rem;
+  }
+
+  .container-header {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  .breadcrumb {
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+    opacity: 0.85;
+    font-family: var(--font-body);
+  }
+
+  .breadcrumb a {
+    color: #F4E8D1;
+    text-decoration: none;
+  }
+
+  .breadcrumb a:hover { color: white; }
+
+  .breadcrumb span { margin: 0 0.5rem; }
+
+  .series-header h1 {
+    font-family: var(--font-heading);
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .series-header p {
+    font-size: 1.1rem;
+    opacity: 0.85;
+    color: #d7ad7d;
+  }
+
+  .series-content {
+    padding: 4rem 0;
+  }
+
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  .series-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    counter-reset: series-counter;
+    margin-bottom: 3rem;
+  }
+
+  .series-entry {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .part-label {
+    font-family: var(--font-body);
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--gold-accent);
+  }
+
+  .back-to-blog {
+    text-align: center;
+    padding-top: 2rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .back-link {
+    color: var(--gold-accent);
+    text-decoration: none;
+    font-weight: 600;
+    font-family: var(--font-body);
+    transition: color 0.2s ease;
+  }
+
+  .back-link:hover {
+    color: var(--color-gold-light);
+    text-decoration: underline;
+  }
+</style>

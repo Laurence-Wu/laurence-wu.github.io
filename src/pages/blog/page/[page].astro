@@ -1,0 +1,211 @@
+---
+import Layout from '../../../components/Layout.astro';
+import SearchBar from '../../../components/SearchBar.astro';
+import PostCard from '../../../components/PostCard.astro';
+import TagBadge from '../../../components/TagBadge.astro';
+import { getCollection } from 'astro:content';
+import { getUrl } from '../../../utils/url';
+import { sortByDate, filterDrafts, extractUniqueTags } from '../../../utils/collections';
+
+const PAGE_SIZE = 12;
+
+export async function getStaticPaths() {
+  const PAGE_SIZE = 12;
+  const allBlogPosts = await getCollection('blogs');
+  const published = sortByDate(filterDrafts(allBlogPosts));
+  const totalPages = Math.ceil(published.length / PAGE_SIZE);
+
+  // Generate pages 2, 3, 4... (page 1 is handled by blog/index.astro)
+  return Array.from({ length: Math.max(0, totalPages - 1) }, (_, i) => ({
+    params: { page: String(i + 2) },
+  }));
+}
+
+const page = Number(Astro.params.page);
+const allBlogPosts = await getCollection('blogs');
+const allProjects = await getCollection('projects');
+const publishedPosts = sortByDate(filterDrafts(allBlogPosts));
+const totalPages = Math.ceil(publishedPosts.length / PAGE_SIZE);
+const pagePosts = publishedPosts.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+const allTags = extractUniqueTags(publishedPosts);
+---
+
+<Layout
+  title={`Blog — Page ${page} - Laurence`}
+  description="Read my latest thoughts on technology, engineering, and various interests."
+>
+  <div class="blog-header">
+    <div class="container-header">
+      <h1>Blog</h1>
+      <p>Page {page} of {totalPages}</p>
+    </div>
+  </div>
+
+  <section class="blog-content">
+    <div class="container">
+      <aside class="blog-sidebar">
+        <div class="sidebar-section">
+          <h3>Search</h3>
+          <SearchBar allBlogPosts={publishedPosts} allProjects={allProjects} />
+        </div>
+
+        <div class="sidebar-section">
+          <h3>Categories</h3>
+          <div class="tag-cloud">
+            {allTags.map(tag => (
+              <TagBadge label={tag} href={getUrl(`/blog/tag/${tag}/`)} />
+            ))}
+          </div>
+        </div>
+      </aside>
+
+      <div class="blog-posts">
+        {pagePosts.map(post => (
+          <PostCard
+            title={post.data.title}
+            description={post.data.description}
+            pubDate={post.data.pubDate}
+            tags={post.data.tags}
+            slug={post.slug}
+            thumbnail={post.data.thumbnail}
+            author={post.data.author}
+            type="blog"
+          />
+        ))}
+
+        <nav class="pagination" aria-label="Blog pagination">
+          {page > 2 ? (
+            <a href={getUrl(`/blog/page/${page - 1}/`)} class="pagination-prev">← Previous</a>
+          ) : (
+            <a href={getUrl('/blog/')} class="pagination-prev">← Previous</a>
+          )}
+          <span class="pagination-current">Page {page} of {totalPages}</span>
+          {page < totalPages && (
+            <a href={getUrl(`/blog/page/${page + 1}/`)} class="pagination-next">Next →</a>
+          )}
+        </nav>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .blog-header {
+    background: var(--gradient-header);
+    color: white;
+    padding: 4rem 0 2rem;
+    text-align: center;
+  }
+
+  .container-header {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  .blog-header h1 {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+    font-family: var(--font-heading);
+  }
+
+  .blog-header p {
+    font-size: 1.25rem;
+    opacity: 0.9;
+    color: #d7ad7d;
+  }
+
+  .blog-content {
+    padding: 4rem 0;
+  }
+
+  .container {
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    gap: 3rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  .blog-sidebar {
+    position: sticky;
+    top: 100px;
+    height: fit-content;
+  }
+
+  .sidebar-section {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+  }
+
+  .sidebar-section h3 {
+    margin-bottom: 1rem;
+    color: #333;
+    border-bottom: 2px solid #39647c;
+    padding-bottom: 0.5rem;
+    font-family: var(--font-heading);
+  }
+
+  .tag-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .blog-posts {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 0;
+    border-top: 1px solid var(--color-border);
+    font-family: var(--font-body);
+  }
+
+  .pagination-current {
+    color: var(--color-text-light);
+    font-size: 0.9rem;
+  }
+
+  .pagination-next,
+  .pagination-prev {
+    color: var(--gold-accent);
+    text-decoration: none;
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--gold-accent);
+    border-radius: 6px;
+    transition: var(--transition-standard);
+  }
+
+  .pagination-next:hover,
+  .pagination-prev:hover {
+    background: var(--gold-accent);
+    color: white;
+  }
+
+  @media (max-width: 768px) {
+    .blog-header h1 {
+      font-size: 2rem;
+    }
+
+    .container {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    .blog-sidebar {
+      position: static;
+      order: 2;
+    }
+  }
+</style>
