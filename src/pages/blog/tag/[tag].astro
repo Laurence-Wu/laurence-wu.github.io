@@ -1,32 +1,25 @@
 ---
 import Layout from '../../../components/Layout.astro';
 import { getCollection } from 'astro:content';
+import { getUrl } from '../../../utils/url';
+import { filterByTag, filterDrafts, sortByDate, extractUniqueTags } from '../../../utils/collections';
+import { formatDate } from '../../../utils/date';
 
 export async function getStaticPaths() {
   const allBlogPosts = await getCollection('blogs');
-  
-  // Get all unique tags
-  const allTags = [...new Set(allBlogPosts.flatMap(post => post.data.tags || []))];
-  
+  const published = filterDrafts(allBlogPosts);
+  const allTags = extractUniqueTags(published);
+
   return allTags.map(tag => ({
     params: { tag },
-    props: { 
+    props: {
       tag,
-      posts: allBlogPosts.filter(post => post.data.tags?.includes(tag))
-        .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+      posts: sortByDate(filterByTag(published, tag)),
     }
   }));
 }
 
 const { tag, posts } = Astro.props;
-
-// Helper function to get proper URL with base path
-const baseUrl = import.meta.env.BASE_URL;
-function getUrl(path: string): string {
-  const cleanBaseUrl = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
-  const cleanPath = path.startsWith('/') ? path : `/${path}`;
-  return `${cleanBaseUrl}${cleanPath}`;
-}
 ---
 
 <Layout title={`Posts tagged "${tag}" - Blog`} description={`All blog posts tagged with ${tag}`}>
@@ -54,11 +47,7 @@ function getUrl(path: string): string {
                 </h2>
                 <div class="post-meta">
                   <time datetime={post.data.pubDate.toISOString()}>
-                    {post.data.pubDate.toLocaleDateString('en-US', {
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric'
-                    })}
+                    {formatDate(post.data.pubDate)}
                   </time>
                   <span class="author">by {post.data.author}</span>
                 </div>

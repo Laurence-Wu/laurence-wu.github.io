@@ -53,7 +53,7 @@ const { title, description, pubDate, updatedDate, author = 'Laurence', image, ta
       <TableOfContents />
       
       <div class="content-with-sidebar">
-        <div class="post-content main-content">
+        <div class="post-content prose-content main-content">
           <slot />
         </div>
         
@@ -83,6 +83,28 @@ const { title, description, pubDate, updatedDate, author = 'Laurence', image, ta
       console.warn(`[Tag Warning] The tag "${tag}" contains a slash, which may cause issues with URL routing. Please consider using a different separator like a hyphen (-).`);
     }
   });
+</script>
+
+<script>
+  // Load mermaid.js from CDN and initialize diagrams
+  if (document.querySelector('.mermaid')) {
+    const s = document.createElement('script');
+    s.src = 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js';
+    s.onload = () => {
+      (window as any).mermaid.initialize({
+        startOnLoad: false,
+        theme: 'neutral',
+        themeVariables: {
+          primaryColor: '#39647c',
+          primaryTextColor: '#2E3A59',
+          lineColor: '#8A9A7E',
+          background: '#F4E9D8',
+        }
+      });
+      (window as any).mermaid.run({ querySelector: '.mermaid' });
+    };
+    document.head.appendChild(s);
+  }
 </script>
 
 </BaseLayout>
@@ -213,169 +235,23 @@ const { title, description, pubDate, updatedDate, author = 'Laurence', image, ta
   }
   
   .post-content {
-    line-height: 1.8;
-    color: var(--deep-navy);
-    font-family: var(--font-accent);
-    font-size: 1.1rem;
     padding: 2.5rem;
     margin: 2rem 0;
   }
-  
-  .post-content :global(h2) {
-    color: var(--deep-navy);
-    font-family: var(--font-heading);
-    font-size: 1.8rem;
-    margin-top: 2.5rem;
-    margin-bottom: 1rem;
-    border-bottom: 2px solid var(--color-border);
-    padding-bottom: 0.5rem;
-    line-height: 1.3;
-  }
-  
-  .post-content :global(h3) {
-    color: var(--deep-navy);
-    font-family: var(--font-heading);
-    font-size: 1.4rem;
-    margin-top: 2rem;
-    margin-bottom: 0.8rem;
-    line-height: 1.4;
-  }
-  
-  .post-content :global(h4),
-  .post-content :global(h5),
-  .post-content :global(h6) {
-    color: var(--deep-navy);
-    font-family: var(--font-heading);
-    margin-top: 1.5rem;
-    margin-bottom: 0.8rem;
-    line-height: 1.4;
-  }
-  
-  .post-content :global(p) {
-    margin-bottom: 1.5rem;
-    line-height: 1.8;
-    color: var(--deep-navy);
-  }
-  
-  .post-content :global(a) {
-    color: var(--gold-accent);
-    font-weight: 600;
-    text-decoration: underline;
-    text-decoration-color: rgba(169, 135, 67, 0.3);
-    text-underline-offset: 3px;
-  }
-  
-  .post-content :global(a:hover) {
-    color: var(--color-gold-light);
-    text-decoration-color: rgba(169, 135, 67, 0.6);
-  }
-  
-  .post-content :global(blockquote) {
-    border-left: 4px solid var(--gold-accent);
-    padding-left: 1.5rem;
-    margin: 2rem 0;
-    font-style: italic;
-    color: var(--color-text-light);
-    background: rgba(169, 135, 67, 0.05);
-    padding: 1.5rem;
-    border-radius: 0 12px 12px 0;
-    font-size: 1.05em;
-    line-height: 1.7;
-  }
-  
-  .post-content :global(ul),
-  .post-content :global(ol) {
-    margin-bottom: 1.5rem;
-    padding-left: 2rem;
-    line-height: 1.7;
-  }
-  
-  .post-content :global(li) {
-    margin-bottom: 0.8rem;
-    color: var(--deep-navy);
-  }
-  
-  .post-content :global(code) {
-    background: rgba(10, 35, 66, 0.05);
-    color: var(--deep-navy);
-    padding: 0.2em 0.4em;
-    border-radius: 4px;
-    font-family: 'Fira Code', monospace;
-    font-size: 0.9em;
-  }
-  
-  .post-content :global(pre) {
-    background: #0A2342;
-    color: #F8F7F4;
-    padding: 1.5rem;
-    border-radius: 8px;
-    margin: 1.5rem 0;
+
+  :global(.mermaid-wrapper) {
     overflow-x: auto;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    margin: 2rem 0;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    background: #fff;
+    padding: 1.5rem;
+    text-align: center;
   }
-  
-  .post-content :global(pre code) {
-    background: transparent;
-    color: inherit;
-    padding: 0;
-  }
-  
-  .post-content :global(img) {
+
+  :global(.mermaid svg) {
     max-width: 100%;
     height: auto;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    margin: 1.5rem auto;
-    display: block;
-    object-fit: contain;
-  }
-  
-  .content-with-sidebar {
-    display: flex;
-    gap: 3rem;
-    align-items: flex-start;
-  }
-
-  .main-content {
-    flex: 1;
-    min-width: 0; /* Allow flexbox to shrink */
-  }
-
-  .front-picture-sidebar {
-    flex: 0 0 300px; /* Fixed width sidebar */
-    position: sticky;
-    top: 2rem;
-  }
-
-  .front-picture-sidebar h4 {
-    color: var(--deep-navy);
-    font-family: var(--font-heading);
-    font-size: 1.2rem;
-    margin: 0 0 1.5rem 0;
-    text-align: center;
-    border-bottom: 2px solid var(--color-border);
-    padding-bottom: 0.8rem;
-  }
-
-  .front-picture-image {
-    width: 100%;
-    height: auto;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  }
-
-  @media (max-width: 1024px) {
-    .content-with-sidebar {
-      flex-direction: column;
-      gap: 2rem;
-    }
-
-    .front-picture-sidebar {
-      flex: none;
-      position: static;
-      max-width: 500px;
-      margin: 0 auto;
-    }
   }
 
   @media (max-width: 768px) {
@@ -383,23 +259,23 @@ const { title, description, pubDate, updatedDate, author = 'Laurence', image, ta
       padding: 0.5rem 0.5rem;
       margin-top: -0.5rem;
     }
-    
+
     .post-header {
       padding: 1rem;
       margin: 0.5rem 0;
     }
-    
+
     .post-content {
       padding: 1rem;
       margin: 0.5rem 0;
       font-size: 1rem;
       line-height: 1.7;
     }
-    
+
     .post-header h1 {
       font-size: 2rem;
     }
-    
+
     .blog-footer {
       padding: 1rem 0;
       margin-top: 0.5rem;
@@ -408,11 +284,6 @@ const { title, description, pubDate, updatedDate, author = 'Laurence', image, ta
 
     .content-with-sidebar {
       gap: 1.5rem;
-    }
-
-    .front-picture-sidebar {
-      padding: 1.5rem;
-      max-width: none;
     }
   }
 </style>

@@ -1,106 +1,80 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
-import { getUrl } from '../utils/url';
+import { sortByDate, filterDrafts } from '../utils/collections';
+import ThinkingSection from '../components/ThinkingSection.astro';
+import FeaturedResearch from '../components/FeaturedResearch.astro';
+import type { ThinkingItem } from '../components/ThinkingSection.astro';
+import { Image } from 'astro:assets';
+import profileImage from '../assets/images/profile.jpg';
 
 const allBlogPosts = await getCollection('blogs');
-const researchPosts = allBlogPosts
-  .filter(post => post.data.tags && post.data.tags.includes('research'))
-  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-  .slice(0, 3); // Display top 3 most recent research posts
+const researchPosts = sortByDate(filterDrafts(allBlogPosts))
+  .filter(post => post.data.tags?.includes('research'))
+  .slice(0, 3);
+
+const thinkingItems: ThinkingItem[] = [
+  {
+    question: 'The relationship between transfer function and electric field?',
+    answer: "A transfer function $H(s)$ is more than a ratio; it is the signature of a medium's soul. In electromagnetics, space acts as a processor—a spatial filter where $E_{out}(s) = H(s) \\cdot E_{in}(s)$. Permittivity $\\epsilon(\\omega)$ is the material's personality, governing how it breathes in response to the pressure of an external field.",
+  },
+  {
+    question: 'How does Diffusion Blocks changes the inference and what factor determine the most efficient block size?',
+    answer: 'Diffusion Blocks are architectural heartbeats. Larger blocks offer contextual depth for global alignment but demand heavy GPU tolls. Efficiency is found at the Information Bottleneck: matching the block\'s receptive field to the Latent Resolution to ensure every FLOP sculpts meaning rather than redundant noise.',
+  },
+  {
+    question: 'Why Circuits have relatively larger LTI range than other field (language, material science, etc.)?',
+    answer: "Circuits enjoy mathematical grace because we manufacture them to obey our symbols. Through negative feedback, we create 'linear islands' in a non-linear sea. Unlike language, where context is volatile, circuits thrive on Superposition—where the response is blissfully indifferent to surrounding signals.",
+  },
+  {
+    question: 'How to develop sharp intuition on the electrical components work?',
+    answer: "To 'see' electricity, look for where the energy is hiding. See Voltage as the desperate urge of electrons to find peace and Current as their kinetic rush. Intuition is forged in the sandbox of failure, understanding that electricity is a fluid, living force seeking equilibrium.",
+  },
+];
 ---
 
 <BaseLayout title="Xiaoyou Wu - Research Portfolio">
   <div class="container research-home-container">
     <section class="hero-section">
-      <h1>Xiaoyou Wu</h1>
-      <p class="tagline">Computer Engineering @GaTech | Research in Efficient LLM & robot localization</p>
-      <p class="introduction">
-        Welcome to my research portfolio. I am a Computer Engineering student at Georgia Tech,
-        passionately exploring efficient LLM inference, signal processing and high-speed PCB design
-      </p>
-      <div class="contact-links">
-        <a href="mailto:xwu488@gatech.edu" class="contact-link">📧: xwu488@gatech.edu</a>
-        <a href="https://linkedin.com/in/xiaoyou-wu" target="_blank" rel="noopener noreferrer" class="contact-link">🔗 LinkedIn</a>
-        <a href="https://github.com/Laurence-Wu" target="_blank" rel="noopener noreferrer" class="contact-link">💻 GitHub</a>
+      <div class="hero-layout">
+        <div class="profile-image-container">
+          <Image src={profileImage} alt="Xiaoyou Wu" class="profile-image" width={350} />
+        </div>
+        <div class="hero-text">
+          <h1>Xiaoyou Wu</h1>
+          <p class="tagline"><strong>Computer Engineering @GaTech | Research in Efficient LLM & robot localization</strong></p>
+          <p class="introduction">
+            <strong>A student of electrodynamics and existentialism who finds rhythm in both classical mechanics and Ne-Yo(or Usher). Whether I'm designing efficient infrastructure, hitting a badminton court, or poping, I’m driven by the pursuit of truth and a perfectly timed beat.</strong>
+          </p>
+          <div class="contact-links">
+            <a href="mailto:xwu488@gatech.edu" class="contact-link">📧 Email</a>
+            <a href="https://linkedin.com/in/xiaoyou-wu" target="_blank" rel="noopener noreferrer" class="contact-link">🔗 LinkedIn</a>
+            <a href="https://github.com/Laurence-Wu" target="_blank" rel="noopener noreferrer" class="contact-link">💻 GitHub</a>
+            <a href="https://x.com/BluishZima" target="_blank" rel="noopener noreferrer" class="contact-link">𝕏 Twitter</a>
+          </div>
+          <blockquote class="motto">"I have never believed more firmly that my sole purpose in this world is to contemplate it, and to exhaust all my fire in the pursuit of truth."</blockquote>
+        </div>
       </div>
     </section>
 
     <section class="research-interests-section">
       <h2>Research Interests</h2>
       <ul>
-        <li>Efficient NLP : LLM Quantization, Diffusion LLM, Speculative decoding</li>
-        <li>Robot Localization: Particle Filters, SLAM</li>
-        <li>Advanced PCB Design: High-Speed Layout, Signal Integrity, analog circuit design</li>
-        <li>Signal Processing and Control theory: root locus, Autocorrection, Nyquist Plot</li>
+        <li><strong>Efficient LLMs</strong>: Inference, Quantization, Diffusion</li>
+        <li><strong>Hardware Architecture</strong>: High-Speed PCB, FPGAs, Signal Integrity</li>
+        <li><strong>Robotics</strong>: Autonomous Systems, Sensor Integration, Control Theory</li>
       </ul>
     </section>
 
-    <section class="currently-thinking-section">
-        <h2>Currently Thinking</h2>
-        <ul id="thinking-list">
-            <!-- Thinking Item 1 -->
-            <li class="thinking-item">
-                <p class="static-text">The relationship between transfer function and electric field?</p>
-                <div class="animated-text-container">
-                    <span class="animated-text" data-content="A transfer function $H(s)$ is more than a ratio; it is the signature of a medium’s soul. In electromagnetics, space acts as a processor—a spatial filter where $E_{out}(s) = H(s) \cdot E_{in}(s)$. Permittivity $\epsilon(\omega)$ is the material's personality, governing how it breathes in response to the pressure of an external field."></span>
-                </div>
-            </li>
+    <ThinkingSection items={thinkingItems} />
 
-            <!-- Thinking Item 2 -->
-            <li class="thinking-item">
-                <p class="static-text">How does Diffusion Blocks changes the inference and what factor determine the most efficient block size ?</p>
-                <div class="animated-text-container">
-                    <span class="animated-text" data-content="Diffusion Blocks are architectural heartbeats. Larger blocks offer contextual depth for global alignment but demand heavy GPU tolls. Efficiency is found at the Information Bottleneck: matching the block's receptive field to the Latent Resolution to ensure every FLOP sculpts meaning rather than redundant noise."></span>
-                </div>
-            </li>
-
-            <!-- Thinking Item 3 -->
-            <li class="thinking-item">
-                <p class="static-text">Why Circuits have relatively larger LTI range than other field (language, material science, etc.)?</p>
-                <div class="animated-text-container">
-                    <span class="animated-text" data-content="Circuits enjoy mathematical grace because we manufacture them to obey our symbols. Through negative feedback, we create 'linear islands' in a non-linear sea. Unlike language, where context is volatile, circuits thrive on Superposition—where the response is blissfully indifferent to surrounding signals."></span>
-                </div>
-            </li>
-
-            <!-- Thinking Item 4 -->
-            <li class="thinking-item">
-                <p class="static-text">How to develop sharp intuition on the electrical components work ?</p>
-                <div class="animated-text-container">
-                    <span class="animated-text" data-content="To 'see' electricity, look for where the energy is hiding. See Voltage as the desperate urge of electrons to find peace and Current as their kinetic rush. Intuition is forged in the sandbox of failure, understanding that electricity is a fluid, living force seeking equilibrium."></span>
-                </div>
-            </li>
-        </ul>
-    </section>
-
-
-    {researchPosts.length > 0 && (
-      <section class="featured-research-section">
-        <h2>Featured Research Ideas</h2>
-        <div class="research-posts-grid">
-          {researchPosts.map(post => (
-            <article class="research-post-card">
-              <h3><a href={getUrl(`/blog/${post.slug}/`)}>{post.data.title}</a></h3>
-              <p class="post-description">{post.data.description}</p>
-              <time datetime={post.data.pubDate.toISOString()}>
-                {post.data.pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
-              </time>
-              <a href={getUrl(`/blog/${post.slug}/`)} class="read-more">Read More →</a>
-            </article>
-          ))}
-        </div>
-        <p class="all-research-link">
-          <a href={getUrl('/blog/')}>View All Research & Blog Posts →</a>
-        </p>
-      </section>
-    )}
-
+    <FeaturedResearch posts={researchPosts} />
   </div>
 </BaseLayout>
 
 <style>
   .research-home-container {
-    max-width: 800px;
+    max-width: 900px;
     margin: 4rem auto;
     padding: 0 1.5rem;
     font-family: var(--font-body);
@@ -109,19 +83,48 @@ const researchPosts = allBlogPosts
   }
 
   .hero-section {
-    text-align: center;
     margin-bottom: 4rem;
   }
 
-  .hero-section h1 {
-    font-size: 3rem;
+  .hero-layout {
+    display: flex;
+    align-items: center;
+    gap: 2.5rem;
+  }
+
+  .profile-image-container {
+    flex-shrink: 0;
+  }
+
+  .profile-image {
+    width: auto;
+    height: auto;
+    max-width: 350px;
+    border-radius: 12px;
+    object-fit: contain;
+    border: 3px solid var(--sage-green);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .profile-image:hover {
+    transform: scale(1.02);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+  }
+
+  .hero-text {
+    flex: 1;
+  }
+
+  .hero-text h1 {
+    font-size: 2.8rem;
     color: var(--deep-navy);
     margin-bottom: 0.5rem;
     font-weight: 700;
   }
 
   .tagline {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     color: var(--color-text-light);
     margin-bottom: 1.5rem;
   }
@@ -150,6 +153,16 @@ const researchPosts = allBlogPosts
     color: var(--color-gold-light);
   }
 
+  .motto {
+    margin-top: 1.5rem;
+    font-size: 1rem;
+    color: var(--color-text-light);
+    font-style: italic;
+    border-left: 3px solid var(--gold-accent);
+    padding-left: 1rem;
+    line-height: 1.6;
+  }
+
   h2 {
     font-size: 2rem;
     color: var(--deep-navy);
@@ -172,183 +185,30 @@ const researchPosts = allBlogPosts
     color: var(--color-text);
   }
 
-  .featured-research-section {
-    margin-bottom: 4rem;
-  }
-
-  .research-posts-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 2rem;
-  }
-
-  .research-post-card {
-    padding-bottom: 1.5rem;
-    border-bottom: 1px solid var(--color-border);
-  }
-
-  .research-post-card h3 {
-    font-size: 1.3rem;
-    color: var(--deep-navy);
-    margin-top: 0;
-    margin-bottom: 0.5rem;
-  }
-
-  .research-post-card h3 a {
-    text-decoration: none;
-    color: var(--deep-navy);
-  }
-
-  .research-post-card h3 a:hover {
-    color: var(--gold-accent);
-  }
-
-  .post-description {
-    font-size: 1rem;
-    color: var(--color-text-light);
-    margin-bottom: 0.5rem;
-  }
-
-  .research-post-card time {
-    font-size: 0.9rem;
-    color: var(--color-text-light);
-    display: block;
-    margin-bottom: 0.5rem;
-  }
-
-  .read-more {
-    color: var(--gold-accent);
-    text-decoration: none;
-    font-weight: 600;
-  }
-
-  .read-more:hover {
-    text-decoration: underline;
-    color: var(--color-gold-light);
-  }
-
-  .all-research-link {
-    text-align: center;
-    margin-top: 2rem;
-  }
-  
-  .all-research-link a {
-    color: var(--gold-accent);
-    text-decoration: none;
-    font-weight: 600;
-  }
-  
-  .all-research-link a:hover {
-    text-decoration: underline;
-    color: var(--color-gold-light);
-  }
-
-  .education-section {
-    text-align: center;
-    margin-top: 4rem;
-  }
-
-  .education-section p {
-    font-size: 1.1rem;
-    color: var(--color-text);
-    margin: 0;
-  }
-
-  .currently-thinking-section {
-    margin-top: 4rem;
-    margin-bottom: 4rem;
-  }
-
-  .currently-thinking-section ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1.5rem;
-  }
-
-  .currently-thinking-section li {
-    background-color: var(--warm-neutral);
-    border: 1px solid var(--color-border);
-    border-radius: 8px;
-    padding: 1.2rem;
-    font-size: 1rem;
-    color: var(--deep-navy);
-    display: flex;
-    flex-direction: column;
-    gap: 0.8rem;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
-  }
-
-  .currently-thinking-section li:hover,
-  .currently-thinking-section li.is-hovered {
-    transform: translateY(-5px) scale(1.02);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-    background-color: #fffaf0; /* Light orange */
-  }
-
-  .animated-text-container {
-    display: none;
-  }
-
-  .currently-thinking-section li.is-hovered .animated-text-container {
-    display: block;
-  }
-
-  .education-section strong {
-    color: var(--deep-navy);
-  }
-
   @media (max-width: 768px) {
-    .hero-section h1 {
-      font-size: 2.5rem;
+    .hero-layout {
+      flex-direction: column;
+      text-align: center;
     }
+
+    .profile-image {
+      max-width: 280px;
+    }
+
+    .hero-text h1 {
+      font-size: 2.2rem;
+    }
+
     .tagline {
-      font-size: 1.1rem;
+      font-size: 1rem;
     }
+
+    .contact-links {
+      justify-content: center;
+    }
+
     h2 {
       font-size: 1.8rem;
     }
   }
 </style>
-
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const thinkingItems = document.querySelectorAll('.thinking-item');
-    let typingTimeout;
-
-    thinkingItems.forEach(item => {
-      const animatedTextContainer = item.querySelector('.animated-text');
-      const animatedText = animatedTextContainer.getAttribute('data-content');
-
-      item.addEventListener('mouseenter', () => {
-        if (typingTimeout) clearTimeout(typingTimeout);
-        animatedTextContainer.innerHTML = ''; // Use innerHTML for KaTeX
-        item.classList.add('is-hovered');
-        
-        let i = 0;
-        function typeWriter() {
-          if (i < animatedText.length) {
-            animatedTextContainer.textContent += animatedText.charAt(i);
-            i++;
-            typingTimeout = setTimeout(typeWriter, 25); // Faster typing speed
-          } else {
-            // Render LaTeX after typing is complete
-            katex.render(animatedTextContainer.textContent, animatedTextContainer, {
-              throwOnError: false
-            });
-          }
-        }
-        typeWriter();
-      });
-
-      item.addEventListener('mouseleave', () => {
-        if (typingTimeout) clearTimeout(typingTimeout);
-        animatedTextContainer.innerHTML = '';
-        item.classList.remove('is-hovered');
-      });
-    });
-  });
-</script>

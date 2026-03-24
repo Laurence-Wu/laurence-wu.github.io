@@ -57,6 +57,16 @@
   --transition-sophisticated: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Sophisticated easing - preserved */
   --transition-bounce: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Bounce effect - preserved */
   --transition-decelerate: all 0.5s cubic-bezier(0, 0, 0.2, 1);      /* Decelerate easing - preserved */
+
+  /* ===== SIDEBAR DIMENSIONS ===== */
+  --sidebar-toc-width: 280px;
+  --sidebar-toc-collapsed: 60px;
+  --sidebar-timeline-width: 320px;
+  --sidebar-max-height: 70vh;
+
+  /* ===== SHARED GRADIENTS ===== */
+  --gradient-primary: linear-gradient(135deg, #2E3A59 0%, #39647c 100%);
+  --gradient-header: linear-gradient(135deg, #8A9A7E 0%, #39647c 50%, #2E3A59 100%);
 }
 
 /* ===== RESET & BASE STYLES ===== */
@@ -481,49 +491,8 @@ pre code {
   background: #2563eb !important;
 }
 
-/* Custom Search Results Global Overrides */
-body #search-results .result-item {
-  /* Your custom search result styles here */
-  background: #f9fafb !important;
-  border: 2px solid #e5e7eb !important;
-  border-radius: 0.75rem !important;
-  padding: 1.25rem !important;
-  margin: 0.5rem 0 !important;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-}
 
-body #search-results .result-item:hover {
-  background: linear-gradient(135deg, #dbeafe, #e0e7ff) !important;
-  border-color: #3b82f6 !important;
-  transform: translateY(-3px) scale(1.02) !important;
-  box-shadow: 0 10px 25px rgba(59, 130, 246, 0.25) !important;
-}
 
-body #search-results .result-title {
-  color: #1e40af !important;
-  font-size: 1.1rem !important;
-  font-weight: 800 !important;
-  margin-bottom: 0.75rem !important;
-}
-
-body #search-results .result-description {
-  color: #4b5563 !important;
-  font-size: 0.95rem !important;
-  line-height: 1.6 !important;
-  margin-bottom: 1rem !important;
-}
-
-body #search-results .result-type {
-  background: linear-gradient(135deg, #8b5cf6, #ec4899) !important;
-  color: white !important;
-  padding: 0.375rem 1rem !important;
-  border-radius: 2rem !important;
-  font-weight: 700 !important;
-  font-size: 0.75rem !important;
-  text-transform: uppercase !important;
-  letter-spacing: 0.1em !important;
-  box-shadow: 0 2px 4px rgba(139, 92, 246, 0.3) !important;
-} 
 /
 * ============================================ */
 /* 📊 TABLE STYLING - Enhanced Readability     */
@@ -763,4 +732,67 @@ caption {
 .post-content table + ul,
 .post-content table + ol {
   margin-top: 2rem;
+}
+
+/* ===== SHARED UTILITY CLASSES ===== */
+
+/* Card — white container with elevation */
+.card {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(138, 154, 126, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Tag pill — rounded label */
+.tag-pill {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(138, 154, 126, 0.1);
+  color: var(--deep-navy);
+  padding: 0.3rem 0.7rem;
+  border-radius: 15px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border: 1px solid rgba(138, 154, 126, 0.25);
+  text-decoration: none;
+  font-family: var(--font-body);
+  transition: var(--transition-standard);
+}
+
+.tag-pill:hover,
+.tag-pill.active {
+  background: rgba(138, 154, 126, 0.25);
+  border-color: #8A9A7E;
+  transform: translateY(-1px);
+}
+
+/* Hover lift — subtle upward motion on hover */
+.hover-lift {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12), 0 4px 15px rgba(138, 154, 126, 0.15);
+}
+
+/* Page header — gradient banner */
+.page-header {
+  background: var(--gradient-header);
+  color: white;
+  padding: 4rem 0 2rem;
+  text-align: center;
+}
+
+.page-header h1 {
+  font-family: var(--font-heading);
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+}
+
+.page-header p {
+  font-size: 1.25rem;
+  opacity: 0.9;
+  color: #d7ad7d;
 }

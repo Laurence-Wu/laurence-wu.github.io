@@ -4,23 +4,17 @@ export interface Props {
   currentProject?: string;
 }
 
+import { getUrl } from '../utils/url';
+import { sortByDate, extractUniqueTags } from '../utils/collections';
+import { formatDateShort } from '../utils/date';
+
 const { allProjects, currentProject } = Astro.props;
 
-// Helper function to get proper URL with base path
-const baseUrl = import.meta.env.BASE_URL;
-function getUrl(path: string): string {
-  const cleanBaseUrl = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
-  const cleanPath = path.startsWith('/') ? path : `/${path}`;
-  return `${cleanBaseUrl}${cleanPath}`;
-}
-
 // Sort projects by date (newest first)
-const sortedProjects = allProjects.sort((a, b) => 
-  b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
-);
+const sortedProjects = sortByDate(allProjects);
 
 // Get all unique tags and organize projects by tags
-const allTags = [...new Set(sortedProjects.flatMap(project => project.data.tags || []))];
+const allTags = extractUniqueTags(sortedProjects);
 
 // Create a map of tags to projects for better organization
 const projectsByTag = allTags.reduce((acc: Record<string, any[]>, tag: string) => {
@@ -71,10 +65,7 @@ const projectsByTag = allTags.reduce((acc: Record<string, any[]>, tag: string) =
                 <a href={getUrl(`/projects/${project.slug}/`)}>{project.data.title}</a>
               </h4>
               <time class="project-date" datetime={project.data.pubDate.toISOString()}>
-                {project.data.pubDate.toLocaleDateString('en-US', {
-                  year: 'numeric',
-                  month: 'short'
-                })}
+                {formatDateShort(project.data.pubDate)}
               </time>
             </div>
             

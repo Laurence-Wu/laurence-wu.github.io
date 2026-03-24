@@ -43,8 +43,9 @@ const {
   <meta property="twitter:image" content={image}>
 
   <!-- KaTeX CSS for Math Rendering -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css" integrity="sha384-GvrOXuhMATgEsSwCs4smul74iXGOixntILdUW9XmUC6+HX0sLNAK3q71HotJqlAn" crossorigin="anonymous">
-  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js" integrity="sha384-cpW21h6RZv/5XBYEstVDL5aG2t0BonFGT" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+  <script is:inline defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+  <script is:inline defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script>
   
   <!-- Google Fonts - Preserved Typography System -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -60,6 +61,7 @@ const {
   <style is:global>
     @import '../styles/global.css';
     @import '../styles/custom-overrides.css';
+    @import '../styles/content.css';
   </style>
 </head>
 <body>
@@ -77,6 +79,7 @@ const {
         <div class="footer-links">
           <a href="https://github.com/Laurence-Wu" target="_blank" rel="noopener noreferrer">GitHub</a>
           <a href="https://linkedin.com/in/xiaoyou-wu" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a href="https://x.com/BluishZima" target="_blank" rel="noopener noreferrer">𝕏</a>
           <a href={`${import.meta.env.BASE_URL}resume.pdf`} target="_blank" rel="noopener noreferrer">Resume</a>
         </div>
       </div>

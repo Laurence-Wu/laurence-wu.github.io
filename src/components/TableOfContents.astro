@@ -361,6 +361,7 @@
 
 <script>
   // @ts-nocheck
+  import { isIndividualProjectPage, isProjectsIndexPage, isBlogPage } from '../lib/pageType.ts';
   class TableOfContents {
     constructor() {
       this.tocContainer = document.getElementById('table-of-contents');
@@ -412,23 +413,9 @@
     }
     
     detectPageType() {
-      // Check if we're on an individual project page (should behave like blog pages)
-      const isIndividualProjectPage = window.location.pathname.includes('/projects/') && 
-                                     !window.location.pathname.endsWith('/projects/') &&
-                                     !window.location.pathname.endsWith('/projects');
-      
-      // Check if we're on the projects index page (timeline view)
-      const isProjectsIndexPage = window.location.pathname.endsWith('/projects/') || 
-                                 window.location.pathname.endsWith('/projects');
-      
-      // Check if we're on a blog page
-      const isBlogPage = window.location.pathname.includes('/blog/') && 
-                        !window.location.pathname.endsWith('/blog/') &&
-                        !window.location.pathname.endsWith('/blog');
-      
-      if (isProjectsIndexPage) {
+      if (isProjectsIndexPage()) {
         document.body.classList.add('project-page');
-      } else if (isIndividualProjectPage || isBlogPage) {
+      } else if (isIndividualProjectPage() || isBlogPage()) {
         // Both individual project pages and blog pages behave the same way
         document.body.classList.add('blog-page');
       }
@@ -753,20 +740,12 @@
     }
     
     savePosition() {
-      const isIndividualProjectPage = window.location.pathname.includes('/projects/') && 
-                                     !window.location.pathname.endsWith('/projects/') &&
-                                     !window.location.pathname.endsWith('/projects');
-      const isProjectsIndexPage = window.location.pathname.endsWith('/projects/') || 
-                                 window.location.pathname.endsWith('/projects');
-      const isBlogPage = window.location.pathname.includes('/blog/') && 
-                        !window.location.pathname.endsWith('/blog/') &&
-                        !window.location.pathname.endsWith('/blog');
       
       const position = {
         x: this.currentX,
         y: this.currentY,
-        isProjectsIndexPage: isProjectsIndexPage,
-        isBlogLikePage: isIndividualProjectPage || isBlogPage
+        isProjectsIndexPage: isProjectsIndexPage(),
+        isBlogLikePage: isIndividualProjectPage() || isBlogPage()
       };
       localStorage.setItem('toc-position', JSON.stringify(position));
     }
@@ -777,19 +756,10 @@
         try {
           const position = JSON.parse(savedPosition);
           
-          const isIndividualProjectPage = window.location.pathname.includes('/projects/') && 
-                                         !window.location.pathname.endsWith('/projects/') &&
-                                         !window.location.pathname.endsWith('/projects');
-          const isProjectsIndexPage = window.location.pathname.endsWith('/projects/') || 
-                                     window.location.pathname.endsWith('/projects');
-          const isBlogPage = window.location.pathname.includes('/blog/') && 
-                            !window.location.pathname.endsWith('/blog/') &&
-                            !window.location.pathname.endsWith('/blog');
-          
-          const currentIsBlogLikePage = isIndividualProjectPage || isBlogPage;
-          
+          const currentIsBlogLikePage = isIndividualProjectPage() || isBlogPage();
+
           // Only restore position if page type matches
-          if (position.isProjectsIndexPage === isProjectsIndexPage && 
+          if (position.isProjectsIndexPage === isProjectsIndexPage() &&
               position.isBlogLikePage === currentIsBlogLikePage) {
             this.currentX = position.x || 0;
             this.currentY = position.y || 0;

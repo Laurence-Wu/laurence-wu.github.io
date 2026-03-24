@@ -11,6 +11,13 @@ const blogs = defineCollection({
     tags: z.array(z.string()).optional(),
     image: z.string().optional(),
     thumbnail: z.string().optional(),
+    draft: z.boolean().optional().default(false),
+    featured: z.boolean().optional().default(false),
+    series: z.string().optional(),
+    seriesOrder: z.number().optional(),
+    category: z.enum([
+      'Research', 'Engineering', 'Learning Journal', 'Review', 'Personal'
+    ]).optional(),
   }),
 });
 

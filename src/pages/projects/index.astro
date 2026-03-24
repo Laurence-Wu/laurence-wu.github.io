@@ -3,11 +3,11 @@ import Layout from '../../components/Layout.astro';
 import ProjectTimeline from '../../components/ProjectTimeline.astro';
 import { getCollection } from 'astro:content';
 import { getUrl } from '../../utils/url';
+import { sortByDate } from '../../utils/collections';
+import { formatDateShort } from '../../utils/date';
 
 const allProjects = await getCollection('projects');
-const sortedProjects = allProjects.sort((a, b) =>
-  b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
-);
+const sortedProjects = sortByDate(allProjects);
 ---
 
 <Layout title="Projects - Laurence" description="Explore my engineering and software development projects.">
@@ -28,10 +28,7 @@ const sortedProjects = allProjects.sort((a, b) =>
             </h3>
 
             <time class="project-date" datetime={project.data.pubDate.toISOString()}>
-              {project.data.pubDate.toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'short'
-              })}
+              {formatDateShort(project.data.pubDate)}
             </time>
 
             <div class="project-tags">

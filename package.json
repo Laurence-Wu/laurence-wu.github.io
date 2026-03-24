@@ -8,6 +8,7 @@
     "preview": "astro preview",
     "astro": "astro",
     "check": "astro check",
+    "new-post": "node scripts/new-post.mjs",
     "md-to-mdx": "node src/build/cli.js",
     "perf:benchmark": "node src/build/performance-cli.js benchmark",
     "perf:monitor": "node src/build/performance-cli.js monitor",
@@ -16,6 +17,7 @@
   "dependencies": {
     "@astrojs/mdx": "^4.3.1",
     "@astrojs/react": "^4.3.0",
+    "@astrojs/rss": "^4.0.17",
     "@astrojs/sitemap": "^3.4.2",
     "@astrojs/tailwind": "^6.0.2",
     "@radix-ui/react-slot": "^1.2.3",
