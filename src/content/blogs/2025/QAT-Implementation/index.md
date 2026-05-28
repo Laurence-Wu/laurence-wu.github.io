@@ -1,10 +1,13 @@
 ---
-title: "Quantization Aware Training Implementation Guide"
-description: "Implementation details and best practices for Quantization Aware Training (QAT) with LoRA, including GPU memory optimization strategies"
-pubDate: 2025-01-15
-author: "Xiaoyou Wu"
-thumbnail: "https://picsum.photos/seed/QAT-Implementation/400/300"
-tags: ["AI-ML", "GPU & Compilers", "research"]
+title: Quantization Aware Training Implementation Guide
+description: Implementation details and best practices for Quantization Aware Training (QAT) with LoRA, including GPU memory optimization strategies
+pubDate: 2025-01-15T00:00:00.000Z
+author: Xiaoyou Wu
+thumbnail: https://live.staticflickr.com/6073/6128667994_412864eb43_b.jpg
+tags:
+  - AI-ML
+  - GPU & Compilers
+  - research
 ---
 
 # Quantization Aware Training

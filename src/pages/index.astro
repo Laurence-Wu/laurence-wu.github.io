@@ -1,151 +1,225 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { getCollection } from 'astro:content';
-import { sortByDate, filterDrafts } from '../utils/collections';
 import ThinkingSection from '../components/ThinkingSection.astro';
 import FeaturedResearch from '../components/FeaturedResearch.astro';
+import type { ResearchPaper } from '../components/FeaturedResearch.astro';
 import type { ThinkingItem } from '../components/ThinkingSection.astro';
+
 import { Image } from 'astro:assets';
 import profileImage from '../assets/images/profile.jpg';
 
-const allBlogPosts = await getCollection('blogs');
-const researchPosts = sortByDate(filterDrafts(allBlogPosts))
-  .filter(post => post.data.tags?.includes('research'))
-  .slice(0, 3);
+const researchPapers: ResearchPaper[] = [
+  {
+    title: 'BlockBatch: Multi-Scale Consensus Decoding for Efficient Diffusion Language Model Inference',
+    description: 'Diffusion language models (dLLMs) generate text by iteratively denoising multiple token positions in parallel, offering an attractive alternative to strictly autoregressive decoding. In practice, however, block-wise dLLM inference exposes a difficult granularity trade-off: small blocks preserve local conditioning but require many denoising steps, whereas large blocks expose more parallelism but can make premature commitments and accumulate cache error. Existing acceleration methods typically choose a single block size per request, leaving the complementarity among block sizes unused. We show that block size itself is a useful branching dimension. Different block sizes induce related but non-identical KV-cache trajectories: branches often share an initial prefix, bifurcate at semantically decisive positions, and later agree on syntactically lightweight tokens. Motivated by this structure, we propose BlockBatch, a training-free online inference framework that executes multiple block-size branches for the same request inside a batched forward pass. BlockBatch coordinates these branches through confidence-gated token merging, leader-based synchronization, and periodic full-sequence refreshes that re-anchor local block updates to a globally consistent KV state. Across 3 representative dLLMs and 4 datasets, BlockBatch reduces denoising NFEs by 26.6% on average and achieves a 1.33× average end-to-end speedup over Fast-dLLM while preserving accuracy.',
+    venue: 'Under Submission',
+    date: 'May 2026',
+    projectHref: '/projects/blockbatch/blockbatch/',
+    authors: '<strong>Xiaoyou Wu</strong>, Cheng-Jhih Shih, Binfei Ji, Yong Liu, Yingyan (Celine) Lin · Georgia Institute of Technology',
+  },
+  {
+    title: 'Hy²: Accelerating Hybrid Mamba-Transformer Serving Through Adaptive GPU–PIM Co-Design',
+    description: 'Hybrid Mamba-Transformer models have emerged as a promising alternative to pure Transformers because they combine the constant-time decoding of state space models (SSMs) with the in-context recall of attention, promising higher decode throughput, smaller KV-cache footprint, and lower serving cost. However, they create a new serving challenge: different operators within the same model have different hardware affinities, the model maintains two structurally different state types (growing KV caches and fixed-size SSM states), and those affinities shift at runtime under continuous batching. GPU-only execution underutilizes GPU compute on bandwidth-bound SSM scans and attention general matrix-vector multiplications (GEMVs), while compute-bound operators in the same model still demand GPU-class throughput—making GPU-PIM architectures a natural fit. However, existing GPU serving engines assume single-device execution, and prior GPU-PIM systems largely target more uniform Transformer workloads with fixed or limited operator partitioning. We present Hy² (Hybrid model on Hybrid hardware), a co-design framework for serving hybrid models on GPU-PIM hardware. Hy² jointly addresses three coupled challenges: tailoring PIM microarchitecture to the hybrid operator mix, managing heterogeneous KV-cache and SSM states across GPU and PIM memory, and adapting operator placement per layer and per iteration as continuous batching shifts batch composition. Hy² integrates workload-guided PIM design-space exploration, a unified paged-slab memory manager, and an adaptive scheduler with per-request SLO enforcement. Across five hybrid models, Hy² achieves 1.51× average throughput over prior GPU-PIM baselines and 2.47× over GPU-only baselines, while reducing P99 tail latency to 0.61× that of prior GPU-PIM baselines.',
+    venue: 'Under Submission',
+    date: 'April 2026',
+    projectHref: '/projects/hy2/hy2/',
+    authors: 'Cheng-Jhih Shih, Jishnu Das, Sung Bin Kim, Chung-En Ho, Wei-Hsing Huang, <strong>Xiaoyou Wu</strong>, Binfei Ji, How-Shing Wang, Riley Corzine, Shimeng Yu, Yingyan (Celine) Lin · Georgia Institute of Technology',
+  },
+];
 
 const thinkingItems: ThinkingItem[] = [
   {
-    question: 'The relationship between transfer function and electric field?',
-    answer: "A transfer function $H(s)$ is more than a ratio; it is the signature of a medium's soul. In electromagnetics, space acts as a processor—a spatial filter where $E_{out}(s) = H(s) \\cdot E_{in}(s)$. Permittivity $\\epsilon(\\omega)$ is the material's personality, governing how it breathes in response to the pressure of an external field.",
+    question: 'Does block-size diversity reveal something fundamental about how diffusion models represent uncertainty?',
+    answer: "Different block sizes don't just trade speed for quality — they carve different trajectories through the same probability landscape. The bifurcation points where branches diverge are exactly where the model is most uncertain: semantically loaded tokens where the distribution is wide. The re-agreement at the end is the model's confidence collapsing back to a mode. BlockBatch is, in some sense, a structured way to sample that uncertainty and extract signal from it without the cost of full independent samples.",
   },
   {
-    question: 'How does Diffusion Blocks changes the inference and what factor determine the most efficient block size?',
-    answer: 'Diffusion Blocks are architectural heartbeats. Larger blocks offer contextual depth for global alignment but demand heavy GPU tolls. Efficiency is found at the Information Bottleneck: matching the block\'s receptive field to the Latent Resolution to ensure every FLOP sculpts meaning rather than redundant noise.',
+    question: 'Why is memory bandwidth — not compute — the binding constraint in modern LLM serving?',
+    answer: "During decode, each forward pass moves the entire model weight matrix across HBM for a single token — arithmetic intensity collapses to near zero. The roofline isn't a theoretical toy; it's an indictment. GPUs that achieve 312 TFLOP/s sit idle at 3% utilization because the HBM bus (2 TB/s) can't feed them fast enough. PIM's value isn't raw bandwidth — it's that it puts compute where the data lives, turning the memory wall into a foundation rather than a ceiling.",
   },
   {
-    question: 'Why Circuits have relatively larger LTI range than other field (language, material science, etc.)?',
-    answer: "Circuits enjoy mathematical grace because we manufacture them to obey our symbols. Through negative feedback, we create 'linear islands' in a non-linear sea. Unlike language, where context is volatile, circuits thrive on Superposition—where the response is blissfully indifferent to surrounding signals.",
+    question: 'Why does negative feedback deserve more credit than any algorithm in modern engineering?',
+    answer: "Every elegant system I've studied traces back to the same mechanism: measure the error, oppose it. The Laplace transform turns this loop into algebra, but the intuition is older — it's how thermostats work, how pupils dilate, how markets (imperfectly) clear. What makes it profound is that a system doesn't need to understand its goal; it only needs to know how far it is from it. Intelligence, reduced to a signed difference.",
   },
   {
-    question: 'How to develop sharp intuition on the electrical components work?',
-    answer: "To 'see' electricity, look for where the energy is hiding. See Voltage as the desperate urge of electrons to find peace and Current as their kinetic rush. Intuition is forged in the sandbox of failure, understanding that electricity is a fluid, living force seeking equilibrium.",
+    question: 'Is there a deeper analogy between the SSM state and working memory in biological cognition?',
+    answer: "SSMs maintain a fixed-size recurrent state that's updated in-place at every token — it has to compress the entire causal history into a bounded representation. Biological working memory does the same: selective, lossy, capacity-constrained. The difference is that attention can selectively retrieve from an unbounded KV cache, while SSM must decide what to keep as it goes. Hybrid models aren't just an engineering compromise — they might be probing something real about the architecture of memory itself.",
   },
 ];
 ---
 
 <BaseLayout title="Xiaoyou Wu - Research Portfolio">
   <div class="container research-home-container">
+
     <section class="hero-section">
       <div class="hero-layout">
-        <div class="profile-image-container">
-          <Image src={profileImage} alt="Xiaoyou Wu" class="profile-image" width={350} />
+
+        <div class="hero-left">
+          <Image src={profileImage} alt="Xiaoyou Wu" class="profile-image" width={160} />
         </div>
+
         <div class="hero-text">
           <h1>Xiaoyou Wu</h1>
-          <p class="tagline"><strong>Computer Engineering @GaTech | Research in Efficient LLM & robot localization</strong></p>
-          <p class="introduction">
-            <strong>A student of electrodynamics and existentialism who finds rhythm in both classical mechanics and Ne-Yo(or Usher). Whether I'm designing efficient infrastructure, hitting a badminton court, or poping, I’m driven by the pursuit of truth and a perfectly timed beat.</strong>
+          <p class="affiliation">Computer Engineering · Georgia Institute of Technology</p>
+          <p class="bio">
+            I'm a Computer Engineering student at Georgia Tech working on efficient inference for large generative models and video generation for world models. My research spans diffusion language model acceleration, GPU–PIM hardware co-design, and autoregressive world modeling for closed-loop robot control.
           </p>
-          <div class="contact-links">
-            <a href="mailto:xwu488@gatech.edu" class="contact-link">📧 Email</a>
-            <a href="https://linkedin.com/in/xiaoyou-wu" target="_blank" rel="noopener noreferrer" class="contact-link">🔗 LinkedIn</a>
-            <a href="https://github.com/Laurence-Wu" target="_blank" rel="noopener noreferrer" class="contact-link">💻 GitHub</a>
-            <a href="https://x.com/BluishZima" target="_blank" rel="noopener noreferrer" class="contact-link">𝕏 Twitter</a>
+
+          <div class="interests-row">
+            <span class="interests-label">Interests</span>
+            <div class="interest-tags">
+              <span class="itag">LLM Inference</span>
+              <span class="itag">Diffusion LMs</span>
+              <span class="itag">Quantization</span>
+              <span class="itag">GPU–PIM Systems</span>
+              <span class="itag">World Modeling</span>
+            </div>
           </div>
-          <blockquote class="motto">"I have never believed more firmly that my sole purpose in this world is to contemplate it, and to exhaust all my fire in the pursuit of truth."</blockquote>
+
+          <div class="contact-links">
+            <a href="mailto:xwu488@gatech.edu" class="contact-link">Email</a>
+            <a href="https://linkedin.com/in/xiaoyou-wu" target="_blank" rel="noopener noreferrer" class="contact-link">LinkedIn</a>
+            <a href="https://github.com/Laurence-Wu" target="_blank" rel="noopener noreferrer" class="contact-link">GitHub</a>
+            <a href="https://x.com/BluishZima" target="_blank" rel="noopener noreferrer" class="contact-link">Twitter</a>
+          </div>
         </div>
+
       </div>
     </section>
 
-    <section class="research-interests-section">
-      <h2>Research Interests</h2>
-      <ul>
-        <li><strong>Efficient LLMs</strong>: Inference, Quantization, Diffusion</li>
-        <li><strong>Hardware Architecture</strong>: High-Speed PCB, FPGAs, Signal Integrity</li>
-        <li><strong>Robotics</strong>: Autonomous Systems, Sensor Integration, Control Theory</li>
-      </ul>
-    </section>
+    <FeaturedResearch papers={researchPapers} />
 
     <ThinkingSection items={thinkingItems} />
 
-    <FeaturedResearch posts={researchPosts} />
   </div>
 </BaseLayout>
 
 <style>
   .research-home-container {
-    max-width: 900px;
-    margin: 4rem auto;
+    max-width: 960px;
+    margin: 2.5rem auto;
     padding: 0 1.5rem;
     font-family: var(--font-body);
     color: var(--deep-navy);
     line-height: 1.7;
   }
 
+  /* ── Hero ── */
   .hero-section {
-    margin-bottom: 4rem;
+    margin-bottom: 2rem;
   }
 
   .hero-layout {
     display: flex;
     align-items: center;
-    gap: 2.5rem;
+    gap: 2rem;
   }
 
-  .profile-image-container {
+  /* Photo */
+  .hero-left {
     flex-shrink: 0;
+    width: 155px;
   }
 
   .profile-image {
-    width: auto;
+    width: 100%;
     height: auto;
-    max-width: 350px;
-    border-radius: 12px;
-    object-fit: contain;
+    border-radius: 50%;
+    object-fit: cover;
+    aspect-ratio: 1 / 1;
     border: 3px solid var(--sage-green);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+    display: block;
+    transition: box-shadow 0.3s ease;
   }
 
   .profile-image:hover {
-    transform: scale(1.02);
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
   }
 
+  /* Text column */
   .hero-text {
     flex: 1;
+    min-width: 0;
   }
 
   .hero-text h1 {
-    font-size: 2.8rem;
+    font-size: 2rem;
     color: var(--deep-navy);
-    margin-bottom: 0.5rem;
+    margin: 0 0 0.15rem 0;
     font-weight: 700;
+    line-height: 1.15;
   }
 
-  .tagline {
-    font-size: 1.1rem;
+  .affiliation {
+    font-size: 0.88rem;
     color: var(--color-text-light);
-    margin-bottom: 1.5rem;
+    margin: 0 0 0.6rem 0;
   }
 
-  .introduction {
-    font-size: 1.1rem;
+  .bio {
+    font-size: 0.9rem;
     color: var(--color-text);
-    margin-bottom: 2rem;
+    line-height: 1.6;
+    margin: 0 0 0.75rem 0;
+    max-width: 56ch;
   }
 
+  /* Interests row */
+  .interests-row {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.7rem;
+    flex-wrap: wrap;
+  }
+
+  .interests-label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.9px;
+    color: var(--color-text-light);
+    white-space: nowrap;
+  }
+
+  .interest-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+
+  .itag {
+    font-size: 0.74rem;
+    font-weight: 500;
+    color: var(--deep-navy);
+    background: rgba(138, 154, 126, 0.12);
+    border: 1px solid rgba(138, 154, 126, 0.35);
+    border-radius: 20px;
+    padding: 0.15rem 0.55rem;
+    line-height: 1.5;
+  }
+
+  /* Contact links */
   .contact-links {
     display: flex;
-    justify-content: center;
-    gap: 2rem;
+    gap: 0.9rem;
     flex-wrap: wrap;
+    align-items: center;
   }
 
   .contact-link {
     color: var(--gold-accent);
     text-decoration: none;
     font-weight: 600;
+    font-size: 0.85rem;
+    transition: color 0.2s;
+  }
+
+  .contact-link + .contact-link::before {
+    content: '·';
+    margin-right: 0.9rem;
+    color: var(--color-border);
+    font-weight: 400;
   }
 
   .contact-link:hover {
@@ -153,16 +227,7 @@ const thinkingItems: ThinkingItem[] = [
     color: var(--color-gold-light);
   }
 
-  .motto {
-    margin-top: 1.5rem;
-    font-size: 1rem;
-    color: var(--color-text-light);
-    font-style: italic;
-    border-left: 3px solid var(--gold-accent);
-    padding-left: 1rem;
-    line-height: 1.6;
-  }
-
+  /* Shared section heading used by child components */
   h2 {
     font-size: 2rem;
     color: var(--deep-navy);
@@ -173,38 +238,32 @@ const thinkingItems: ThinkingItem[] = [
     padding-bottom: 0.5rem;
   }
 
-  .research-interests-section ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-
-  .research-interests-section li {
-    font-size: 1.1rem;
-    margin-bottom: 0.5rem;
-    color: var(--color-text);
-  }
-
-  @media (max-width: 768px) {
+  /* ── Mobile ── */
+  @media (max-width: 700px) {
     .hero-layout {
       flex-direction: column;
+      align-items: center;
       text-align: center;
     }
 
-    .profile-image {
-      max-width: 280px;
+    .hero-left {
+      width: 150px;
     }
 
-    .hero-text h1 {
-      font-size: 2.2rem;
+    .bio {
+      max-width: 100%;
     }
 
-    .tagline {
-      font-size: 1rem;
+    .interests-row {
+      justify-content: center;
     }
 
     .contact-links {
       justify-content: center;
+    }
+
+    .hero-text h1 {
+      font-size: 2rem;
     }
 
     h2 {

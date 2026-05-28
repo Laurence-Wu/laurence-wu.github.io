@@ -1,5 +1,5 @@
 <!DOCTYPE html><html lang="en" data-astro-cid-37fxchfa> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>VIP Progress Journal - SystemVerilog Learning</title><meta name="description" content="Weekly progress journal documenting my journey learning SystemVerilog, including module structures, always blocks, and FSM implementations"><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://laurence-wu.github.io/blog/2024/vip_progress/"><meta property="og:title" content="VIP Progress Journal - SystemVerilog Learning"><meta property="og:description" content="Weekly progress journal documenting my journey learning SystemVerilog, including module structures, always blocks, and FSM implementations"><meta property="og:image" content="/assets/profile-image.jpg"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://laurence-wu.github.io/blog/2024/vip_progress/"><meta property="twitter:title" content="VIP Progress Journal - SystemVerilog Learning"><meta property="twitter:description" content="Weekly progress journal documenting my journey learning SystemVerilog, including module structures, always blocks, and FSM implementations"><meta property="twitter:image" content="/assets/profile-image.jpg"><!-- KaTeX CSS for Math Rendering --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous"><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script><!-- Google Fonts - Preserved Typography System --><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&family=Cormorant+Garamond:wght@300;400;500;600;700&display=swap" rel="stylesheet"><!-- Fira Code for code blocks --><link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap" rel="stylesheet"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Global CSS Import --><link rel="stylesheet" href="/_astro/_slug_.CaX6V1Dz.css">
-<link rel="stylesheet" href="/_astro/index.DV-GBmqc.css">
+<link rel="stylesheet" href="/_astro/index.B8H_S5Qn.css">
 <style>.blog-post[data-astro-cid-bvzihdzo]{max-width:800px;margin:0 auto;padding:1rem;margin-top:-1rem;min-height:calc(100vh - 180px)}@media (min-width: 1201px){.blog-post[data-astro-cid-bvzihdzo]{margin-left:340px;margin-right:auto;max-width:calc(100vw - 380px)}.blog-footer[data-astro-cid-bvzihdzo] .container[data-astro-cid-bvzihdzo]{margin-left:340px;margin-right:auto}}.post-header[data-astro-cid-bvzihdzo]{margin-bottom:1rem;margin-top:.5rem;border-bottom:1px solid var(--color-border);padding-bottom:1rem;padding:1.5rem;border-radius:12px}.blog-footer[data-astro-cid-bvzihdzo]{background:var(--deep-navy);padding:1.5rem 0;border-top:3px solid var(--color-border);margin-top:1rem;margin-bottom:-1rem;position:relative;overflow:hidden;width:100%}.container[data-astro-cid-bvzihdzo]{max-width:800px;margin:0 auto;padding:0 1rem;position:relative;z-index:2}.back-link[data-astro-cid-bvzihdzo]{color:var(--warm-neutral);text-decoration:none;font-weight:600;font-size:1.1rem}.post-header[data-astro-cid-bvzihdzo] h1[data-astro-cid-bvzihdzo]{font-size:2rem;margin-bottom:.5rem;line-height:1.2;color:var(--deep-navy);font-family:var(--font-heading)}.post-image[data-astro-cid-bvzihdzo]{margin:2rem 0;text-align:center}.post-image[data-astro-cid-bvzihdzo] img[data-astro-cid-bvzihdzo]{max-width:100%;border-radius:8px}.post-meta[data-astro-cid-bvzihdzo]{color:var(--color-text-light);font-size:.9rem;margin-bottom:1rem;font-family:var(--font-body)}.post-meta[data-astro-cid-bvzihdzo] time[data-astro-cid-bvzihdzo]{font-weight:500;color:var(--color-text-light)}.author[data-astro-cid-bvzihdzo]{margin-left:1rem;color:var(--color-text-light);font-weight:500}.updated[data-astro-cid-bvzihdzo]{margin-left:1rem;font-style:italic;color:var(--color-text-light)}.tags[data-astro-cid-bvzihdzo]{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}.tag[data-astro-cid-bvzihdzo]{background:#0a23420d;color:var(--deep-navy);padding:.4rem .8rem;border-radius:20px;font-size:.8rem;font-weight:600;border:1px solid var(--color-border);font-family:var(--font-body);text-decoration:none;display:inline-block}.tag[data-astro-cid-bvzihdzo]:hover{background:#0a23421a;color:var(--gold-accent)}.post-content[data-astro-cid-bvzihdzo]{padding:2.5rem;margin:2rem 0}.mermaid-wrapper{overflow-x:auto;margin:2rem 0;border:1px solid var(--color-border);border-radius:8px;background:#fff;padding:1.5rem;text-align:center}.mermaid svg{max-width:100%;height:auto}@media (max-width: 768px){.blog-post[data-astro-cid-bvzihdzo]{padding:.5rem;margin-top:-.5rem}.post-header[data-astro-cid-bvzihdzo]{padding:1rem;margin:.5rem 0}.post-content[data-astro-cid-bvzihdzo]{padding:1rem;margin:.5rem 0;font-size:1rem;line-height:1.7}.post-header[data-astro-cid-bvzihdzo] h1[data-astro-cid-bvzihdzo]{font-size:2rem}.blog-footer[data-astro-cid-bvzihdzo]{padding:1rem 0;margin-top:.5rem;margin-bottom:-.5rem}.content-with-sidebar[data-astro-cid-bvzihdzo]{gap:1.5rem}}
 </style></head> <body data-astro-cid-37fxchfa> <nav class="navbar" data-astro-cid-pux6a34n> <div class="navbar-brand" data-astro-cid-pux6a34n>Xiaoyou Wu</div> <a href="/" class="navbar-link " data-astro-cid-pux6a34n>
 Home
@@ -10,17 +10,17 @@ Projects
 </a> </nav>  <script type="module">function r(){const e=document.querySelector(".navbar");window.scrollY>50?e?.classList.add("scrolled"):e?.classList.remove("scrolled")}window.addEventListener("scroll",r);document.querySelector(".navbar")?.addEventListener("contextmenu",e=>{e.preventDefault()});document.querySelector(".navbar")?.addEventListener("dragstart",e=>{e.preventDefault()});</script> <main class="main-content" data-astro-cid-37fxchfa>  <main class="blog-post" data-astro-cid-bvzihdzo> <article data-astro-cid-bvzihdzo> <header class="post-header" data-astro-cid-bvzihdzo> <h1 data-astro-cid-bvzihdzo>VIP Progress Journal - SystemVerilog Learning</h1> <div class="post-meta" data-astro-cid-bvzihdzo> <time datetime="2024-08-25T00:00:00.000Z" data-astro-cid-bvzihdzo> August 24, 2024 </time> <span class="author" data-astro-cid-bvzihdzo>by Xiaoyou Wu</span>  </div> <div class="tags" data-astro-cid-bvzihdzo> <a href="/blog/tag/Hardware &#38; Digital Design/" class="tag" data-astro-cid-bvzihdzo>Hardware &amp; Digital Design</a><a href="/blog/tag/Learning Journal/" class="tag" data-astro-cid-bvzihdzo>Learning Journal</a> </div> </header>  <div id="table-of-contents" class="toc-container" data-astro-cid-xvrfupwn> <div class="toc-header" data-astro-cid-xvrfupwn> <div class="toc-title-area" data-astro-cid-xvrfupwn> <span class="drag-handle" title="Drag to move" data-astro-cid-xvrfupwn>⋮⋮</span> <h3 data-astro-cid-xvrfupwn>Table of Contents</h3> </div> <button id="toc-toggle" class="toc-toggle" aria-label="Toggle table of contents" data-astro-cid-xvrfupwn> <span class="toggle-icon" data-astro-cid-xvrfupwn>←</span> </button> </div> <nav class="toc-nav" aria-label="Table of contents" data-astro-cid-xvrfupwn> <ul id="toc-list" class="toc-list" data-astro-cid-xvrfupwn> <!-- TOC items will be populated by JavaScript --> </ul> </nav> </div>  <script type="module" src="/_astro/TableOfContents.astro_astro_type_script_index_0_lang.DKspTH5I.js"></script> <div class="content-with-sidebar" data-astro-cid-bvzihdzo> <div class="post-content prose-content main-content" data-astro-cid-bvzihdzo>  <h2 id="week-1-aug-25---aug-31">Week 1: Aug 25 - Aug 31</h2>
 <h3 id="foundation--basic-structures">Foundation &#x26; Basic Structures</h3>
 <h4 id="module-structure">Module Structure</h4>
-<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>module ModuleName (</span></span>
-<span class="line"><span>    // Input signals</span></span>
-<span class="line"><span>    input logic signal_name,</span></span>
-<span class="line"><span>    input logic [31:0] bus_signal,</span></span>
-<span class="line"><span></span></span>
-<span class="line"><span>    // Output signals</span></span>
-<span class="line"><span>    output logic output_signal,</span></span>
-<span class="line"><span>    output logic [4:0] output_bus</span></span>
-<span class="line"><span>);</span></span>
-<span class="line"><span>    // Module body</span></span>
-<span class="line"><span>endmodule</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="verilog"><code><span class="line"><span style="color:#F97583">module</span><span style="color:#B392F0"> ModuleName</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#6A737D">    // Input signals</span></span>
+<span class="line"><span style="color:#F97583">    input</span><span style="color:#E1E4E8"> logic signal_name,</span></span>
+<span class="line"><span style="color:#F97583">    input</span><span style="color:#E1E4E8"> logic [</span><span style="color:#79B8FF">31</span><span style="color:#E1E4E8">:</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">] bus_signal,</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    // Output signals</span></span>
+<span class="line"><span style="color:#F97583">    output</span><span style="color:#E1E4E8"> logic output_signal,</span></span>
+<span class="line"><span style="color:#F97583">    output</span><span style="color:#E1E4E8"> logic [</span><span style="color:#79B8FF">4</span><span style="color:#E1E4E8">:</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">] output_bus</span></span>
+<span class="line"><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#6A737D">    // Module body</span></span>
+<span class="line"><span style="color:#F97583">endmodule</span></span></code></pre>
 <p><strong>Remember:</strong></p>
 <ul>
 <li><code>logic</code> replaces wire/reg</li>
@@ -28,181 +28,181 @@ Projects
 <li>Semicolon after port list</li>
 </ul>
 <h4 id="data-types">Data Types</h4>
-<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>// Enumerated types with explicit width</span></span>
-<span class="line"><span>typedef enum logic [2:0] {</span></span>
-<span class="line"><span>    NO_WRITEBACK = 3'b000,</span></span>
-<span class="line"><span>    READ_ALU_RESULT = 3'b001,</span></span>
-<span class="line"><span>    READ_MEM_RESULT = 3'b010</span></span>
-<span class="line"><span>} write_back_mux_selector;</span></span>
-<span class="line"><span></span></span>
-<span class="line"><span>// Localparam for compile-time constants</span></span>
-<span class="line"><span>localparam INSTR_START_PC = 0;</span></span>
-<span class="line"><span>localparam DATA_START_PC = 127;</span></span>
-<span class="line"><span></span></span>
-<span class="line"><span>// Parameter extraction using bit slicing</span></span>
-<span class="line"><span>localparam REG_S1_MSB = 19;</span></span>
-<span class="line"><span>localparam REG_S1_LSB = 15;</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="verilog"><code><span class="line"><span style="color:#6A737D">// Enumerated types with explicit width</span></span>
+<span class="line"><span style="color:#E1E4E8">typedef enum logic [</span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">:</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">] {</span></span>
+<span class="line"><span style="color:#E1E4E8">    NO_WRITEBACK </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 3'b000</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    READ_ALU_RESULT </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 3'b001</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    READ_MEM_RESULT </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 3'b010</span></span>
+<span class="line"><span style="color:#E1E4E8">} write_back_mux_selector;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// Localparam for compile-time constants</span></span>
+<span class="line"><span style="color:#F97583">localparam</span><span style="color:#E1E4E8"> INSTR_START_PC </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">localparam</span><span style="color:#E1E4E8"> DATA_START_PC </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 127</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// Parameter extraction using bit slicing</span></span>
+<span class="line"><span style="color:#F97583">localparam</span><span style="color:#E1E4E8"> REG_S1_MSB </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 19</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">localparam</span><span style="color:#E1E4E8"> REG_S1_LSB </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 15</span><span style="color:#E1E4E8">;</span></span></code></pre>
 <p><strong>Number Formats:</strong></p>
-<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>7'h23    // 7-bit hex value</span></span>
-<span class="line"><span>3'b001   // 3-bit binary value</span></span>
-<span class="line"><span>32'bz    // 32-bit high-impedance</span></span>
-<span class="line"><span>8'h00    // 8-bit hex (for byte operations)</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="verilog"><code><span class="line"><span style="color:#79B8FF">7'h23</span><span style="color:#6A737D">    // 7-bit hex value</span></span>
+<span class="line"><span style="color:#79B8FF">3'b001</span><span style="color:#6A737D">   // 3-bit binary value</span></span>
+<span class="line"><span style="color:#79B8FF">32'bz</span><span style="color:#6A737D">    // 32-bit high-impedance</span></span>
+<span class="line"><span style="color:#79B8FF">8'h00</span><span style="color:#6A737D">    // 8-bit hex (for byte operations)</span></span></code></pre>
 <h4 id="procedural-blocks">Procedural Blocks</h4>
 <p><strong>Combinational - always_comb</strong></p>
-<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>always_comb begin</span></span>
-<span class="line"><span>    case(alu_operator_ip)</span></span>
-<span class="line"><span>        ALU_ADD: begin</span></span>
-<span class="line"><span>            alu_result_op = alu_operand_a_ip + alu_operand_b_ip;</span></span>
-<span class="line"><span>            alu_valid_op = 1;</span></span>
-<span class="line"><span>        end</span></span>
-<span class="line"><span>        ALU_SUB: begin</span></span>
-<span class="line"><span>            alu_result_op = alu_operand_a_ip - alu_operand_b_ip;</span></span>
-<span class="line"><span>            alu_valid_op = 1;</span></span>
-<span class="line"><span>        end</span></span>
-<span class="line"><span>        default: begin</span></span>
-<span class="line"><span>            alu_result_op = 0;</span></span>
-<span class="line"><span>            alu_valid_op = 0;</span></span>
-<span class="line"><span>        end</span></span>
-<span class="line"><span>    endcase</span></span>
-<span class="line"><span>end</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="verilog"><code><span class="line"><span style="color:#E1E4E8">always_comb </span><span style="color:#F97583">begin</span></span>
+<span class="line"><span style="color:#F97583">    case</span><span style="color:#E1E4E8">(alu_operator_ip)</span></span>
+<span class="line"><span style="color:#E1E4E8">        ALU_ADD: </span><span style="color:#F97583">begin</span></span>
+<span class="line"><span style="color:#E1E4E8">            alu_result_op </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> alu_operand_a_ip </span><span style="color:#F97583">+</span><span style="color:#E1E4E8"> alu_operand_b_ip;</span></span>
+<span class="line"><span style="color:#E1E4E8">            alu_valid_op </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">        end</span></span>
+<span class="line"><span style="color:#E1E4E8">        ALU_SUB: </span><span style="color:#F97583">begin</span></span>
+<span class="line"><span style="color:#E1E4E8">            alu_result_op </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> alu_operand_a_ip </span><span style="color:#F97583">-</span><span style="color:#E1E4E8"> alu_operand_b_ip;</span></span>
+<span class="line"><span style="color:#E1E4E8">            alu_valid_op </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">        end</span></span>
+<span class="line"><span style="color:#F97583">        default</span><span style="color:#E1E4E8">: </span><span style="color:#F97583">begin</span></span>
+<span class="line"><span style="color:#E1E4E8">            alu_result_op </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">            alu_valid_op </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">        end</span></span>
+<span class="line"><span style="color:#F97583">    endcase</span></span>
+<span class="line"><span style="color:#F97583">end</span></span></code></pre>
 <p><strong>Sequential - always @(posedge clk)</strong></p>
-<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>always @(posedge clk) begin</span></span>
-<span class="line"><span>    if (~reset)</span></span>
-<span class="line"><span>        cycle_count &#x3C;= cycle_count + 1;</span></span>
-<span class="line"><span>end</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="verilog"><code><span class="line"><span style="color:#F97583">always</span><span style="color:#E1E4E8"> @(</span><span style="color:#F97583">posedge</span><span style="color:#E1E4E8"> clk) </span><span style="color:#F97583">begin</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">~</span><span style="color:#E1E4E8">reset)</span></span>
+<span class="line"><span style="color:#E1E4E8">        cycle_count </span><span style="color:#F97583">&#x3C;=</span><span style="color:#E1E4E8"> cycle_count </span><span style="color:#F97583">+</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">end</span></span></code></pre>
 <hr>
 <h2 id="week-2-sep-1---sep-7">Week 2: Sep 1 - Sep 7</h2>
 <h3 id="advanced-patterns--pipeline-design">Advanced Patterns &#x26; Pipeline Design</h3>
 <h4 id="packages">Packages</h4>
-<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>package CORE_PKG;</span></span>
-<span class="line"><span>    // Parameters</span></span>
-<span class="line"><span>    parameter OPCODE_STORE = 7'h23;</span></span>
-<span class="line"><span></span></span>
-<span class="line"><span>    // Enumerations</span></span>
-<span class="line"><span>    typedef enum logic [6:0] {</span></span>
-<span class="line"><span>        ALU_NOP = 7'b0000000,</span></span>
-<span class="line"><span>        ALU_ADD = 7'b0011000</span></span>
-<span class="line"><span>    } alu_opcode_e;</span></span>
-<span class="line"><span></span></span>
-<span class="line"><span>    // Custom types</span></span>
-<span class="line"><span>    typedef enum {</span></span>
-<span class="line"><span>        REG_A, PC, OPA_NOP</span></span>
-<span class="line"><span>    } operand_a_mux;</span></span>
-<span class="line"><span>endpackage</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="verilog"><code><span class="line"><span style="color:#E1E4E8">package CORE_PKG;</span></span>
+<span class="line"><span style="color:#6A737D">    // Parameters</span></span>
+<span class="line"><span style="color:#F97583">    parameter</span><span style="color:#E1E4E8"> OPCODE_STORE </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 7'h23</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    // Enumerations</span></span>
+<span class="line"><span style="color:#E1E4E8">    typedef enum logic [</span><span style="color:#79B8FF">6</span><span style="color:#E1E4E8">:</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">] {</span></span>
+<span class="line"><span style="color:#E1E4E8">        ALU_NOP </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 7'b0000000</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">        ALU_ADD </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 7'b0011000</span></span>
+<span class="line"><span style="color:#E1E4E8">    } alu_opcode_e;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    // Custom types</span></span>
+<span class="line"><span style="color:#E1E4E8">    typedef enum {</span></span>
+<span class="line"><span style="color:#E1E4E8">        REG_A, PC, OPA_NOP</span></span>
+<span class="line"><span style="color:#E1E4E8">    } operand_a_mux;</span></span>
+<span class="line"><span style="color:#E1E4E8">endpackage</span></span></code></pre>
 <p><strong>Import:</strong></p>
-<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>import CORE_PKG::*;</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="verilog"><code><span class="line"><span style="color:#E1E4E8">import CORE_PKG::</span><span style="color:#F97583">*</span><span style="color:#E1E4E8">;</span></span></code></pre>
 <h4 id="pipeline-patterns">Pipeline Patterns</h4>
 <p><strong>Signal Naming Convention</strong></p>
-<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>// Pass-through signals use _pt suffix</span></span>
-<span class="line"><span>logic [31:0] id_uimmd_pt;</span></span>
-<span class="line"><span>logic [31:0] ex_uimmd_pt;</span></span>
-<span class="line"><span>logic [31:0] lsu_uimmd_pt;</span></span>
-<span class="line"><span></span></span>
-<span class="line"><span>// Stage outputs use _op suffix</span></span>
-<span class="line"><span>output logic [31:0] alu_result_op;</span></span>
-<span class="line"><span>output logic alu_valid_op;</span></span>
-<span class="line"><span></span></span>
-<span class="line"><span>// Stage inputs use _ip suffix</span></span>
-<span class="line"><span>input logic [31:0] alu_operand_a_ip;</span></span>
-<span class="line"><span>input logic alu_enable_ip;</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="verilog"><code><span class="line"><span style="color:#6A737D">// Pass-through signals use _pt suffix</span></span>
+<span class="line"><span style="color:#E1E4E8">logic [</span><span style="color:#79B8FF">31</span><span style="color:#E1E4E8">:</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">] id_uimmd_pt;</span></span>
+<span class="line"><span style="color:#E1E4E8">logic [</span><span style="color:#79B8FF">31</span><span style="color:#E1E4E8">:</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">] ex_uimmd_pt;</span></span>
+<span class="line"><span style="color:#E1E4E8">logic [</span><span style="color:#79B8FF">31</span><span style="color:#E1E4E8">:</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">] lsu_uimmd_pt;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// Stage outputs use _op suffix</span></span>
+<span class="line"><span style="color:#F97583">output</span><span style="color:#E1E4E8"> logic [</span><span style="color:#79B8FF">31</span><span style="color:#E1E4E8">:</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">] alu_result_op;</span></span>
+<span class="line"><span style="color:#F97583">output</span><span style="color:#E1E4E8"> logic alu_valid_op;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// Stage inputs use _ip suffix</span></span>
+<span class="line"><span style="color:#F97583">input</span><span style="color:#E1E4E8"> logic [</span><span style="color:#79B8FF">31</span><span style="color:#E1E4E8">:</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">] alu_operand_a_ip;</span></span>
+<span class="line"><span style="color:#F97583">input</span><span style="color:#E1E4E8"> logic alu_enable_ip;</span></span></code></pre>
 <p><strong>Pipeline Buffers</strong></p>
-<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>// ID to EX pipeline buffer</span></span>
-<span class="line"><span>logic [31:0] id_instr_pc_addr_pt;</span></span>
-<span class="line"><span>logic [31:0] ex_instr_pc_addr_pt;</span></span>
-<span class="line"><span></span></span>
-<span class="line"><span>// EX to MEM pipeline buffer</span></span>
-<span class="line"><span>logic [31:0] ex_alu_result_pt;</span></span>
-<span class="line"><span>logic ex_alu_result_valid_pt;</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="verilog"><code><span class="line"><span style="color:#6A737D">// ID to EX pipeline buffer</span></span>
+<span class="line"><span style="color:#E1E4E8">logic [</span><span style="color:#79B8FF">31</span><span style="color:#E1E4E8">:</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">] id_instr_pc_addr_pt;</span></span>
+<span class="line"><span style="color:#E1E4E8">logic [</span><span style="color:#79B8FF">31</span><span style="color:#E1E4E8">:</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">] ex_instr_pc_addr_pt;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// EX to MEM pipeline buffer</span></span>
+<span class="line"><span style="color:#E1E4E8">logic [</span><span style="color:#79B8FF">31</span><span style="color:#E1E4E8">:</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">] ex_alu_result_pt;</span></span>
+<span class="line"><span style="color:#E1E4E8">logic ex_alu_result_valid_pt;</span></span></code></pre>
 <p><strong>Pipeline Control</strong></p>
-<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>input logic flush_en;   // Branch flush</span></span>
-<span class="line"><span>output logic stall_op;  // Hazard stall</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="verilog"><code><span class="line"><span style="color:#F97583">input</span><span style="color:#E1E4E8"> logic flush_en;   </span><span style="color:#6A737D">// Branch flush</span></span>
+<span class="line"><span style="color:#F97583">output</span><span style="color:#E1E4E8"> logic stall_op;  </span><span style="color:#6A737D">// Hazard stall</span></span></code></pre>
 <h4 id="risc-v-patterns">RISC-V Patterns</h4>
 <p><strong>Opcodes</strong></p>
-<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>parameter OPCODE_STORE = 7'h23;   // S-type</span></span>
-<span class="line"><span>parameter OPCODE_LOAD = 7'h03;    // I-type</span></span>
-<span class="line"><span>parameter OPCODE_BRANCH = 7'h63;  // B-type</span></span>
-<span class="line"><span>parameter OPCODE_JAL = 7'h6f;     // J-type</span></span>
-<span class="line"><span>parameter OPCODE_JALR = 7'h67;</span></span>
-<span class="line"><span>parameter OPCODE_LUI = 7'h37;     // U-type</span></span>
-<span class="line"><span>parameter OPCODE_AUIPC = 7'h17;</span></span>
-<span class="line"><span>parameter OPCODE_OP = 7'h33;      // R-type</span></span>
-<span class="line"><span>parameter OPCODE_OPIMM = 7'h13;</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="verilog"><code><span class="line"><span style="color:#F97583">parameter</span><span style="color:#E1E4E8"> OPCODE_STORE </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 7'h23</span><span style="color:#E1E4E8">;   </span><span style="color:#6A737D">// S-type</span></span>
+<span class="line"><span style="color:#F97583">parameter</span><span style="color:#E1E4E8"> OPCODE_LOAD </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 7'h03</span><span style="color:#E1E4E8">;    </span><span style="color:#6A737D">// I-type</span></span>
+<span class="line"><span style="color:#F97583">parameter</span><span style="color:#E1E4E8"> OPCODE_BRANCH </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 7'h63</span><span style="color:#E1E4E8">;  </span><span style="color:#6A737D">// B-type</span></span>
+<span class="line"><span style="color:#F97583">parameter</span><span style="color:#E1E4E8"> OPCODE_JAL </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 7'h6f</span><span style="color:#E1E4E8">;     </span><span style="color:#6A737D">// J-type</span></span>
+<span class="line"><span style="color:#F97583">parameter</span><span style="color:#E1E4E8"> OPCODE_JALR </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 7'h67</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">parameter</span><span style="color:#E1E4E8"> OPCODE_LUI </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 7'h37</span><span style="color:#E1E4E8">;     </span><span style="color:#6A737D">// U-type</span></span>
+<span class="line"><span style="color:#F97583">parameter</span><span style="color:#E1E4E8"> OPCODE_AUIPC </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 7'h17</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">parameter</span><span style="color:#E1E4E8"> OPCODE_OP </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 7'h33</span><span style="color:#E1E4E8">;      </span><span style="color:#6A737D">// R-type</span></span>
+<span class="line"><span style="color:#F97583">parameter</span><span style="color:#E1E4E8"> OPCODE_OPIMM </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 7'h13</span><span style="color:#E1E4E8">;</span></span></code></pre>
 <p><strong>Field Extraction</strong></p>
-<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>logic [6:0] opcode = instruction[6:0];</span></span>
-<span class="line"><span>logic [4:0] rd = instruction[11:7];</span></span>
-<span class="line"><span>logic [2:0] funct3 = instruction[14:12];</span></span>
-<span class="line"><span>logic [4:0] rs1 = instruction[19:15];</span></span>
-<span class="line"><span>logic [4:0] rs2 = instruction[24:20];</span></span>
-<span class="line"><span>logic [6:0] funct7 = instruction[31:25];</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="verilog"><code><span class="line"><span style="color:#E1E4E8">logic [</span><span style="color:#79B8FF">6</span><span style="color:#E1E4E8">:</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">] opcode </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> instruction[</span><span style="color:#79B8FF">6</span><span style="color:#E1E4E8">:</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">];</span></span>
+<span class="line"><span style="color:#E1E4E8">logic [</span><span style="color:#79B8FF">4</span><span style="color:#E1E4E8">:</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">] rd </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> instruction[</span><span style="color:#79B8FF">11</span><span style="color:#E1E4E8">:</span><span style="color:#79B8FF">7</span><span style="color:#E1E4E8">];</span></span>
+<span class="line"><span style="color:#E1E4E8">logic [</span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">:</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">] funct3 </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> instruction[</span><span style="color:#79B8FF">14</span><span style="color:#E1E4E8">:</span><span style="color:#79B8FF">12</span><span style="color:#E1E4E8">];</span></span>
+<span class="line"><span style="color:#E1E4E8">logic [</span><span style="color:#79B8FF">4</span><span style="color:#E1E4E8">:</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">] rs1 </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> instruction[</span><span style="color:#79B8FF">19</span><span style="color:#E1E4E8">:</span><span style="color:#79B8FF">15</span><span style="color:#E1E4E8">];</span></span>
+<span class="line"><span style="color:#E1E4E8">logic [</span><span style="color:#79B8FF">4</span><span style="color:#E1E4E8">:</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">] rs2 </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> instruction[</span><span style="color:#79B8FF">24</span><span style="color:#E1E4E8">:</span><span style="color:#79B8FF">20</span><span style="color:#E1E4E8">];</span></span>
+<span class="line"><span style="color:#E1E4E8">logic [</span><span style="color:#79B8FF">6</span><span style="color:#E1E4E8">:</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">] funct7 </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> instruction[</span><span style="color:#79B8FF">31</span><span style="color:#E1E4E8">:</span><span style="color:#79B8FF">25</span><span style="color:#E1E4E8">];</span></span></code></pre>
 <hr>
 <h3 id="interesting-knowledge-base-on-my-previous-project">Interesting Knowledge base on my previous project</h3>
 <h2 id="week-3-sep-8---sep-14">Week 3: Sep 8 - Sep 14</h2>
 <h3 id="testing-synthesis--optimization">Testing, Synthesis &#x26; Optimization</h3>
 <h4 id="testbench">Testbench</h4>
 <p><strong>Clock &#x26; Timing</strong></p>
-<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>`timescale 1ns / 1ns</span></span>
-<span class="line"><span></span></span>
-<span class="line"><span>module Core_tb;</span></span>
-<span class="line"><span>    logic clk = 1;</span></span>
-<span class="line"><span>    always #1 clk &#x3C;= clk + 1;</span></span>
-<span class="line"><span></span></span>
-<span class="line"><span>    initial begin</span></span>
-<span class="line"><span>        reset = 1'b1;</span></span>
-<span class="line"><span>        #6 reset = 1'b0;</span></span>
-<span class="line"><span>        #50 $finish;</span></span>
-<span class="line"><span>    end</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="verilog"><code><span class="line"><span style="color:#F97583">`timescale</span><span style="color:#E1E4E8"> 1ns </span><span style="color:#F97583">/</span><span style="color:#E1E4E8"> 1ns</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">module</span><span style="color:#B392F0"> Core_tb</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">    logic clk </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">    always</span><span style="color:#79B8FF"> #1</span><span style="color:#E1E4E8"> clk </span><span style="color:#F97583">&#x3C;=</span><span style="color:#E1E4E8"> clk </span><span style="color:#F97583">+</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    initial</span><span style="color:#F97583"> begin</span></span>
+<span class="line"><span style="color:#E1E4E8">        reset </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 1'b1</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#79B8FF">        #6</span><span style="color:#E1E4E8"> reset </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 1'b0</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#79B8FF">        #50</span><span style="color:#79B8FF"> $finish</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">    end</span></span></code></pre>
 <p><strong>Memory Init</strong></p>
-<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>core_proc.InstructionFetch_Module.InstructionMemory.instr_RAM[0] = 8'h00;</span></span>
-<span class="line"><span>core_proc.InstructionFetch_Module.InstructionMemory.instr_RAM[1] = 8'h00;</span></span>
-<span class="line"><span>core_proc.InstructionFetch_Module.InstructionMemory.instr_RAM[2] = 8'h00;</span></span>
-<span class="line"><span>core_proc.InstructionFetch_Module.InstructionMemory.instr_RAM[3] = 8'h00;</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="verilog"><code><span class="line"><span style="color:#E1E4E8">core_proc.InstructionFetch_Module.InstructionMemory.instr_RAM[</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 8'h00</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">core_proc.InstructionFetch_Module.InstructionMemory.instr_RAM[</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 8'h00</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">core_proc.InstructionFetch_Module.InstructionMemory.instr_RAM[</span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 8'h00</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">core_proc.InstructionFetch_Module.InstructionMemory.instr_RAM[</span><span style="color:#79B8FF">3</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 8'h00</span><span style="color:#E1E4E8">;</span></span></code></pre>
 <p><strong>Waveform Dump</strong></p>
-<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>$dumpfile("Core_Simulation.vcd");</span></span>
-<span class="line"><span>$dumpvars(0, Core_tb);</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="verilog"><code><span class="line"><span style="color:#79B8FF">$dumpfile</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"Core_Simulation.vcd"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#79B8FF">$dumpvars</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">, Core_tb);</span></span></code></pre>
 <h4 id="tricks">Tricks</h4>
 <p><strong>1. Ternary Operator</strong></p>
-<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>assign valid_instr_to_decode = instr_data_valid_ip ? instr_data_ip : 32'bz;</span></span>
-<span class="line"><span>alu_result_op = ($signed(alu_operand_a_ip) &#x3C; $signed(alu_operand_b_ip)) ? 1 : 0;</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="verilog"><code><span class="line"><span style="color:#F97583">assign</span><span style="color:#E1E4E8"> valid_instr_to_decode </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> instr_data_valid_ip ? instr_data_ip : </span><span style="color:#79B8FF">32'bz</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">alu_result_op </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> ($</span><span style="color:#F97583">signed</span><span style="color:#E1E4E8">(alu_operand_a_ip) </span><span style="color:#F97583">&#x3C;</span><span style="color:#E1E4E8"> $</span><span style="color:#F97583">signed</span><span style="color:#E1E4E8">(alu_operand_b_ip)) ? </span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8"> : </span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">;</span></span></code></pre>
 <p><strong>2. Prevent Latches</strong></p>
-<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>always_comb begin</span></span>
-<span class="line"><span>    // Set defaults first</span></span>
-<span class="line"><span>    alu_operator = ALU_NOP;</span></span>
-<span class="line"><span>    operand_a_select = OPA_NOP;</span></span>
-<span class="line"><span>    writeback_mux = NO_WRITEBACK;</span></span>
-<span class="line"><span></span></span>
-<span class="line"><span>    // Then override based on conditions</span></span>
-<span class="line"><span>    case(opcode)</span></span>
-<span class="line"><span>        // ...</span></span>
-<span class="line"><span>    endcase</span></span>
-<span class="line"><span>end</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="verilog"><code><span class="line"><span style="color:#E1E4E8">always_comb </span><span style="color:#F97583">begin</span></span>
+<span class="line"><span style="color:#6A737D">    // Set defaults first</span></span>
+<span class="line"><span style="color:#E1E4E8">    alu_operator </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> ALU_NOP;</span></span>
+<span class="line"><span style="color:#E1E4E8">    operand_a_select </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> OPA_NOP;</span></span>
+<span class="line"><span style="color:#E1E4E8">    writeback_mux </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> NO_WRITEBACK;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    // Then override based on conditions</span></span>
+<span class="line"><span style="color:#F97583">    case</span><span style="color:#E1E4E8">(opcode)</span></span>
+<span class="line"><span style="color:#6A737D">        // ...</span></span>
+<span class="line"><span style="color:#F97583">    endcase</span></span>
+<span class="line"><span style="color:#F97583">end</span></span></code></pre>
 <p><strong>3. Hierarchical Access</strong></p>
-<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>core_proc.InstructionFetch_Module.InstructionMemory.instr_RAM[0]</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="verilog"><code><span class="line"><span style="color:#E1E4E8">core_proc.InstructionFetch_Module.InstructionMemory.instr_RAM[</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">]</span></span></code></pre>
 <p><strong>4. Module Instance</strong></p>
-<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>Core core_proc(</span></span>
-<span class="line"><span>    .clock(clk),</span></span>
-<span class="line"><span>    .reset(reset),</span></span>
-<span class="line"><span>    .mem_en(mem_enable)</span></span>
-<span class="line"><span>);</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="verilog"><code><span class="line"><span style="color:#E1E4E8">Core core_proc(</span></span>
+<span class="line"><span style="color:#E1E4E8">    .clock(clk),</span></span>
+<span class="line"><span style="color:#E1E4E8">    .reset(reset),</span></span>
+<span class="line"><span style="color:#E1E4E8">    .mem_en(mem_enable)</span></span>
+<span class="line"><span style="color:#E1E4E8">);</span></span></code></pre>
 <p><strong>5. Case with Default</strong></p>
-<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>case(selector)</span></span>
-<span class="line"><span>    VALUE1: action1();</span></span>
-<span class="line"><span>    VALUE2: action2();</span></span>
-<span class="line"><span>    default: begin</span></span>
-<span class="line"><span>        default_action();</span></span>
-<span class="line"><span>    end</span></span>
-<span class="line"><span>endcase</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="verilog"><code><span class="line"><span style="color:#F97583">case</span><span style="color:#E1E4E8">(selector)</span></span>
+<span class="line"><span style="color:#E1E4E8">    VALUE1: action1();</span></span>
+<span class="line"><span style="color:#E1E4E8">    VALUE2: action2();</span></span>
+<span class="line"><span style="color:#F97583">    default</span><span style="color:#E1E4E8">: </span><span style="color:#F97583">begin</span></span>
+<span class="line"><span style="color:#E1E4E8">        default_action();</span></span>
+<span class="line"><span style="color:#F97583">    end</span></span>
+<span class="line"><span style="color:#F97583">endcase</span></span></code></pre>
 <h4 id="synthesis-rules">Synthesis Rules</h4>
 <p><strong>1. Assignment Types</strong></p>
-<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>always @(posedge clk) begin</span></span>
-<span class="line"><span>    signal &#x3C;= new_value;  // Non-blocking in sequential</span></span>
-<span class="line"><span>end</span></span>
-<span class="line"><span></span></span>
-<span class="line"><span>always_comb begin</span></span>
-<span class="line"><span>    signal = input_value;  // Blocking in combinational</span></span>
-<span class="line"><span>end</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="verilog"><code><span class="line"><span style="color:#F97583">always</span><span style="color:#E1E4E8"> @(</span><span style="color:#F97583">posedge</span><span style="color:#E1E4E8"> clk) </span><span style="color:#F97583">begin</span></span>
+<span class="line"><span style="color:#E1E4E8">    signal </span><span style="color:#F97583">&#x3C;=</span><span style="color:#E1E4E8"> new_value;  </span><span style="color:#6A737D">// Non-blocking in sequential</span></span>
+<span class="line"><span style="color:#F97583">end</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">always_comb </span><span style="color:#F97583">begin</span></span>
+<span class="line"><span style="color:#E1E4E8">    signal </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> input_value;  </span><span style="color:#6A737D">// Blocking in combinational</span></span>
+<span class="line"><span style="color:#F97583">end</span></span></code></pre>
 <p><strong>2. Sensitivity Lists</strong></p>
-<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>always_comb begin  // Auto-sensitive to all RHS</span></span>
-<span class="line"><span>end</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="verilog"><code><span class="line"><span style="color:#E1E4E8">always_comb </span><span style="color:#F97583">begin</span><span style="color:#6A737D">  // Auto-sensitive to all RHS</span></span>
+<span class="line"><span style="color:#F97583">end</span></span></code></pre>
 <p><strong>3. No Latches</strong></p>
 <ul>
 <li>Assign in all branches</li>
@@ -211,40 +211,40 @@ Projects
 </ul>
 <h4 id="debug">Debug</h4>
 <p><strong>1. Display Messages</strong></p>
-<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>$display("Time: %0t, PC: %h, Instruction: %h", $time, pc, instruction);</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="verilog"><code><span class="line"><span style="color:#79B8FF">$display</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"Time: %0t, PC: %h, Instruction: %h"</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">$time</span><span style="color:#E1E4E8">, pc, instruction);</span></span></code></pre>
 <p><strong>2. Assertions</strong></p>
-<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>assert(condition) else $error("Assertion failed at time %0t", $time);</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="verilog"><code><span class="line"><span style="color:#E1E4E8">assert(condition) </span><span style="color:#F97583">else</span><span style="color:#E1E4E8"> $error(</span><span style="color:#9ECBFF">"Assertion failed at time %0t"</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">$time</span><span style="color:#E1E4E8">);</span></span></code></pre>
 <p><strong>3. Generate Loops</strong></p>
-<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>genvar i;</span></span>
-<span class="line"><span>generate</span></span>
-<span class="line"><span>    for (i = 0; i &#x3C; 32; i++) begin : gen_loop</span></span>
-<span class="line"><span>        assign bit_out[i] = bit_in[i] &#x26; enable;</span></span>
-<span class="line"><span>    end</span></span>
-<span class="line"><span>endgenerate</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="verilog"><code><span class="line"><span style="color:#F97583">genvar</span><span style="color:#E1E4E8"> i;</span></span>
+<span class="line"><span style="color:#F97583">generate</span></span>
+<span class="line"><span style="color:#F97583">    for</span><span style="color:#E1E4E8"> (i </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">; i </span><span style="color:#F97583">&#x3C;</span><span style="color:#79B8FF"> 32</span><span style="color:#E1E4E8">; i</span><span style="color:#F97583">++</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">begin</span><span style="color:#E1E4E8"> : gen_loop</span></span>
+<span class="line"><span style="color:#F97583">        assign</span><span style="color:#E1E4E8"> bit_out[i] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> bit_in[i] </span><span style="color:#F97583">&#x26;</span><span style="color:#E1E4E8"> enable;</span></span>
+<span class="line"><span style="color:#F97583">    end</span></span>
+<span class="line"><span style="color:#F97583">endgenerate</span></span></code></pre>
 <p><strong>4. Parameterized Width</strong></p>
-<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>module GenericModule #(</span></span>
-<span class="line"><span>    parameter WIDTH = 32</span></span>
-<span class="line"><span>)(</span></span>
-<span class="line"><span>    input logic [WIDTH-1:0] data_in,</span></span>
-<span class="line"><span>    output logic [WIDTH-1:0] data_out</span></span>
-<span class="line"><span>);</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="verilog"><code><span class="line"><span style="color:#F97583">module</span><span style="color:#B392F0"> GenericModule</span><span style="color:#E1E4E8"> #(</span></span>
+<span class="line"><span style="color:#F97583">    parameter</span><span style="color:#E1E4E8"> WIDTH </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 32</span></span>
+<span class="line"><span style="color:#E1E4E8">)(</span></span>
+<span class="line"><span style="color:#F97583">    input</span><span style="color:#E1E4E8"> logic [WIDTH</span><span style="color:#F97583">-</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">:</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">] data_in,</span></span>
+<span class="line"><span style="color:#F97583">    output</span><span style="color:#E1E4E8"> logic [WIDTH</span><span style="color:#F97583">-</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">:</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">] data_out</span></span>
+<span class="line"><span style="color:#E1E4E8">);</span></span></code></pre>
 <p><strong>5. Width-Specified Constants</strong></p>
-<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>logic [31:0] data = 32'h0000_0000;  // Underscores for readability</span></span>
-<span class="line"><span>logic [6:0] opcode = 7'b011_0011;</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="verilog"><code><span class="line"><span style="color:#E1E4E8">logic [</span><span style="color:#79B8FF">31</span><span style="color:#E1E4E8">:</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">] data </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 32'h0000_0000</span><span style="color:#E1E4E8">;  </span><span style="color:#6A737D">// Underscores for readability</span></span>
+<span class="line"><span style="color:#E1E4E8">logic [</span><span style="color:#79B8FF">6</span><span style="color:#E1E4E8">:</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">] opcode </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 7'b011_0011</span><span style="color:#E1E4E8">;</span></span></code></pre>
 <p><strong>6. Forward Declaration</strong></p>
-<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>logic [31:0] internal_signal;</span></span>
-<span class="line"><span>logic control_signal;</span></span>
-<span class="line"><span></span></span>
-<span class="line"><span>always_comb begin</span></span>
-<span class="line"><span>    internal_signal = input_signal + offset;</span></span>
-<span class="line"><span>end</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="verilog"><code><span class="line"><span style="color:#E1E4E8">logic [</span><span style="color:#79B8FF">31</span><span style="color:#E1E4E8">:</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">] internal_signal;</span></span>
+<span class="line"><span style="color:#E1E4E8">logic control_signal;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">always_comb </span><span style="color:#F97583">begin</span></span>
+<span class="line"><span style="color:#E1E4E8">    internal_signal </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> input_signal </span><span style="color:#F97583">+</span><span style="color:#E1E4E8"> offset;</span></span>
+<span class="line"><span style="color:#F97583">end</span></span></code></pre>
 <p><strong>7. Auto-sensitivity - always @(*)</strong></p>
-<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>always @(*) begin</span></span>
-<span class="line"><span>    alu_operator = ALU_NOP; // Default assignment</span></span>
-<span class="line"><span>    operand_a_select = OPA_NOP;</span></span>
-<span class="line"><span>end</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="verilog"><code><span class="line"><span style="color:#F97583">always</span><span style="color:#E1E4E8"> @(</span><span style="color:#F97583">*</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">begin</span></span>
+<span class="line"><span style="color:#E1E4E8">    alu_operator </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> ALU_NOP; </span><span style="color:#6A737D">// Default assignment</span></span>
+<span class="line"><span style="color:#E1E4E8">    operand_a_select </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> OPA_NOP;</span></span>
+<span class="line"><span style="color:#F97583">end</span></span></code></pre>
 <p><strong>8. Signed Compare</strong></p>
-<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>$signed(operand_a) &#x3C; $signed(operand_b)  // Treat as signed values</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="verilog"><code><span class="line"><span style="color:#E1E4E8">$</span><span style="color:#F97583">signed</span><span style="color:#E1E4E8">(operand_a) </span><span style="color:#F97583">&#x3C;</span><span style="color:#E1E4E8"> $</span><span style="color:#F97583">signed</span><span style="color:#E1E4E8">(operand_b)  </span><span style="color:#6A737D">// Treat as signed values</span></span></code></pre>
 <h2 id="week-3-sep-15---sep-17">Week 3: Sep 15 - Sep 17</h2>
 <p>We decide upon the part for the add-on board</p>
 <p>For this current board, I think I might design a four layer board. I have to correctly consider the WIFI module SPI and the level shifter, and do some entry level impedance matching.</p>
@@ -347,4 +347,4 @@ Projects
       console.warn(`[Tag Warning] The tag "${tag}" contains a slash, which may cause issues with URL routing. Please consider using a different separator like a hyphen (-).`);
     }
   });
-})();</script> <script type="module">if(document.querySelector(".mermaid")){const e=document.createElement("script");e.src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js",e.onload=()=>{window.mermaid.initialize({startOnLoad:!1,theme:"neutral",themeVariables:{primaryColor:"#39647c",primaryTextColor:"#2E3A59",lineColor:"#8A9A7E",background:"#F4E9D8"}}),window.mermaid.run({querySelector:".mermaid"})},document.head.appendChild(e)}</script>  </main> <footer class="site-footer" data-astro-cid-37fxchfa> <div class="footer-content" data-astro-cid-37fxchfa> <p data-astro-cid-37fxchfa>&copy; 2025 Xiaoyou Wu. All rights reserved.</p> <p data-astro-cid-37fxchfa>I create this website myself.</p> <div class="footer-links" data-astro-cid-37fxchfa> <a href="https://github.com/Laurence-Wu" target="_blank" rel="noopener noreferrer" data-astro-cid-37fxchfa>GitHub</a> <a href="https://linkedin.com/in/xiaoyou-wu" target="_blank" rel="noopener noreferrer" data-astro-cid-37fxchfa>LinkedIn</a> <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" data-astro-cid-37fxchfa>Resume</a> </div> </div> </footer> </body></html> 
+})();</script> <script type="module">if(document.querySelector(".mermaid")){const e=document.createElement("script");e.src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js",e.onload=()=>{window.mermaid.initialize({startOnLoad:!1,theme:"neutral",themeVariables:{primaryColor:"#39647c",primaryTextColor:"#2E3A59",lineColor:"#8A9A7E",background:"#F4E9D8"}}),window.mermaid.run({querySelector:".mermaid"})},document.head.appendChild(e)}</script>  </main> <footer class="site-footer" data-astro-cid-37fxchfa> <div class="footer-content" data-astro-cid-37fxchfa> <p data-astro-cid-37fxchfa>&copy; 2025 Xiaoyou Wu. All rights reserved.</p> <p data-astro-cid-37fxchfa>I create this website myself.</p> <div class="footer-links" data-astro-cid-37fxchfa> <a href="https://github.com/Laurence-Wu" target="_blank" rel="noopener noreferrer" data-astro-cid-37fxchfa>GitHub</a> <a href="https://linkedin.com/in/xiaoyou-wu" target="_blank" rel="noopener noreferrer" data-astro-cid-37fxchfa>LinkedIn</a> <a href="https://x.com/BluishZima" target="_blank" rel="noopener noreferrer" data-astro-cid-37fxchfa>𝕏</a> <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" data-astro-cid-37fxchfa>Resume</a> </div> </div> </footer> </body></html> 

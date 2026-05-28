@@ -1,11 +1,13 @@
 ---
-title: "Intro to Triton with Matrix Multiplication"
-description: "Introduction to GPU programming with Triton and build the matrix multiplication along the way"
-pubDate: 2025-03-18
-author: "Xiaoyou Wu"
-thumbnail: "https://picsum.photos/seed/matrix-multiplication/400/300"
-tags: ["GPU & Compilers", "research"]
-image: "./images/grouped_vs_row_major_ordering.png"
+title: Intro to Triton with Matrix Multiplication
+description: Introduction to GPU programming with Triton and build the matrix multiplication along the way
+pubDate: 2025-03-18T00:00:00.000Z
+author: Xiaoyou Wu
+thumbnail: https://live.staticflickr.com/8149/7455908804_49f827a329_b.jpg
+tags:
+  - GPU & Compilers
+  - research
+image: ./images/grouped_vs_row_major_ordering.png
 ---
 
 As the most important operation in GPU computation, matrix multiplication optimization is a must learn!

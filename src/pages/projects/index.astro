@@ -1,144 +1,220 @@
 ---
 import Layout from '../../components/Layout.astro';
-import ProjectTimeline from '../../components/ProjectTimeline.astro';
 import { getCollection } from 'astro:content';
 import { getUrl } from '../../utils/url';
 import { sortByDate } from '../../utils/collections';
 import { formatDateShort } from '../../utils/date';
 
 const allProjects = await getCollection('projects');
-const sortedProjects = sortByDate(allProjects);
+const blockbatch = allProjects.find(p => p.id.startsWith('blockbatch/'));
+const hy2 = allProjects.find(p => p.id.startsWith('hy2/'));
+const hides = allProjects.find(p => p.id.startsWith('hides/'));
+const legacyProjects = sortByDate(allProjects.filter(p => p.id.startsWith('legacy/')));
 ---
 
 <Layout title="Projects - Laurence" description="Explore my engineering and software development projects.">
-  <ProjectTimeline allProjects={sortedProjects} />
-
   <section class="projects-content">
     <div class="container">
-      <div class="projects-grid">
-        {sortedProjects.map(project => (
-          <article class="project-card">
-            {project.data.thumbnail && (
-              <a href={getUrl(`/projects/${project.slug}/`)}>
-                <img src={project.data.thumbnail} alt={project.data.title} class="thumbnail" />
-              </a>
-            )}
-            <h3 class="project-title">
-              <a href={getUrl(`/projects/${project.slug}/`)}>{project.data.title}</a>
-            </h3>
 
-            <time class="project-date" datetime={project.data.pubDate.toISOString()}>
-              {formatDateShort(project.data.pubDate)}
-            </time>
+      <div class="featured-section">
+        <h2 class="section-label">Research Projects</h2>
 
-            <div class="project-tags">
-              {project.data.tags && project.data.tags.slice(0, 5).map((tag: string) => (
-                <span class="tag">{tag}</span>
-              ))}
-            </div>
-
-            <div class="project-actions">
-              <a href={getUrl(`/projects/${project.slug}/`)} class="btn-details">View</a>
-              {project.data.githubLink && (
-                <a href={project.data.githubLink} class="btn-github" target="_blank" rel="noopener noreferrer">GitHub</a>
-              )}
+        {blockbatch && (
+          <article class="featured-card">
+            <a href={getUrl(`/projects/${blockbatch.slug}/`)} class="featured-img-link">
+              <img src={blockbatch.data.thumbnail} alt={blockbatch.data.title} class="featured-img" />
+            </a>
+            <div class="featured-body">
+              <h3 class="featured-title">
+                <a href={getUrl(`/projects/${blockbatch.slug}/`)}>{blockbatch.data.title}</a>
+              </h3>
+              <p class="featured-desc">{blockbatch.data.description}</p>
+              <time class="project-date" datetime={blockbatch.data.pubDate.toISOString()}>
+                {formatDateShort(blockbatch.data.pubDate)}
+              </time>
+              <div class="project-tags">
+                {blockbatch.data.tags && blockbatch.data.tags.slice(0, 6).map((tag: string) => (
+                  <span class="tag">{tag}</span>
+                ))}
+              </div>
+              <div class="project-actions">
+                <a href={getUrl(`/projects/${blockbatch.slug}/`)} class="btn-details">View Project</a>
+              </div>
             </div>
           </article>
-        ))}
+        )}
+
+        {hy2 && (
+          <article class="featured-card">
+            <a href={getUrl(`/projects/${hy2.slug}/`)} class="featured-img-link">
+              <img src={hy2.data.thumbnail} alt={hy2.data.title} class="featured-img" />
+            </a>
+            <div class="featured-body">
+              <h3 class="featured-title">
+                <a href={getUrl(`/projects/${hy2.slug}/`)}>{hy2.data.title}</a>
+              </h3>
+              <p class="featured-desc">{hy2.data.description}</p>
+              <time class="project-date" datetime={hy2.data.pubDate.toISOString()}>
+                {formatDateShort(hy2.data.pubDate)}
+              </time>
+              <div class="project-tags">
+                {hy2.data.tags && hy2.data.tags.slice(0, 6).map((tag: string) => (
+                  <span class="tag">{tag}</span>
+                ))}
+              </div>
+              <div class="project-actions">
+                <a href={getUrl(`/projects/${hy2.slug}/`)} class="btn-details">View Project</a>
+              </div>
+            </div>
+          </article>
+        )}
+
+        {hides && (
+          <article class="featured-card">
+            <a href={getUrl(`/projects/${hides.slug}/`)} class="featured-img-link">
+              <img src={hides.data.thumbnail} alt={hides.data.title} class="featured-img" />
+            </a>
+            <div class="featured-body">
+              <h3 class="featured-title">
+                <a href={getUrl(`/projects/${hides.slug}/`)}>{hides.data.title}</a>
+              </h3>
+              <p class="featured-desc">{hides.data.description}</p>
+              <time class="project-date" datetime={hides.data.pubDate.toISOString()}>
+                {formatDateShort(hides.data.pubDate)}
+              </time>
+              <div class="project-tags">
+                {hides.data.tags && hides.data.tags.slice(0, 6).map((tag: string) => (
+                  <span class="tag">{tag}</span>
+                ))}
+              </div>
+              <div class="project-actions">
+                <a href={getUrl(`/projects/${hides.slug}/`)} class="btn-details">View Project</a>
+              </div>
+            </div>
+          </article>
+        )}
       </div>
+
+      <div class="legacy-section">
+        <h2 class="section-label">Legacy Projects</h2>
+        <a href={getUrl('/projects/legacy/')} class="legacy-card">
+          <div class="legacy-thumbs">
+            {legacyProjects.slice(0, 4).map(p => (
+              <img src={p.data.thumbnail} alt={p.data.title} class="legacy-thumb" />
+            ))}
+          </div>
+          <div class="legacy-info">
+            <span class="legacy-count">{legacyProjects.length} projects</span>
+            <p class="legacy-desc">Robotics, embedded systems, computer vision, AI, and more</p>
+            <span class="legacy-cta">View all →</span>
+          </div>
+        </a>
+      </div>
+
     </div>
   </section>
 </Layout>
 
 <style>
-  /* Compact, information-dense layout */
   .container {
-    max-width: 1400px;
+    max-width: 1000px;
     margin: 0 auto;
-    padding: 0 1rem;
-  }
-
-  /* Adjust layout for timeline on tablet and larger screens */
-  @media (min-width: 769px) and (max-width: 1200px) {
-    .projects-content .container {
-      margin-left: 320px;
-      margin-right: auto;
-      max-width: calc(100vw - 360px);
-    }
-  }
-
-  @media (min-width: 1201px) {
-    .projects-content .container {
-      margin-left: 360px;
-      margin-right: auto;
-      max-width: calc(100vw - 400px);
-    }
+    padding: 2.5rem 1.5rem;
   }
 
   .projects-content {
-    padding: 2rem 0;
     background: rgba(244, 232, 209, 0.2);
+    min-height: 100vh;
   }
 
-  /* Dense grid - fit more cards on screen */
-  .projects-grid {
-    display: grid;
-    gap: 1.25rem;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  .section-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #8A9A7E;
+    margin: 0 0 0.85rem 0;
   }
 
-  /* Compact card design */
-  .project-card {
+  /* ── Featured cards ── */
+  .featured-section {
+    margin-bottom: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .featured-card {
     background: white;
-    border-radius: 8px;
-    padding: 1.25rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    transition: all 0.2s ease;
+    border-radius: 10px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    transition: box-shadow 0.2s;
+  }
+
+  .featured-card:hover {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.14);
+  }
+
+  .featured-img-link {
+    flex: 0 0 45%;
+    max-width: 45%;
+    background: #f8f6f2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .featured-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+    display: block;
+    padding: 1rem;
+    box-sizing: border-box;
+  }
+
+  .featured-body {
+    flex: 1;
+    padding: 1.75rem;
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
   }
 
-  .thumbnail {
-    width: calc(100% + 2.5rem);
-    height: 150px;
-    object-fit: cover;
-    border-radius: 8px 8px 0 0;
-    margin: -1.25rem -1.25rem 1.25rem -1.25rem;
-  }
-  
-  .project-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
-  }
-
-  /* Title - compact and bold */
-  .project-title {
+  .featured-title {
     margin: 0;
-    font-size: 1.1rem;
+    font-size: 1.25rem;
     line-height: 1.3;
   }
 
-  .project-title a {
+  .featured-title a {
     color: #2E3A59;
     text-decoration: none;
     font-weight: 700;
     transition: color 0.2s;
   }
 
-  .project-title a:hover {
+  .featured-title a:hover {
     color: #8A9A7E;
   }
 
-  /* Date - small and subtle */
+  .featured-desc {
+    margin: 0;
+    font-size: 0.88rem;
+    color: #4A5568;
+    line-height: 1.6;
+  }
+
   .project-date {
-    display: block;
     font-size: 0.8rem;
     color: #718096;
     font-weight: 500;
   }
 
-  /* Tags - inline, compact */
   .project-tags {
     display: flex;
     flex-wrap: wrap;
@@ -156,52 +232,112 @@ const sortedProjects = sortByDate(allProjects);
     letter-spacing: 0.3px;
   }
 
-  /* Actions - small buttons */
   .project-actions {
-    display: flex;
-    gap: 0.5rem;
     margin-top: auto;
   }
 
-  .btn-details,
-  .btn-github {
-    flex: 1;
-    text-align: center;
-    padding: 0.5rem;
+  .btn-details {
+    display: inline-block;
+    padding: 0.5rem 1.25rem;
     border-radius: 4px;
     text-decoration: none;
     font-size: 0.85rem;
     font-weight: 600;
-    transition: all 0.2s;
-  }
-
-  .btn-details {
     background: #8A9A7E;
     color: white;
+    transition: background 0.2s;
   }
 
   .btn-details:hover {
     background: #75826b;
   }
 
-  .btn-github {
-    background: #333;
-    color: white;
+  /* ── Legacy card ── */
+  .legacy-section {
+    margin-bottom: 2rem;
   }
 
-  .btn-github:hover {
-    background: #555;
+  .legacy-card {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    background: white;
+    border-radius: 10px;
+    padding: 1.25rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    text-decoration: none;
+    transition: all 0.2s ease;
   }
 
-  /* Mobile responsive */
+  .legacy-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 14px rgba(0, 0, 0, 0.12);
+  }
+
+  .legacy-thumbs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 3px;
+    width: 140px;
+    height: 100px;
+    flex-shrink: 0;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .legacy-thumb {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: brightness(0.85);
+  }
+
+  .legacy-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .legacy-count {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #2E3A59;
+  }
+
+  .legacy-desc {
+    margin: 0;
+    font-size: 0.85rem;
+    color: #718096;
+    line-height: 1.4;
+  }
+
+  .legacy-cta {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #8A9A7E;
+    margin-top: 0.2rem;
+  }
+
+  /* Mobile */
   @media (max-width: 768px) {
-    .projects-grid {
-      grid-template-columns: 1fr;
-      gap: 1rem;
+    .featured-card {
+      flex-direction: column;
     }
 
-    .project-card {
-      padding: 1rem;
+    .featured-img-link {
+      flex: unset;
+      max-width: 100%;
+    }
+
+    .featured-img {
+      height: 200px;
+    }
+
+    .legacy-thumbs {
+      width: 100px;
+      height: 72px;
     }
   }
-</style> 
+</style>

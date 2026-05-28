@@ -1,9 +1,10 @@
 ---
-title: "Review on Rick and Morty S02 E04"
-description: "A review of the Rick and Morty episode S02 E04, discussing the themes of memory, relationships, and the nature of imperfection."
+title: Review on Rick and Morty S02 E04
+description: A review of the Rick and Morty episode S02 E04, discussing the themes of memory, relationships, and the nature of imperfection.
 pubDate: "2025-12-14"
-thumbnail: "https://picsum.photos/seed/Rick_and_Morty_S02_E04_review/400/300"
-tags: ["Review"]
+thumbnail: https://live.staticflickr.com/940/29052970387_441779c1ed_b.jpg
+tags:
+  - Review
 ---
 # Review on Rick and Morty S02 E04
 

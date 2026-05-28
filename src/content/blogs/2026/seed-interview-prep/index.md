@@ -1,11 +1,15 @@
 ---
 title: "SEED Interview Preparation: Ultimate Guide"
-description: "A structured study guide covering LLMs, deep learning, classic ML, and algorithms for SEED interviews."
-pubDate: 2026-03-27
-author: "Xiaoyou Wu"
-tags: ["interview-prep", "llm", "machine-learning", "algorithms"]
-category: "Learning Journal"
-thumbnail: "https://picsum.photos/seed/seed-interview-prep/400/300"
+description: A structured study guide covering LLMs, deep learning, classic ML, and algorithms for SEED interviews.
+pubDate: 2026-03-27T00:00:00.000Z
+author: Xiaoyou Wu
+tags:
+  - interview-prep
+  - llm
+  - machine-learning
+  - algorithms
+category: Learning Journal
+thumbnail: https://live.staticflickr.com/3271/2353186656_34458f7370_b.jpg
 draft: false
 ---
 

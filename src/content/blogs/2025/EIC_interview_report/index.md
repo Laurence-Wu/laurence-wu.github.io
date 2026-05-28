@@ -1,10 +1,12 @@
 ---
 title: "Quantization Strategy Report: Switchable and Cyclic Precision Training"
-description: "Comprehensive report on quantization strategies including switchable precision and cyclic precision training applied to WikiText-103 dataset"
-pubDate: 2025-01-10
-author: "Xiaoyou Wu"
-thumbnail: "https://picsum.photos/seed/EIC_interview_report/400/300"
-tags: ["AI-ML", "research"]
+description: Comprehensive report on quantization strategies including switchable precision and cyclic precision training applied to WikiText-103 dataset
+pubDate: 2025-01-10T00:00:00.000Z
+author: Xiaoyou Wu
+thumbnail: https://live.staticflickr.com/6203/6128106275_bdcb5ec3f9_b.jpg
+tags:
+  - AI-ML
+  - research
 ---
 
 # Report on Quantization Strategy on Switchable Precision and Cyclic Precision Training

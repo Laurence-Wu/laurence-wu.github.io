@@ -1,10 +1,12 @@
 ---
-title: "VIP Progress Journal - SystemVerilog Learning"
-description: "Weekly progress journal documenting my journey learning SystemVerilog, including module structures, always blocks, and FSM implementations"
-pubDate: 2024-08-25
-author: "Xiaoyou Wu"
-thumbnail: "https://picsum.photos/seed/VIP_Progress/400/300"
-tags: ["Hardware & Digital Design", "Learning Journal"]
+title: VIP Progress Journal - SystemVerilog Learning
+description: Weekly progress journal documenting my journey learning SystemVerilog, including module structures, always blocks, and FSM implementations
+pubDate: 2024-08-25T00:00:00.000Z
+author: Xiaoyou Wu
+thumbnail: https://live.staticflickr.com/3064/2877920748_48a572fbd7_b.jpg
+tags:
+  - Hardware & Digital Design
+  - Learning Journal
 ---
 
 ## Week 1: Aug 25 - Aug 31
@@ -12,7 +14,7 @@ tags: ["Hardware & Digital Design", "Learning Journal"]
 ### Foundation & Basic Structures
 
 #### Module Structure
-```systemverilog
+```verilog
 module ModuleName (
     // Input signals
     input logic signal_name,
@@ -32,7 +34,7 @@ endmodule
 - Semicolon after port list
 
 #### Data Types
-```systemverilog
+```verilog
 // Enumerated types with explicit width
 typedef enum logic [2:0] {
     NO_WRITEBACK = 3'b000,
@@ -50,7 +52,7 @@ localparam REG_S1_LSB = 15;
 ```
 
 **Number Formats:**
-```systemverilog
+```verilog
 7'h23    // 7-bit hex value
 3'b001   // 3-bit binary value
 32'bz    // 32-bit high-impedance
@@ -60,7 +62,7 @@ localparam REG_S1_LSB = 15;
 #### Procedural Blocks
 
 **Combinational - always_comb**
-```systemverilog
+```verilog
 always_comb begin
     case(alu_operator_ip)
         ALU_ADD: begin
@@ -80,7 +82,7 @@ end
 ```
 
 **Sequential - always @(posedge clk)**
-```systemverilog
+```verilog
 always @(posedge clk) begin
     if (~reset)
         cycle_count <= cycle_count + 1;
@@ -93,7 +95,7 @@ end
 ### Advanced Patterns & Pipeline Design
 
 #### Packages
-```systemverilog
+```verilog
 package CORE_PKG;
     // Parameters
     parameter OPCODE_STORE = 7'h23;
@@ -112,14 +114,14 @@ endpackage
 ```
 
 **Import:**
-```systemverilog
+```verilog
 import CORE_PKG::*;
 ```
 
 #### Pipeline Patterns
 
 **Signal Naming Convention**
-```systemverilog
+```verilog
 // Pass-through signals use _pt suffix
 logic [31:0] id_uimmd_pt;
 logic [31:0] ex_uimmd_pt;
@@ -135,7 +137,7 @@ input logic alu_enable_ip;
 ```
 
 **Pipeline Buffers**
-```systemverilog
+```verilog
 // ID to EX pipeline buffer
 logic [31:0] id_instr_pc_addr_pt;
 logic [31:0] ex_instr_pc_addr_pt;
@@ -146,7 +148,7 @@ logic ex_alu_result_valid_pt;
 ```
 
 **Pipeline Control**
-```systemverilog
+```verilog
 input logic flush_en;   // Branch flush
 output logic stall_op;  // Hazard stall
 ```
@@ -154,7 +156,7 @@ output logic stall_op;  // Hazard stall
 #### RISC-V Patterns
 
 **Opcodes**
-```systemverilog
+```verilog
 parameter OPCODE_STORE = 7'h23;   // S-type
 parameter OPCODE_LOAD = 7'h03;    // I-type
 parameter OPCODE_BRANCH = 7'h63;  // B-type
@@ -167,7 +169,7 @@ parameter OPCODE_OPIMM = 7'h13;
 ```
 
 **Field Extraction**
-```systemverilog
+```verilog
 logic [6:0] opcode = instruction[6:0];
 logic [4:0] rd = instruction[11:7];
 logic [2:0] funct3 = instruction[14:12];
@@ -187,7 +189,7 @@ logic [6:0] funct7 = instruction[31:25];
 #### Testbench
 
 **Clock & Timing**
-```systemverilog
+```verilog
 `timescale 1ns / 1ns
 
 module Core_tb;
@@ -202,7 +204,7 @@ module Core_tb;
 ```
 
 **Memory Init**
-```systemverilog
+```verilog
 core_proc.InstructionFetch_Module.InstructionMemory.instr_RAM[0] = 8'h00;
 core_proc.InstructionFetch_Module.InstructionMemory.instr_RAM[1] = 8'h00;
 core_proc.InstructionFetch_Module.InstructionMemory.instr_RAM[2] = 8'h00;
@@ -210,7 +212,7 @@ core_proc.InstructionFetch_Module.InstructionMemory.instr_RAM[3] = 8'h00;
 ```
 
 **Waveform Dump**
-```systemverilog
+```verilog
 $dumpfile("Core_Simulation.vcd");
 $dumpvars(0, Core_tb);
 ```
@@ -218,13 +220,13 @@ $dumpvars(0, Core_tb);
 #### Tricks
 
 **1. Ternary Operator**
-```systemverilog
+```verilog
 assign valid_instr_to_decode = instr_data_valid_ip ? instr_data_ip : 32'bz;
 alu_result_op = ($signed(alu_operand_a_ip) < $signed(alu_operand_b_ip)) ? 1 : 0;
 ```
 
 **2. Prevent Latches**
-```systemverilog
+```verilog
 always_comb begin
     // Set defaults first
     alu_operator = ALU_NOP;
@@ -239,12 +241,12 @@ end
 ```
 
 **3. Hierarchical Access**
-```systemverilog
+```verilog
 core_proc.InstructionFetch_Module.InstructionMemory.instr_RAM[0]
 ```
 
 **4. Module Instance**
-```systemverilog
+```verilog
 Core core_proc(
     .clock(clk),
     .reset(reset),
@@ -253,7 +255,7 @@ Core core_proc(
 ```
 
 **5. Case with Default**
-```systemverilog
+```verilog
 case(selector)
     VALUE1: action1();
     VALUE2: action2();
@@ -266,7 +268,7 @@ endcase
 #### Synthesis Rules
 
 **1. Assignment Types**
-```systemverilog
+```verilog
 always @(posedge clk) begin
     signal <= new_value;  // Non-blocking in sequential
 end
@@ -277,7 +279,7 @@ end
 ```
 
 **2. Sensitivity Lists**
-```systemverilog
+```verilog
 always_comb begin  // Auto-sensitive to all RHS
 end
 ```
@@ -290,17 +292,17 @@ end
 #### Debug
 
 **1. Display Messages**
-```systemverilog
+```verilog
 $display("Time: %0t, PC: %h, Instruction: %h", $time, pc, instruction);
 ```
 
 **2. Assertions**
-```systemverilog
+```verilog
 assert(condition) else $error("Assertion failed at time %0t", $time);
 ```
 
 **3. Generate Loops**
-```systemverilog
+```verilog
 genvar i;
 generate
     for (i = 0; i < 32; i++) begin : gen_loop
@@ -310,7 +312,7 @@ endgenerate
 ```
 
 **4. Parameterized Width**
-```systemverilog
+```verilog
 module GenericModule #(
     parameter WIDTH = 32
 )(
@@ -320,14 +322,14 @@ module GenericModule #(
 ```
 
 **5. Width-Specified Constants**
-```systemverilog
+```verilog
 logic [31:0] data = 32'h0000_0000;  // Underscores for readability
 logic [6:0] opcode = 7'b011_0011;
 ```
 
 **6. Forward Declaration**
 
-```systemverilog
+```verilog
 logic [31:0] internal_signal;
 logic control_signal;
 
@@ -338,7 +340,7 @@ end
 
 **7. Auto-sensitivity - always @(*)**
 
-```systemverilog
+```verilog
 always @(*) begin
     alu_operator = ALU_NOP; // Default assignment
     operand_a_select = OPA_NOP;
@@ -347,7 +349,7 @@ end
 
 **8. Signed Compare**
 
-```systemverilog
+```verilog
 $signed(operand_a) < $signed(operand_b)  // Treat as signed values
 ```
 

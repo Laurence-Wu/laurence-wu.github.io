@@ -1,119 +1,225 @@
 ---
-import type { CollectionEntry } from 'astro:content';
 import { getUrl } from '../utils/url';
-import { formatDate } from '../utils/date';
 
-export interface Props {
-  posts: CollectionEntry<'blogs'>[];
-  viewAllHref?: string;
+export interface ResearchPaper {
+  title: string;
+  description: string;
+  venue: string;
+  date: string;
+  projectHref: string;
+  authors: string;
+  tags?: string[];
 }
 
-const { posts, viewAllHref = '/blog/' } = Astro.props;
+export interface Props {
+  papers: ResearchPaper[];
+}
+
+const { papers } = Astro.props;
 ---
 
-{posts.length > 0 && (
-  <section class="featured-research-section">
-    <h2>Featured Research Ideas</h2>
-    <div class="research-posts-grid">
-      {posts.map(post => (
-        <article class="research-post-card">
-          <h3><a href={getUrl(`/blog/${post.slug}/`)}>{post.data.title}</a></h3>
-          <p class="post-description">{post.data.description}</p>
-          <time datetime={post.data.pubDate.toISOString()}>
-            {formatDate(post.data.pubDate)}
-          </time>
-          <a href={getUrl(`/blog/${post.slug}/`)} class="read-more">Read More →</a>
-        </article>
+{papers.length > 0 && (
+  <section class="publications-section">
+    <h2>Research Papers</h2>
+    <ol class="pub-list">
+      {papers.map(paper => (
+        <li class="pub-entry">
+          <div class="pub-header">
+            <span class="venue-pill">{paper.venue}</span>
+            <span class="pub-year">{paper.date}</span>
+          </div>
+          <h3 class="pub-title">
+            <a href={getUrl(paper.projectHref)}>{paper.title}</a>
+          </h3>
+          <p class="pub-authors" set:html={paper.authors} />
+          <details class="pub-abstract-details">
+            <summary class="pub-abstract-toggle">Abstract</summary>
+            <p class="pub-abstract">{paper.description}</p>
+          </details>
+          <div class="pub-links">
+            <a href={getUrl(paper.projectHref)} class="pub-link primary">Project</a>
+          </div>
+        </li>
       ))}
-    </div>
-    <p class="all-research-link">
-      <a href={getUrl(viewAllHref)}>View All Research & Blog Posts →</a>
-    </p>
+    </ol>
   </section>
 )}
 
 <style>
-  .featured-research-section {
+  .publications-section {
     margin-bottom: 4rem;
   }
 
-  .featured-research-section h2 {
+  .publications-section h2 {
     font-size: 2rem;
     color: var(--deep-navy);
     margin-top: 3rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.75rem;
     text-align: center;
     border-bottom: 2px solid var(--color-border);
     padding-bottom: 0.5rem;
   }
 
-  .research-posts-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 2rem;
+  .pub-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
   }
 
-  .research-post-card {
-    padding-bottom: 1.5rem;
+  .pub-entry {
+    padding: 2rem 0;
     border-bottom: 1px solid var(--color-border);
   }
 
-  .research-post-card h3 {
-    font-size: 1.3rem;
-    color: var(--deep-navy);
-    margin-top: 0;
-    margin-bottom: 0.5rem;
+  .pub-entry:first-child {
+    border-top: 1px solid var(--color-border);
   }
 
-  .research-post-card h3 a {
-    text-decoration: none;
-    color: var(--deep-navy);
-    transition: color 0.2s ease;
+  /* ── Venue + year row ── */
+  .pub-header {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.65rem;
   }
 
-  .research-post-card h3 a:hover {
-    color: var(--gold-accent);
+  .venue-pill {
+    display: inline-block;
+    font-size: 0.67rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+    padding: 0.18rem 0.6rem;
+    border-radius: 3px;
+    background: var(--gold-accent);
+    color: white;
   }
 
-  .post-description {
-    font-size: 1rem;
+  .pub-year {
+    font-size: 0.82rem;
     color: var(--color-text-light);
-    margin-bottom: 0.5rem;
+    font-variant-numeric: tabular-nums;
   }
 
-  .research-post-card time {
-    font-size: 0.9rem;
+  /* ── Title ── */
+  .pub-title {
+    margin: 0 0 0.65rem 0;
+    font-size: 1.08rem;
+    font-weight: 700;
+    line-height: 1.45;
+  }
+
+  .pub-title a {
+    color: var(--deep-navy);
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+
+  .pub-title a:hover {
+    color: var(--gold-accent);
+  }
+
+  /* ── Authors ── */
+  .pub-authors {
+    margin: 0 0 1rem 0;
+    font-size: 0.87rem;
     color: var(--color-text-light);
-    display: block;
-    margin-bottom: 0.5rem;
+    line-height: 1.55;
   }
 
-  .read-more {
-    color: var(--gold-accent);
-    text-decoration: none;
+  .pub-authors :global(strong) {
+    color: var(--deep-navy);
     font-weight: 600;
-    transition: color 0.2s ease;
   }
 
-  .read-more:hover {
-    text-decoration: underline;
-    color: var(--color-gold-light);
+  /* ── Abstract (collapsible) ── */
+  .pub-abstract-details {
+    margin: 0 0 1.1rem 0;
   }
 
-  .all-research-link {
-    text-align: center;
-    margin-top: 2rem;
-  }
-
-  .all-research-link a {
-    color: var(--gold-accent);
-    text-decoration: none;
+  .pub-abstract-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.8rem;
     font-weight: 600;
-    transition: color 0.2s ease;
+    color: var(--color-text-light);
+    cursor: pointer;
+    user-select: none;
+    list-style: none;
+    padding: 0.15rem 0;
+    transition: color 0.15s ease;
   }
 
-  .all-research-link a:hover {
-    text-decoration: underline;
-    color: var(--color-gold-light);
+  .pub-abstract-toggle::-webkit-details-marker {
+    display: none;
+  }
+
+  .pub-abstract-toggle::after {
+    content: '▾';
+    font-size: 0.75rem;
+    transition: transform 0.2s ease;
+    display: inline-block;
+  }
+
+  .pub-abstract-details[open] .pub-abstract-toggle {
+    color: var(--deep-navy);
+  }
+
+  .pub-abstract-details[open] .pub-abstract-toggle::after {
+    transform: rotate(-180deg);
+  }
+
+  .pub-abstract-toggle:hover {
+    color: var(--deep-navy);
+  }
+
+  .pub-abstract {
+    margin: 0.6rem 0 0 0;
+    font-size: 0.875rem;
+    color: var(--color-text-light);
+    line-height: 1.75;
+    padding-left: 0.9rem;
+    border-left: 2px solid var(--color-border);
+  }
+
+  /* ── Links ── */
+  .pub-links {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .pub-link {
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-decoration: none;
+    padding: 0.28rem 0.75rem;
+    border-radius: 4px;
+    border: 1.5px solid currentColor;
+    transition: all 0.15s ease;
+  }
+
+  .pub-link.primary {
+    color: var(--gold-accent);
+    border-color: var(--gold-accent);
+  }
+
+  .pub-link.primary:hover {
+    background: var(--gold-accent);
+    color: white;
+  }
+
+  .pub-link.secondary {
+    color: var(--color-text-light);
+    border-color: var(--color-border);
+  }
+
+  .pub-link.secondary:hover {
+    border-color: var(--deep-navy);
+    color: var(--deep-navy);
   }
 </style>

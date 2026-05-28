@@ -1,0 +1,132 @@
+---
+export interface ExperienceEntry {
+  org: string;
+  role: string;
+  period: string;
+  bullets: string[];
+}
+
+export interface Props {
+  entries: ExperienceEntry[];
+}
+
+const { entries } = Astro.props;
+---
+
+<section class="experience-section">
+  <h2>Experience</h2>
+  <ol class="exp-list">
+    {entries.map(entry => (
+      <li class="exp-entry">
+        <div class="exp-header">
+          <div class="exp-title-block">
+            <span class="exp-org">{entry.org}</span>
+            <span class="exp-role">{entry.role}</span>
+          </div>
+          <span class="exp-period">{entry.period}</span>
+        </div>
+        <ul class="exp-bullets">
+          {entry.bullets.map(b => (
+            <li>{b}</li>
+          ))}
+        </ul>
+      </li>
+    ))}
+  </ol>
+</section>
+
+<style>
+  .experience-section {
+    margin-bottom: 4rem;
+  }
+
+  .experience-section h2 {
+    font-size: 2rem;
+    color: var(--deep-navy);
+    margin-top: 3rem;
+    margin-bottom: 1.75rem;
+    text-align: center;
+    border-bottom: 2px solid var(--color-border);
+    padding-bottom: 0.5rem;
+  }
+
+  .exp-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .exp-entry {
+    padding: 1.75rem 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .exp-entry:first-child {
+    border-top: 1px solid var(--color-border);
+  }
+
+  /* ── Header row ── */
+  .exp-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.9rem;
+    flex-wrap: wrap;
+  }
+
+  .exp-title-block {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .exp-org {
+    font-size: 1.02rem;
+    font-weight: 700;
+    color: var(--deep-navy);
+    line-height: 1.3;
+  }
+
+  .exp-role {
+    font-size: 0.82rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: var(--gold-accent);
+  }
+
+  .exp-period {
+    font-size: 0.82rem;
+    color: var(--color-text-light);
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+    padding-top: 0.1rem;
+  }
+
+  /* ── Bullets ── */
+  .exp-bullets {
+    padding-left: 1.1rem;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+  }
+
+  .exp-bullets li {
+    font-size: 0.875rem;
+    color: var(--color-text-light);
+    line-height: 1.7;
+  }
+
+  .exp-bullets li::marker {
+    color: var(--gold-accent);
+  }
+
+  @media (max-width: 600px) {
+    .exp-header {
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+  }
+</style>

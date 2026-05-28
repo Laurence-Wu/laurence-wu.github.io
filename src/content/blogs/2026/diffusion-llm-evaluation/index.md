@@ -1,11 +1,15 @@
 ---
 title: "Diffusion LLM Evaluation: Pipeline, Frameworks, and Prompting Pitfalls"
-description: "A practical guide to evaluating diffusion LLMs, from sampler integration and extraction to framework selection and prompt hygiene."
-pubDate: 2026-03-27
-author: "Xiaoyou Wu"
-tags: ["llm", "diffusion", "evaluation", "benchmarking"]
-category: "Research"
-thumbnail: "https://picsum.photos/seed/diffusion-llm-eval/400/300"
+description: A practical guide to evaluating diffusion LLMs, from sampler integration and extraction to framework selection and prompt hygiene.
+pubDate: 2026-03-27T00:00:00.000Z
+author: Xiaoyou Wu
+tags:
+  - llm
+  - diffusion
+  - evaluation
+  - benchmarking
+category: Research
+thumbnail: https://live.staticflickr.com/7307/16452212476_1d02ac08dd_b.jpg
 draft: false
 ---
 

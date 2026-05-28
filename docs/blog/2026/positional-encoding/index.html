@@ -1,0 +1,721 @@
+<!DOCTYPE html><html lang="en" data-astro-cid-37fxchfa> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Positional Encoding Methods: Implementation Report</title><meta name="description" content="A deep-dive into 5 positional encoding strategies with mathematical formulations, code walkthroughs, architectural diagrams, and comparative analysis"><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://laurence-wu.github.io/blog/2026/positional-encoding/"><meta property="og:title" content="Positional Encoding Methods: Implementation Report"><meta property="og:description" content="A deep-dive into 5 positional encoding strategies with mathematical formulations, code walkthroughs, architectural diagrams, and comparative analysis"><meta property="og:image" content="./images/encoding_comparison.png"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://laurence-wu.github.io/blog/2026/positional-encoding/"><meta property="twitter:title" content="Positional Encoding Methods: Implementation Report"><meta property="twitter:description" content="A deep-dive into 5 positional encoding strategies with mathematical formulations, code walkthroughs, architectural diagrams, and comparative analysis"><meta property="twitter:image" content="./images/encoding_comparison.png"><!-- KaTeX CSS for Math Rendering --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous"><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script><!-- Google Fonts - Preserved Typography System --><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&family=Cormorant+Garamond:wght@300;400;500;600;700&display=swap" rel="stylesheet"><!-- Fira Code for code blocks --><link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap" rel="stylesheet"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Global CSS Import --><link rel="stylesheet" href="/_astro/_slug_.CaX6V1Dz.css">
+<link rel="stylesheet" href="/_astro/index.B8H_S5Qn.css">
+<style>.blog-post[data-astro-cid-bvzihdzo]{max-width:800px;margin:0 auto;padding:1rem;margin-top:-1rem;min-height:calc(100vh - 180px)}@media (min-width: 1201px){.blog-post[data-astro-cid-bvzihdzo]{margin-left:340px;margin-right:auto;max-width:calc(100vw - 380px)}.blog-footer[data-astro-cid-bvzihdzo] .container[data-astro-cid-bvzihdzo]{margin-left:340px;margin-right:auto}}.post-header[data-astro-cid-bvzihdzo]{margin-bottom:1rem;margin-top:.5rem;border-bottom:1px solid var(--color-border);padding-bottom:1rem;padding:1.5rem;border-radius:12px}.blog-footer[data-astro-cid-bvzihdzo]{background:var(--deep-navy);padding:1.5rem 0;border-top:3px solid var(--color-border);margin-top:1rem;margin-bottom:-1rem;position:relative;overflow:hidden;width:100%}.container[data-astro-cid-bvzihdzo]{max-width:800px;margin:0 auto;padding:0 1rem;position:relative;z-index:2}.back-link[data-astro-cid-bvzihdzo]{color:var(--warm-neutral);text-decoration:none;font-weight:600;font-size:1.1rem}.post-header[data-astro-cid-bvzihdzo] h1[data-astro-cid-bvzihdzo]{font-size:2rem;margin-bottom:.5rem;line-height:1.2;color:var(--deep-navy);font-family:var(--font-heading)}.post-image[data-astro-cid-bvzihdzo]{margin:2rem 0;text-align:center}.post-image[data-astro-cid-bvzihdzo] img[data-astro-cid-bvzihdzo]{max-width:100%;border-radius:8px}.post-meta[data-astro-cid-bvzihdzo]{color:var(--color-text-light);font-size:.9rem;margin-bottom:1rem;font-family:var(--font-body)}.post-meta[data-astro-cid-bvzihdzo] time[data-astro-cid-bvzihdzo]{font-weight:500;color:var(--color-text-light)}.author[data-astro-cid-bvzihdzo]{margin-left:1rem;color:var(--color-text-light);font-weight:500}.updated[data-astro-cid-bvzihdzo]{margin-left:1rem;font-style:italic;color:var(--color-text-light)}.tags[data-astro-cid-bvzihdzo]{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}.tag[data-astro-cid-bvzihdzo]{background:#0a23420d;color:var(--deep-navy);padding:.4rem .8rem;border-radius:20px;font-size:.8rem;font-weight:600;border:1px solid var(--color-border);font-family:var(--font-body);text-decoration:none;display:inline-block}.tag[data-astro-cid-bvzihdzo]:hover{background:#0a23421a;color:var(--gold-accent)}.post-content[data-astro-cid-bvzihdzo]{padding:2.5rem;margin:2rem 0}.mermaid-wrapper{overflow-x:auto;margin:2rem 0;border:1px solid var(--color-border);border-radius:8px;background:#fff;padding:1.5rem;text-align:center}.mermaid svg{max-width:100%;height:auto}@media (max-width: 768px){.blog-post[data-astro-cid-bvzihdzo]{padding:.5rem;margin-top:-.5rem}.post-header[data-astro-cid-bvzihdzo]{padding:1rem;margin:.5rem 0}.post-content[data-astro-cid-bvzihdzo]{padding:1rem;margin:.5rem 0;font-size:1rem;line-height:1.7}.post-header[data-astro-cid-bvzihdzo] h1[data-astro-cid-bvzihdzo]{font-size:2rem}.blog-footer[data-astro-cid-bvzihdzo]{padding:1rem 0;margin-top:.5rem;margin-bottom:-.5rem}.content-with-sidebar[data-astro-cid-bvzihdzo]{gap:1.5rem}}
+</style></head> <body data-astro-cid-37fxchfa> <nav class="navbar" data-astro-cid-pux6a34n> <div class="navbar-brand" data-astro-cid-pux6a34n>Xiaoyou Wu</div> <a href="/" class="navbar-link " data-astro-cid-pux6a34n>
+Home
+</a> <a href="/blog" class="navbar-link active" data-astro-cid-pux6a34n>
+Blog
+</a> <a href="/projects" class="navbar-link " data-astro-cid-pux6a34n>
+Projects
+</a> </nav>  <script type="module">function r(){const e=document.querySelector(".navbar");window.scrollY>50?e?.classList.add("scrolled"):e?.classList.remove("scrolled")}window.addEventListener("scroll",r);document.querySelector(".navbar")?.addEventListener("contextmenu",e=>{e.preventDefault()});document.querySelector(".navbar")?.addEventListener("dragstart",e=>{e.preventDefault()});</script> <main class="main-content" data-astro-cid-37fxchfa>  <main class="blog-post" data-astro-cid-bvzihdzo> <article data-astro-cid-bvzihdzo> <header class="post-header" data-astro-cid-bvzihdzo> <h1 data-astro-cid-bvzihdzo>Positional Encoding Methods: Implementation Report</h1> <div class="post-meta" data-astro-cid-bvzihdzo> <time datetime="2026-03-24T00:00:00.000Z" data-astro-cid-bvzihdzo> March 23, 2026 </time> <span class="author" data-astro-cid-bvzihdzo>by Xiaoyou Wu</span>  </div> <div class="tags" data-astro-cid-bvzihdzo> <a href="/blog/tag/GPU &#38; Compilers/" class="tag" data-astro-cid-bvzihdzo>GPU &amp; Compilers</a><a href="/blog/tag/research/" class="tag" data-astro-cid-bvzihdzo>research</a> </div> </header> <div class="post-image" data-astro-cid-bvzihdzo> <img src="./images/encoding_comparison.png" alt="Positional Encoding Methods: Implementation Report" data-astro-cid-bvzihdzo> </div> <div id="table-of-contents" class="toc-container" data-astro-cid-xvrfupwn> <div class="toc-header" data-astro-cid-xvrfupwn> <div class="toc-title-area" data-astro-cid-xvrfupwn> <span class="drag-handle" title="Drag to move" data-astro-cid-xvrfupwn>⋮⋮</span> <h3 data-astro-cid-xvrfupwn>Table of Contents</h3> </div> <button id="toc-toggle" class="toc-toggle" aria-label="Toggle table of contents" data-astro-cid-xvrfupwn> <span class="toggle-icon" data-astro-cid-xvrfupwn>←</span> </button> </div> <nav class="toc-nav" aria-label="Table of contents" data-astro-cid-xvrfupwn> <ul id="toc-list" class="toc-list" data-astro-cid-xvrfupwn> <!-- TOC items will be populated by JavaScript --> </ul> </nav> </div>  <script type="module" src="/_astro/TableOfContents.astro_astro_type_script_index_0_lang.DKspTH5I.js"></script> <div class="content-with-sidebar" data-astro-cid-bvzihdzo> <div class="post-content prose-content main-content" data-astro-cid-bvzihdzo>  <blockquote>
+<p>A deep-dive into the 5 positional encoding strategies implemented in <code>src/attention/</code>, with mathematical formulations, concrete code walkthroughs, architectural diagrams, and comparative analysis.</p>
+</blockquote>
+<p><img alt="Encoding Methods Overview" loading="lazy" decoding="async" fetchpriority="auto" width="640" height="640" src="/_astro/encoding_comparison.0eHZ3Zr5_Z1D7BJz.webp" ></p>
+<hr>
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol>
+<li><a href="#1-why-positional-encoding-matters">Why Positional Encoding Matters</a></li>
+<li><a href="#2-absolute-sinusoidal-encoding">Method 1: Absolute Sinusoidal Encoding</a></li>
+<li><a href="#3-standard-learned-encoding">Method 2: Standard Learned Encoding</a></li>
+<li><a href="#4-rope-rotary-position-embedding">Method 3: RoPE (Rotary Position Embedding)</a></li>
+<li><a href="#5-exposb-exponential-stick-breaking">Method 4: ExpoSB (Exponential Stick-Breaking)</a></li>
+<li><a href="#6-rse-rotary-stick-breaking-encoding">Method 5: RSE (Rotary Stick-Breaking Encoding)</a></li>
+<li><a href="#7-architecture-integration">Architecture Integration</a></li>
+<li><a href="#8-comparative-analysis">Comparative Analysis</a></li>
+<li><a href="#9-training-results">Training Results</a></li>
+<li><a href="#10-conclusion">Conclusion</a></li>
+</ol>
+<hr>
+<h2 id="1-why-positional-encoding-matters">1. Why Positional Encoding Matters</h2>
+<p>Self-attention is <strong>permutation-invariant</strong> — given tokens <code>[A, B, C]</code>, the attention output for <code>A</code> is the same whether the input order is <code>[A, B, C]</code> or <code>[C, A, B]</code>. Without positional encoding, the model has <strong>no concept of word order</strong>, making it impossible to distinguish “the cat sat on the mat” from “the mat sat on the cat.”</p>
+<p>Positional encoding injects position information so the model can reason about token order, proximity, and relative distance.</p>
+<div class="mermaid-wrapper"><pre class="mermaid">graph LR
+    A["Token Embeddings"] --> B{"Position Encoding?"}
+    B -->|None| C["Bag-of-Words (no order)"]
+    B -->|Additive| D["Absolute / Standard (fixed position)"]
+    B -->|Rotary| E["RoPE / ExpoSB / RSE (relative position)"]</pre></div>
+<hr>
+<h2 id="2-absolute-sinusoidal-encoding">2. Absolute Sinusoidal Encoding</h2>
+<blockquote>
+<p><strong>File:</strong> <code>absolute_attention.py</code></p>
+</blockquote>
+<h3 id="21-mathematical-formulation">2.1 Mathematical Formulation</h3>
+<p>For a token at position <code>pos</code> and embedding dimension <code>i</code>:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>PE(pos, 2i)   = sin(pos / 10000^(2i/d_model))</span></span>
+<span class="line"><span>PE(pos, 2i+1) = cos(pos / 10000^(2i/d_model))</span></span></code></pre>
+<p>Where <code>d_model</code> is the hidden size. This creates a unique “fingerprint” for each position using overlapping sinusoidal waves at different frequencies.</p>
+<p><strong>Intuition:</strong> Low-dimensional indices (small <code>i</code>) produce slowly-varying waves that capture long-range position differences, while high-dimensional indices produce rapidly-varying waves for fine-grained position discrimination.</p>
+<h3 id="22-implementation">2.2 Implementation</h3>
+<p>The core encoding generation:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> _create_sinusoidal_embeddings</span><span style="color:#E1E4E8">(self, max_seq_length, hidden_size):</span></span>
+<span class="line"><span style="color:#6A737D">    # Position indices: [0, 1, 2, ..., max_seq_length-1]</span></span>
+<span class="line"><span style="color:#E1E4E8">    position </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> torch.arange(max_seq_length).unsqueeze(</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">)  </span><span style="color:#6A737D"># Shape: [max_seq, 1]</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    # Frequency divisors: 10000^(2i/d) computed as exp for stability</span></span>
+<span class="line"><span style="color:#E1E4E8">    div_term </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> torch.exp(</span></span>
+<span class="line"><span style="color:#E1E4E8">        torch.arange(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">, hidden_size, </span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">*</span><span style="color:#F97583"> -</span><span style="color:#E1E4E8">(math.log(</span><span style="color:#79B8FF">10000.0</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">/</span><span style="color:#E1E4E8"> hidden_size)</span></span>
+<span class="line"><span style="color:#E1E4E8">    )  </span><span style="color:#6A737D"># Shape: [hidden_size/2]</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    pe </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> torch.zeros(max_seq_length, hidden_size)</span></span>
+<span class="line"><span style="color:#E1E4E8">    pe[:, </span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">::</span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> torch.sin(position </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> div_term)  </span><span style="color:#6A737D"># Even dimensions</span></span>
+<span class="line"><span style="color:#E1E4E8">    pe[:, </span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">::</span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> torch.cos(position </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> div_term)  </span><span style="color:#6A737D"># Odd dimensions</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> pe</span></span></code></pre>
+<h3 id="23-how-its-applied">2.3 How It’s Applied</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> forward</span><span style="color:#E1E4E8">(self, hidden_states, ...):</span></span>
+<span class="line"><span style="color:#6A737D">    # Slice PE table and add to input BEFORE Q/K projection</span></span>
+<span class="line"><span style="color:#E1E4E8">    positions </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> self</span><span style="color:#E1E4E8">.position_embeddings[:seq_length].unsqueeze(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">    hidden_states_with_pos </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> hidden_states </span><span style="color:#F97583">+</span><span style="color:#E1E4E8"> positions</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    # Position leaks into Q and K through linear projection</span></span>
+<span class="line"><span style="color:#E1E4E8">    query_layer </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> self</span><span style="color:#E1E4E8">.query(hidden_states_with_pos)  </span><span style="color:#6A737D"># ← has position</span></span>
+<span class="line"><span style="color:#E1E4E8">    key_layer   </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> self</span><span style="color:#E1E4E8">.key(hidden_states_with_pos)    </span><span style="color:#6A737D"># ← has position</span></span>
+<span class="line"><span style="color:#E1E4E8">    value_layer </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> self</span><span style="color:#E1E4E8">.value(hidden_states)           </span><span style="color:#6A737D"># ← NO position (content only)</span></span></code></pre>
+<blockquote>
+<p>[!IMPORTANT]
+Position is only added to Q and K, <strong>not V</strong>. This means position influences <em>what attends to what</em> but not <em>what information is passed through</em>. This is a deliberate design choice specific to this implementation.</p>
+</blockquote>
+<h3 id="24-encoding-pattern-visualization">2.4 Encoding Pattern Visualization</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>Position →  0    1    2    3    4    5    6    7</span></span>
+<span class="line"><span>Dim 0: ──   0   .84  .91  .14 -.76 -.96 -.28  .66   ← fast oscillation</span></span>
+<span class="line"><span>Dim 1: ──   1   .54 -.42 -.99 -.65  .28  .96  .75</span></span>
+<span class="line"><span>Dim 2: ──   0   .38  .72  .95  .99  .86  .56  .14   ← medium oscillation</span></span>
+<span class="line"><span>Dim 3: ──   1   .93  .70  .33 -.10 -.51 -.83 -.99</span></span>
+<span class="line"><span>...</span></span>
+<span class="line"><span>Dim d: ──   0   .01  .02  .03  .04  .05  .06  .07   ← very slow oscillation</span></span></code></pre>
+<h3 id="25-triton-kernel">2.5 Triton Kernel</h3>
+<p>The Triton forward kernel implements <strong>Flash Attention</strong> (online softmax with max-tracking):</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#6A737D"># Online softmax: track running max and sum for numerical stability</span></span>
+<span class="line"><span style="color:#E1E4E8">m_i_new </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> tl.maximum(m_i, tl.max(qk, </span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">))</span></span>
+<span class="line"><span style="color:#E1E4E8">alpha </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> tl.exp(m_i </span><span style="color:#F97583">-</span><span style="color:#E1E4E8"> m_i_new)        </span><span style="color:#6A737D"># Rescaling factor</span></span>
+<span class="line"><span style="color:#E1E4E8">p </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> tl.exp(qk </span><span style="color:#F97583">-</span><span style="color:#E1E4E8"> m_i_new[:, </span><span style="color:#79B8FF">None</span><span style="color:#E1E4E8">])    </span><span style="color:#6A737D"># Softmax numerator</span></span>
+<span class="line"><span style="color:#E1E4E8">l_i_new </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> alpha </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> l_i </span><span style="color:#F97583">+</span><span style="color:#E1E4E8"> tl.sum(p, </span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">) </span><span style="color:#6A737D"># Running denominator</span></span>
+<span class="line"><span style="color:#E1E4E8">acc </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> acc </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> alpha[:, </span><span style="color:#79B8FF">None</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">+</span><span style="color:#E1E4E8"> tl.dot(p, v)  </span><span style="color:#6A737D"># Rescaled accumulator</span></span></code></pre>
+<p>With a <strong>PyTorch fallback</strong> if the Triton kernel runs out of shared memory:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">except</span><span style="color:#E1E4E8"> triton.runtime.errors.OutOfResources:</span></span>
+<span class="line"><span style="color:#E1E4E8">    o </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> F.scaled_dot_product_attention(query_layer, key_layer, value_layer, </span><span style="color:#79B8FF">...</span><span style="color:#E1E4E8">)</span></span></code></pre>
+<hr>
+<h2 id="3-standard-learned-encoding">3. Standard Learned Encoding</h2>
+<blockquote>
+<p><strong>File:</strong> <code>standard_attention.py</code></p>
+</blockquote>
+<h3 id="31-mathematical-formulation">3.1 Mathematical Formulation</h3>
+<p>Instead of fixed sinusoids, each position gets a <strong>learnable</strong> vector:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>PE(pos) = Embedding_table[pos]    where pos ∈ {0, 1, ..., max_pos - 1}</span></span></code></pre>
+<p>The embedding table has shape <code>[max_position_embeddings × hidden_size]</code> and is trained via backpropagation alongside the rest of the model.</p>
+<h3 id="32-implementation">3.2 Implementation</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> StandardBERTAttention</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">nn</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">Module</span><span style="color:#E1E4E8">):</span></span>
+<span class="line"><span style="color:#F97583">    def</span><span style="color:#79B8FF"> __init__</span><span style="color:#E1E4E8">(self, hidden_size, num_heads, max_position_embeddings</span><span style="color:#F97583">=</span><span style="color:#79B8FF">512</span><span style="color:#E1E4E8">):</span></span>
+<span class="line"><span style="color:#6A737D">        # Learnable embedding table — this IS the positional encoding</span></span>
+<span class="line"><span style="color:#79B8FF">        self</span><span style="color:#E1E4E8">.position_embeddings </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> nn.Embedding(max_position_embeddings, hidden_size)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    def</span><span style="color:#B392F0"> forward</span><span style="color:#E1E4E8">(self, hidden_states, ...):</span></span>
+<span class="line"><span style="color:#E1E4E8">        position_ids </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> torch.arange(seq_len, </span><span style="color:#FFAB70">device</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">hidden_states.device).unsqueeze(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">        position_embeddings </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> self</span><span style="color:#E1E4E8">.position_embeddings(position_ids)</span></span>
+<span class="line"><span style="color:#E1E4E8">        hidden_states </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> hidden_states </span><span style="color:#F97583">+</span><span style="color:#E1E4E8"> position_embeddings  </span><span style="color:#6A737D"># Add to ALL of Q, K, V</span></span></code></pre>
+<h3 id="33-key-difference-from-absolute">3.3 Key Difference from Absolute</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Aspect</th><th>Absolute (Sinusoidal)</th><th>Standard (Learned)</th></tr></thead><tbody><tr><td>Position vectors</td><td>Fixed at init</td><td>Learned during training</td></tr><tr><td>Extra parameters</td><td>0</td><td><code>max_pos × hidden_size</code></td></tr><tr><td>Applied to</td><td>Q and K only</td><td>Q, K, <strong>and</strong> V</td></tr><tr><td>Extrapolation</td><td>Generalizes to unseen lengths</td><td>❌ Fails beyond <code>max_pos</code></td></tr><tr><td>Flexibility</td><td>Fixed frequency structure</td><td>Can learn arbitrary patterns</td></tr></tbody></table>
+<blockquote>
+<p>[!NOTE]
+The standard learned encoding adds <code>max_pos × hidden_size = 512 × 384 = 196,608</code> extra parameters compared to sinusoidal encoding in the current config.</p>
+</blockquote>
+<hr>
+<h2 id="4-rope-rotary-position-embedding">4. RoPE (Rotary Position Embedding)</h2>
+<blockquote>
+<p><strong>File:</strong> <code>rope_attention.py</code></p>
+</blockquote>
+<h3 id="41-mathematical-formulation">4.1 Mathematical Formulation</h3>
+<p>RoPE encodes position by <strong>rotating</strong> Q and K vectors in 2D subspaces. For a vector <code>x</code> at position <code>m</code>, each pair of dimensions <code>(x_{2i}, x_{2i+1})</code> is rotated by angle <code>θ_m = m · ω_i</code>:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>┌           ┐     ┌                  ┐   ┌       ┐</span></span>
+<span class="line"><span>│ x'_{2i}   │  =  │ cos(mω_i)  -sin(mω_i) │ × │ x_{2i}   │</span></span>
+<span class="line"><span>│ x'_{2i+1} │     │ sin(mω_i)   cos(mω_i) │   │ x_{2i+1} │</span></span>
+<span class="line"><span>└           ┘     └                  ┘   └       ┘</span></span></code></pre>
+<p>Where the frequency <code>ω_i</code> is:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>ω_i = 1 / 10000^(2i/d)</span></span>
+<span class="line"><span>     = exp(-log(10000) × 2i/d)</span></span></code></pre>
+<p><strong>The key insight:</strong> When computing <code>Q_m · K_n</code>, the rotation angle becomes <code>(m-n) · ω_i</code>, making attention scores depend only on <strong>relative position</strong> <code>(m-n)</code>, not absolute positions.</p>
+<h3 id="42-implementation--pytorch-version">4.2 Implementation — PyTorch Version</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> apply_rope</span><span style="color:#E1E4E8">(x, position_ids):</span></span>
+<span class="line"><span style="color:#9ECBFF">    """Apply RoPE to input tensor"""</span></span>
+<span class="line"><span style="color:#E1E4E8">    batch_size, num_heads, seq_len, head_dim </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> x.shape</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    # Compute inverse frequencies</span></span>
+<span class="line"><span style="color:#E1E4E8">    dim_half </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> head_dim </span><span style="color:#F97583">//</span><span style="color:#79B8FF"> 2</span></span>
+<span class="line"><span style="color:#E1E4E8">    freq_idx </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> torch.arange(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">, dim_half, </span><span style="color:#FFAB70">dtype</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">torch.float32, </span><span style="color:#FFAB70">device</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">x.device)</span></span>
+<span class="line"><span style="color:#E1E4E8">    exponent </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> freq_idx </span><span style="color:#F97583">*</span><span style="color:#79B8FF"> 2.0</span><span style="color:#F97583"> /</span><span style="color:#E1E4E8"> head_dim</span></span>
+<span class="line"><span style="color:#E1E4E8">    inv_freq </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> torch.exp(</span><span style="color:#F97583">-</span><span style="color:#E1E4E8">math.log(</span><span style="color:#79B8FF">10000.0</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> exponent)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    # Compute rotation angles: position × frequency</span></span>
+<span class="line"><span style="color:#E1E4E8">    angles </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> position_ids </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> inv_freq  </span><span style="color:#6A737D"># Broadcasting: [batch,1,seq,1] × [1,1,1,dim_half]</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    cos_vals </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> torch.cos(angles)</span></span>
+<span class="line"><span style="color:#E1E4E8">    sin_vals </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> torch.sin(angles)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    # Split into dimension pairs and rotate</span></span>
+<span class="line"><span style="color:#E1E4E8">    x_even </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> x[</span><span style="color:#79B8FF">...</span><span style="color:#E1E4E8">, ::</span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">]    </span><span style="color:#6A737D"># Every other dimension starting at 0</span></span>
+<span class="line"><span style="color:#E1E4E8">    x_odd  </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> x[</span><span style="color:#79B8FF">...</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">::</span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">]   </span><span style="color:#6A737D"># Every other dimension starting at 1</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    x_rotated_even </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> x_even </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> cos_vals </span><span style="color:#F97583">-</span><span style="color:#E1E4E8"> x_odd </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> sin_vals</span></span>
+<span class="line"><span style="color:#E1E4E8">    x_rotated_odd  </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> x_odd </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> cos_vals </span><span style="color:#F97583">+</span><span style="color:#E1E4E8"> x_even </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> sin_vals</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    # Interleave back to original dimension order</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> torch.stack([x_rotated_even, x_rotated_odd], </span><span style="color:#FFAB70">dim</span><span style="color:#F97583">=-</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">).flatten(</span><span style="color:#F97583">-</span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">)</span></span></code></pre>
+<h3 id="43-implementation--triton-kernel-inline-rotation">4.3 Implementation — Triton Kernel (Inline Rotation)</h3>
+<p>The Triton kernel <strong>fuses RoPE into the attention computation</strong>, avoiding materializing the rotated Q/K:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#6A737D"># Inside the kernel: rotate Q ONCE before the K-block loop</span></span>
+<span class="line"><span style="color:#E1E4E8">theta </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 10000.0</span></span>
+<span class="line"><span style="color:#E1E4E8">freq_idx </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> offs_d </span><span style="color:#F97583">//</span><span style="color:#79B8FF"> 2</span></span>
+<span class="line"><span style="color:#E1E4E8">dim_factor </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> freq_idx.to(tl.float32) </span><span style="color:#F97583">*</span><span style="color:#79B8FF"> 2.0</span><span style="color:#F97583"> /</span><span style="color:#79B8FF"> BLOCK_DMODEL</span></span>
+<span class="line"><span style="color:#E1E4E8">inv_freq </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> tl.exp(</span><span style="color:#F97583">-</span><span style="color:#E1E4E8">tl.log(theta) </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> dim_factor)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">angle_m </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> pos_m[:, </span><span style="color:#79B8FF">None</span><span style="color:#E1E4E8">].to(tl.float32) </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> inv_freq[</span><span style="color:#79B8FF">None</span><span style="color:#E1E4E8">, :]</span></span>
+<span class="line"><span style="color:#E1E4E8">cos_m </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> tl.cos(angle_m)</span></span>
+<span class="line"><span style="color:#E1E4E8">sin_m </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> tl.sin(angle_m)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">q_rotated </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> q_even </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> cos_m </span><span style="color:#F97583">-</span><span style="color:#E1E4E8"> q_odd </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> sin_m</span></span>
+<span class="line"><span style="color:#E1E4E8">q_rotated </span><span style="color:#F97583">+=</span><span style="color:#E1E4E8"> q_odd </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> cos_m </span><span style="color:#F97583">+</span><span style="color:#E1E4E8"> q_even </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> sin_m</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Inside the loop: rotate each K block</span></span>
+<span class="line"><span style="color:#F97583">for</span><span style="color:#E1E4E8"> start_n </span><span style="color:#F97583">in</span><span style="color:#79B8FF"> range</span><span style="color:#E1E4E8">(lo, hi, </span><span style="color:#79B8FF">BLOCK_N</span><span style="color:#E1E4E8">):</span></span>
+<span class="line"><span style="color:#E1E4E8">    k_t </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> tl.trans(k)</span></span>
+<span class="line"><span style="color:#E1E4E8">    k_rotated </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> k_even </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> cos_n </span><span style="color:#F97583">-</span><span style="color:#E1E4E8"> k_odd </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> sin_n  </span><span style="color:#6A737D"># ← rotated inline</span></span>
+<span class="line"><span style="color:#E1E4E8">    k </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> tl.trans(k_rotated)</span></span>
+<span class="line"><span style="color:#E1E4E8">    qk </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> tl.dot(q, k)  </span><span style="color:#6A737D"># Now QK^T has relative position built in</span></span></code></pre>
+<h3 id="44-relative-position-property">4.4 Relative Position Property</h3>
+<div class="mermaid-wrapper"><pre class="mermaid">graph TB
+    subgraph "Position m"
+        QM["Q_m = R(m) x W_q x x_m"]
+    end
+    subgraph "Position n"
+        KN["K_n = R(n) x W_k x x_n"]
+    end
+    QM -- "dot product" --> DOT["Q_m . K_n = x_m^T W_q^T R(m-n) W_k x_n"]
+    DOT --> REL["Depends only on relative position (m-n)"]</pre></div>
+<h3 id="45-backward-pass">4.5 Backward Pass</h3>
+<p>The backward kernel applies the <strong>inverse rotation</strong> (negate the angle) to compute gradients:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#6A737D"># Inverse RoPE for gradient flow</span></span>
+<span class="line"><span style="color:#E1E4E8">dk_unrot </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> dk_even </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> cos_n </span><span style="color:#F97583">+</span><span style="color:#E1E4E8"> dk_odd </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> sin_n   </span><span style="color:#6A737D"># Note: + instead of -</span></span>
+<span class="line"><span style="color:#E1E4E8">dk_unrot </span><span style="color:#F97583">+=</span><span style="color:#E1E4E8"> dk_odd </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> cos_n </span><span style="color:#F97583">-</span><span style="color:#E1E4E8"> dk_even </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> sin_n  </span><span style="color:#6A737D"># Reversed sign</span></span></code></pre>
+<hr>
+<h2 id="5-exposb-exponential-stick-breaking">5. ExpoSB (Exponential Stick-Breaking)</h2>
+<blockquote>
+<p><strong>File:</strong> <code>exposb_attention.py</code></p>
+</blockquote>
+<h3 id="51-mathematical-formulation">5.1 Mathematical Formulation</h3>
+<p>ExpoSB extends RoPE with <strong>three additional mechanisms</strong>:</p>
+<h4 id="mechanism-1-position-decayed-rotation">Mechanism 1: Position-Decayed Rotation</h4>
+<p>The cos/sin values decay exponentially with position:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>cos'(mω_i) = cos(mω_i) × (1.0 + 0.2 × exp(-0.001 × m))</span></span>
+<span class="line"><span>sin'(mω_i) = sin(mω_i) × (1.0 + 0.2 × exp(-0.001 × m))</span></span></code></pre>
+<p><strong>Effect:</strong> Earlier positions get slightly amplified rotational encoding (20% boost at position 0, decaying to baseline by ~position 1000). This gives the model stronger position discrimination for early tokens.</p>
+<h4 id="mechanism-2-band-pass-frequency-filtering">Mechanism 2: Band-Pass Frequency Filtering</h4>
+<p>After rotation, a Gaussian filter amplifies mid-frequency dimensions:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>G(d) = exp(-(d - d_center)² / (2 × bandwidth²))</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>x_filtered = x_rotated × (0.8 + 0.4 × G(d))</span></span></code></pre>
+<p>Where <code>d_center = head_dim/4</code> and <code>bandwidth = head_dim/8</code>.</p>
+<p><strong>Effect:</strong> Dimensions near <code>d_center</code> get up to 1.2× amplification; extreme dimensions get 0.8× attenuation. This focuses the model’s capacity on mid-frequency components that capture the most useful patterns.</p>
+<h4 id="mechanism-3-distance-based-attention-decay">Mechanism 3: Distance-Based Attention Decay</h4>
+<p>Attention scores are modulated by the distance between query and key positions:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>decay(m, n) = exp(-0.005 × |m - n|)</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>attention'(m, n) = attention(m, n) × (0.7 + 0.3 × decay(m, n))</span></span></code></pre>
+<p><strong>Effect:</strong> Adjacent tokens keep 100% attention (0.7 + 0.3×1.0); tokens 100 positions apart retain ~88% (0.7 + 0.3×0.61); tokens 1000 apart retain ~70% (0.7 + 0.3×0.007). This creates a <strong>locality bias</strong> without hard masking.</p>
+<h3 id="52-concrete-implementation">5.2 Concrete Implementation</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> apply_exposb</span><span style="color:#E1E4E8">(x, position_ids):</span></span>
+<span class="line"><span style="color:#6A737D">    # Step 1: Standard RoPE frequency computation</span></span>
+<span class="line"><span style="color:#E1E4E8">    inv_freq </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> torch.exp(</span><span style="color:#F97583">-</span><span style="color:#E1E4E8">math.log(</span><span style="color:#79B8FF">10000.0</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> exponent)</span></span>
+<span class="line"><span style="color:#E1E4E8">    angles </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> position_ids </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> inv_freq</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    # Step 2: Position-decayed rotation (ExpoSB modification #1)</span></span>
+<span class="line"><span style="color:#E1E4E8">    pos_decay </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> torch.exp(</span><span style="color:#F97583">-</span><span style="color:#E1E4E8">position_ids.float() </span><span style="color:#F97583">*</span><span style="color:#79B8FF"> 0.001</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">    cos_vals </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> torch.cos(angles) </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">1.0</span><span style="color:#F97583"> +</span><span style="color:#79B8FF"> 0.2</span><span style="color:#F97583"> *</span><span style="color:#E1E4E8"> pos_decay)</span></span>
+<span class="line"><span style="color:#E1E4E8">    sin_vals </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> torch.sin(angles) </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">1.0</span><span style="color:#F97583"> +</span><span style="color:#79B8FF"> 0.2</span><span style="color:#F97583"> *</span><span style="color:#E1E4E8"> pos_decay)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    # Step 3: Apply rotation</span></span>
+<span class="line"><span style="color:#E1E4E8">    x_rotated_even </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> x_even </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> cos_vals </span><span style="color:#F97583">-</span><span style="color:#E1E4E8"> x_odd </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> sin_vals</span></span>
+<span class="line"><span style="color:#E1E4E8">    x_rotated_odd  </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> x_odd </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> cos_vals </span><span style="color:#F97583">+</span><span style="color:#E1E4E8"> x_even </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> sin_vals</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    # Step 4: Band-pass filtering (ExpoSB modification #2)</span></span>
+<span class="line"><span style="color:#E1E4E8">    freq_response </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> torch.exp(</span><span style="color:#F97583">-</span><span style="color:#E1E4E8">((dims </span><span style="color:#F97583">-</span><span style="color:#E1E4E8"> center)²) </span><span style="color:#F97583">/</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">2</span><span style="color:#F97583"> *</span><span style="color:#E1E4E8"> width²))</span></span>
+<span class="line"><span style="color:#E1E4E8">    x_rotated </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> x_rotated </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">0.8</span><span style="color:#F97583"> +</span><span style="color:#79B8FF"> 0.4</span><span style="color:#F97583"> *</span><span style="color:#E1E4E8"> freq_response)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> x_rotated</span></span></code></pre>
+<h3 id="53-learnable-parameters">5.3 Learnable Parameters</h3>
+<p>The <code>ExpoSBBERTAttention</code> module adds <strong>per-head learnable parameters</strong>:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#6A737D"># Per-head scaling for Q and K</span></span>
+<span class="line"><span style="color:#79B8FF">self</span><span style="color:#E1E4E8">.band_weights </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> nn.Parameter(torch.ones(num_heads))    </span><span style="color:#6A737D"># 6 params</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Per-head decay rates (not yet wired into kernel)</span></span>
+<span class="line"><span style="color:#79B8FF">self</span><span style="color:#E1E4E8">.decay_rates </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> nn.Parameter(torch.ones(num_heads) </span><span style="color:#F97583">*</span><span style="color:#79B8FF"> 0.001</span><span style="color:#E1E4E8">)  </span><span style="color:#6A737D"># 6 params</span></span></code></pre>
+<h3 id="54-attention-pattern-visualization">5.4 Attention Pattern Visualization</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>Distance:  0     5     10    50    100   500   1000</span></span>
+<span class="line"><span>Decay:   1.00  0.98  0.95  0.78  0.61  0.08  0.007</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Attention modulation = 0.7 + 0.3 × decay:</span></span>
+<span class="line"><span>         1.00  0.99  0.99  0.93  0.88  0.72  0.70</span></span></code></pre>
+<div class="mermaid-wrapper"><pre class="mermaid">xychart-beta
+    title "ExpoSB Attention Modulation vs Distance"
+    x-axis "Token Distance" [0, 50, 100, 200, 500, 1000]
+    y-axis "Attention Multiplier" 0.6 --> 1.1
+    line "Modulation Factor" [1.00, 0.93, 0.88, 0.81, 0.72, 0.70]
+    line "Baseline (Standard)" [1.00, 1.00, 1.00, 1.00, 1.00, 1.00]</pre></div>
+<hr>
+<h2 id="6-rse-rotary-stick-breaking-encoding">6. RSE (Rotary Stick-Breaking Encoding)</h2>
+<blockquote>
+<p><strong>File:</strong> <code>rse_attention.py</code></p>
+</blockquote>
+<h3 id="61-mathematical-formulation">6.1 Mathematical Formulation</h3>
+<p>RSE combines <strong>RoPE</strong> with a fundamentally different attention mechanism: <strong>stick-breaking</strong>.</p>
+<h4 id="standard-softmax-attention">Standard Softmax Attention:</h4>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>α_ij = exp(q_i · k_j) / Σ_k exp(q_i · k_k)</span></span></code></pre>
+<p>All positions compete simultaneously through normalization.</p>
+<h4 id="rse-stick-breaking-attention">RSE Stick-Breaking Attention:</h4>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>logit_ij = (q_RoPE_i · k_RoPE_j) - λ|i - j|</span></span>
+<span class="line"><span>β_ij     = sigmoid(logit_ij)</span></span>
+<span class="line"><span>α_ij     = β_ij × remaining_i</span></span>
+<span class="line"><span>remaining_i ← remaining_i × (1 - Σ_j α_ij)</span></span></code></pre>
+<p><strong>Analogy:</strong> Imagine a stick of length 1. For each key position (in order), the model decides what <strong>fraction</strong> (<code>β</code>) of the <strong>remaining stick</strong> to break off. Early positions can claim large chunks; later positions are limited to whatever’s left.</p>
+<h3 id="62-stick-breaking-process-step-by-step">6.2 Stick-Breaking Process (Step by Step)</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>Start: remaining = 1.000</span></span>
+<span class="line"><span>───────────────────────────────────────────────────────────────────</span></span>
+<span class="line"><span>Key 0: β₀ = 0.30  →  α₀ = 0.30 × 1.000 = 0.300  │  remaining = 0.700</span></span>
+<span class="line"><span>Key 1: β₁ = 0.25  →  α₁ = 0.25 × 0.700 = 0.175  │  remaining = 0.525</span></span>
+<span class="line"><span>Key 2: β₂ = 0.40  →  α₂ = 0.40 × 0.525 = 0.210  │  remaining = 0.315</span></span>
+<span class="line"><span>Key 3: β₃ = 0.35  →  α₃ = 0.35 × 0.315 = 0.110  │  remaining = 0.205</span></span>
+<span class="line"><span>Key 4: β₄ = 0.50  →  α₄ = 0.50 × 0.205 = 0.103  │  remaining = 0.103</span></span>
+<span class="line"><span>...</span></span>
+<span class="line"><span>Sum of weights: 0.300 + 0.175 + 0.210 + 0.110 + 0.103 + ... ≤ 1.0</span></span></code></pre>
+<h3 id="63-the-exponential-decay-term">6.3 The Exponential Decay Term</h3>
+<p>Before computing <code>β</code>, RSE penalizes distant positions:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>logit_ij = score_ij - λ × |i - j|</span></span></code></pre>
+<p>Where <code>λ</code> is a <strong>learnable parameter</strong> (<code>nn.Parameter</code>). The model learns how strongly to penalize distance.</p>
+<h3 id="64-implementation">6.4 Implementation</h3>
+<h4 id="rope-cache-initialization">RoPE Cache Initialization:</h4>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> _init_rope_cache</span><span style="color:#E1E4E8">(self):</span></span>
+<span class="line"><span style="color:#E1E4E8">    theta </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 10000.0</span></span>
+<span class="line"><span style="color:#E1E4E8">    dim_half </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> self</span><span style="color:#E1E4E8">.head_dim </span><span style="color:#F97583">//</span><span style="color:#79B8FF"> 2</span></span>
+<span class="line"><span style="color:#E1E4E8">    freq_idx </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> torch.arange(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">, dim_half, </span><span style="color:#FFAB70">dtype</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">torch.float32)</span></span>
+<span class="line"><span style="color:#E1E4E8">    inv_freq </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 1.0</span><span style="color:#F97583"> /</span><span style="color:#E1E4E8"> (theta </span><span style="color:#F97583">**</span><span style="color:#E1E4E8"> (freq_idx </span><span style="color:#F97583">*</span><span style="color:#79B8FF"> 2.0</span><span style="color:#F97583"> /</span><span style="color:#79B8FF"> self</span><span style="color:#E1E4E8">.head_dim))</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    positions </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> torch.arange(</span><span style="color:#79B8FF">self</span><span style="color:#E1E4E8">.max_position_embeddings, </span><span style="color:#FFAB70">dtype</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">torch.float32)</span></span>
+<span class="line"><span style="color:#E1E4E8">    angles </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> positions[:, </span><span style="color:#79B8FF">None</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> inv_freq[</span><span style="color:#79B8FF">None</span><span style="color:#E1E4E8">, :]  </span><span style="color:#6A737D"># [max_pos, dim_half]</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF">    self</span><span style="color:#E1E4E8">.register_buffer(</span><span style="color:#9ECBFF">'cos_cache'</span><span style="color:#E1E4E8">, torch.cos(angles))</span></span>
+<span class="line"><span style="color:#79B8FF">    self</span><span style="color:#E1E4E8">.register_buffer(</span><span style="color:#9ECBFF">'sin_cache'</span><span style="color:#E1E4E8">, torch.sin(angles))</span></span></code></pre>
+<h4 id="stick-breaking-in-the-triton-kernel">Stick-Breaking in the Triton Kernel:</h4>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#6A737D"># Initialize stick</span></span>
+<span class="line"><span style="color:#E1E4E8">stick_remaining </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> tl.zeros([</span><span style="color:#79B8FF">BLOCK_M</span><span style="color:#E1E4E8">], </span><span style="color:#FFAB70">dtype</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">tl.float32) </span><span style="color:#F97583">+</span><span style="color:#79B8FF"> 1.0</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">for</span><span style="color:#E1E4E8"> start_n </span><span style="color:#F97583">in</span><span style="color:#79B8FF"> range</span><span style="color:#E1E4E8">(lo, hi, </span><span style="color:#79B8FF">BLOCK_N</span><span style="color:#E1E4E8">):</span></span>
+<span class="line"><span style="color:#6A737D">    # Compute RoPE attention scores with distance decay</span></span>
+<span class="line"><span style="color:#E1E4E8">    logits </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> qk </span><span style="color:#F97583">-</span><span style="color:#E1E4E8"> lambda_param </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> tl.abs(pos_q </span><span style="color:#F97583">-</span><span style="color:#E1E4E8"> pos_k)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    # Sigmoid instead of softmax — each position makes independent decision</span></span>
+<span class="line"><span style="color:#E1E4E8">    logits_stable </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> tl.minimum(tl.maximum(logits, </span><span style="color:#F97583">-</span><span style="color:#79B8FF">20.0</span><span style="color:#E1E4E8">), </span><span style="color:#79B8FF">20.0</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">    beta </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> tl.sigmoid(logits_stable)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    # Break off a piece of the stick</span></span>
+<span class="line"><span style="color:#E1E4E8">    attention_weights </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> beta </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> stick_remaining[:, </span><span style="color:#79B8FF">None</span><span style="color:#E1E4E8">]</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    # Update remaining stick</span></span>
+<span class="line"><span style="color:#E1E4E8">    stick_consumed </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> tl.sum(attention_weights, </span><span style="color:#FFAB70">axis</span><span style="color:#F97583">=</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">    stick_remaining </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> stick_remaining </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">1.0</span><span style="color:#F97583"> -</span><span style="color:#E1E4E8"> stick_consumed)</span></span>
+<span class="line"><span style="color:#E1E4E8">    stick_remaining </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> tl.maximum(stick_remaining, </span><span style="color:#79B8FF">1e-6</span><span style="color:#E1E4E8">)  </span><span style="color:#6A737D"># Never fully exhaust</span></span></code></pre>
+<h4 id="pytorch-fallback-simplified">PyTorch Fallback (Simplified):</h4>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#6A737D"># When Triton kernel unavailable, use approximation:</span></span>
+<span class="line"><span style="color:#6A737D"># Apply RoPE to Q, K</span></span>
+<span class="line"><span style="color:#E1E4E8">q_rope </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> apply_rope_rse(q, cos_cache, sin_cache)</span></span>
+<span class="line"><span style="color:#E1E4E8">k_rope </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> apply_rope_rse(k, cos_cache, sin_cache)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Standard attention scores with distance penalty</span></span>
+<span class="line"><span style="color:#E1E4E8">scores </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> torch.matmul(q_rope, k_rope.T) </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> scale</span></span>
+<span class="line"><span style="color:#E1E4E8">decay </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> lambda_param </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> torch.abs(pos_i </span><span style="color:#F97583">-</span><span style="color:#E1E4E8"> pos_j).float()</span></span>
+<span class="line"><span style="color:#E1E4E8">scores </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> scores </span><span style="color:#F97583">-</span><span style="color:#E1E4E8"> decay</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Use softmax instead of stick-breaking (approximation)</span></span>
+<span class="line"><span style="color:#E1E4E8">attn_weights </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> torch.softmax(scores, </span><span style="color:#FFAB70">dim</span><span style="color:#F97583">=-</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">)</span></span></code></pre>
+<blockquote>
+<p>[!WARNING]
+The PyTorch fallback uses <strong>softmax</strong> instead of true <strong>stick-breaking</strong>, which changes the attention distribution. The Triton kernel implements the correct stick-breaking process but currently falls back to PyTorch due to a <code>tl.ones</code> compatibility issue.</p>
+</blockquote>
+<hr>
+<h2 id="7-architecture-integration">7. Architecture Integration</h2>
+<p>All attention mechanisms plug into the same BERT architecture via a <strong>registry pattern</strong>:</p>
+<div class="mermaid-wrapper"><pre class="mermaid">graph TB
+    subgraph "Model Layer"
+        CLM["CLMBertModel"]
+        MLM["BERTMLMModel"]
+    end
+
+    subgraph "Attention Registry"
+        REG["get_attention_class(type)"]
+        REG -- "standard" --> STD["StandardBERTAttention"]
+        REG -- "rope" --> ROPE["RoPEBERTAttention"]
+        REG -- "exposb" --> EXPO["ExpoSBBERTAttention"]
+        REG -- "rse" --> RSE["RSEBERTAttention"]
+        REG -- "absolute" --> ABS["AbsoluteBERTAttention"]
+    end
+
+    CLM --> REG
+    MLM --> REG
+
+    subgraph "BERT Encoder"
+        L0["Layer 0: attention.self"]
+        L1["Layer 1: attention.self"]
+        L2["..."]
+        L5["Layer 5: attention.self"]
+    end
+
+    STD --> L0
+    STD --> L1
+    STD --> L5</pre></div>
+<p>The replacement happens at initialization:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> _replace_attention_layers</span><span style="color:#E1E4E8">(self, attention_type: </span><span style="color:#79B8FF">str</span><span style="color:#E1E4E8">):</span></span>
+<span class="line"><span style="color:#E1E4E8">    attention_class </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> get_attention_class(attention_type)</span></span>
+<span class="line"><span style="color:#F97583">    for</span><span style="color:#E1E4E8"> layer_idx </span><span style="color:#F97583">in</span><span style="color:#79B8FF"> range</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">self</span><span style="color:#E1E4E8">.config.num_hidden_layers):</span></span>
+<span class="line"><span style="color:#E1E4E8">        layer </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> self</span><span style="color:#E1E4E8">.bert.encoder.layer[layer_idx]</span></span>
+<span class="line"><span style="color:#E1E4E8">        layer.attention.self </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> attention_class(</span></span>
+<span class="line"><span style="color:#FFAB70">            hidden_size</span><span style="color:#F97583">=</span><span style="color:#79B8FF">self</span><span style="color:#E1E4E8">.config.hidden_size,      </span><span style="color:#6A737D"># 384</span></span>
+<span class="line"><span style="color:#FFAB70">            num_heads</span><span style="color:#F97583">=</span><span style="color:#79B8FF">self</span><span style="color:#E1E4E8">.config.num_attention_heads, </span><span style="color:#6A737D"># 6</span></span>
+<span class="line"><span style="color:#FFAB70">            max_position_embeddings</span><span style="color:#F97583">=</span><span style="color:#79B8FF">512</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#FFAB70">            dropout</span><span style="color:#F97583">=</span><span style="color:#79B8FF">self</span><span style="color:#E1E4E8">.config.attention_probs_dropout_prob</span></span>
+<span class="line"><span style="color:#E1E4E8">        )</span></span></code></pre>
+<hr>
+<h2 id="8-comparative-analysis">8. Comparative Analysis</h2>
+<h3 id="81-feature-comparison">8.1 Feature Comparison</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Feature</th><th>Absolute</th><th>Standard</th><th>RoPE</th><th>ExpoSB</th><th>RSE</th></tr></thead><tbody><tr><td><strong>Position Type</strong></td><td>Fixed sinusoidal</td><td>Learned embedding</td><td>Rotary Q/K</td><td>Rotary + decay</td><td>Rotary + stick-breaking</td></tr><tr><td><strong>Extra Parameters</strong></td><td>0</td><td>196,608</td><td>0</td><td>12</td><td>1</td></tr><tr><td><strong>Position Applied To</strong></td><td>Q, K</td><td>Q, K, V</td><td>Q, K</td><td>Q, K</td><td>Q, K</td></tr><tr><td><strong>Relative Position</strong></td><td>❌ Implicit</td><td>❌ Implicit</td><td>✅ Direct</td><td>✅ Direct</td><td>✅ Direct</td></tr><tr><td><strong>Length Extrapolation</strong></td><td>⚠️ Limited</td><td>❌ None</td><td>✅ Yes</td><td>✅ Yes</td><td>✅ Yes</td></tr><tr><td><strong>Locality Bias</strong></td><td>None</td><td>None</td><td>None</td><td>Strong (explicit)</td><td>Adaptive (learned λ)</td></tr><tr><td><strong>Attention Mechanism</strong></td><td>Softmax</td><td>Softmax</td><td>Softmax</td><td>Softmax</td><td>Stick-breaking</td></tr><tr><td><strong>Triton Accelerated</strong></td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td></tr><tr><td><strong>Backward Pass</strong></td><td>Flash Attn</td><td>Flash Attn</td><td>Custom kernel</td><td>Custom kernel</td><td>PyTorch fallback</td></tr></tbody></table>
+<h3 id="82-how-advanced-methods-surpass-standard">8.2 How Advanced Methods Surpass Standard</h3>
+<h4 id="rope-vs-standard">RoPE vs Standard</h4>
+<div class="mermaid-wrapper"><pre class="mermaid">graph LR
+    subgraph "Standard: Absolute Position"
+        S1["pos=5 -> always vector v5"]
+        S2["Q(5).K(10) != Q(15).K(20)"]
+        S3["Despite same distance=5"]
+    end
+
+    subgraph "RoPE: Relative Position"
+        R1["pos=5 -> rotate by 5theta"]
+        R2["Q(5).K(10) = Q(15).K(20)"]
+        R3["Same rotation difference = 5theta"]
+    end</pre></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Advantage</th><th>Why It Matters</th></tr></thead><tbody><tr><td><strong>Zero extra parameters</strong></td><td>No <code>nn.Embedding(512, 384)</code> table — saves 196K params</td></tr><tr><td><strong>True relative position</strong></td><td>”3 tokens apart” is the same regardless of absolute position</td></tr><tr><td><strong>Length extrapolation</strong></td><td>Can handle sequences longer than training data</td></tr><tr><td><strong>Computational efficiency</strong></td><td>Rotation is just multiply-add, fuses into attention kernel</td></tr></tbody></table>
+<h4 id="exposb-vs-standard">ExpoSB vs Standard</h4>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Advantage</th><th>Why It Matters</th></tr></thead><tbody><tr><td><strong>Explicit locality bias</strong></td><td>Many NLP tasks care more about nearby context</td></tr><tr><td><strong>Band-pass filtering</strong></td><td>Focuses model capacity on informative frequency bands</td></tr><tr><td><strong>Position-dependent encoding strength</strong></td><td>Earlier positions get stronger signals (useful for CLM)</td></tr><tr><td><strong>Learnable per-head weights</strong></td><td>Each head can specialize (some local, some global)</td></tr><tr><td><strong>Distance-decay attention</strong></td><td>Natural falloff prevents attention dilution over long sequences</td></tr></tbody></table>
+<h4 id="rse-vs-standard">RSE vs Standard</h4>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Advantage</th><th>Why It Matters</th></tr></thead><tbody><tr><td><strong>Stick-breaking prevents attention dilution</strong></td><td>As sequence grows, softmax spreads attention thinner; stick-breaking doesn’t</td></tr><tr><td><strong>Learned locality via λ</strong></td><td>Model discovers optimal attention range during training</td></tr><tr><td><strong>Sequential allocation</strong></td><td>Attention is a finite resource — earlier, more relevant tokens claim it first</td></tr><tr><td><strong>Combines RoPE benefits</strong></td><td>Gets relative position awareness for free</td></tr></tbody></table>
+<h3 id="83-complexity-analysis">8.3 Complexity Analysis</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>Standard:   O(n² × d) attention + O(max_pos × d) position table lookup</span></span>
+<span class="line"><span>Absolute:   O(n² × d) attention + O(d) sinusoidal computation (precomputed)</span></span>
+<span class="line"><span>RoPE:       O(n² × d) attention + O(n × d) rotation (fused into kernel)</span></span>
+<span class="line"><span>ExpoSB:     O(n² × d) attention + O(n × d) rotation + O(n²) decay computation</span></span>
+<span class="line"><span>RSE:        O(n² × d) attention + O(n × d) rotation + O(n²) decay + O(n) stick tracking</span></span></code></pre>
+<p>All methods share the <strong>same O(n²d) asymptotic complexity</strong>. The extra terms are lower-order or constant-factor overheads.</p>
+<h3 id="84-when-to-use-each-method">8.4 When to Use Each Method</h3>
+<div class="mermaid-wrapper"><pre class="mermaid">flowchart TD
+    START["Choose Encoding"] --> Q1{"Need length extrapolation?"}
+    Q1 -->|Yes| Q2{"Need locality bias?"}
+    Q1 -->|No| Q3{"Want max flexibility?"}
+
+    Q2 -->|"Yes, adaptive"| RSE["Use RSE"]
+    Q2 -->|"Yes, fixed"| EXPO["Use ExpoSB"]
+    Q2 -->|No| ROPE["Use RoPE"]
+
+    Q3 -->|Yes| STD["Use Standard (Learned)"]
+    Q3 -->|"No, simple"| ABS["Use Absolute (Sinusoidal)"]</pre></div>
+<hr>
+<h2 id="9-training-results">9. Training Results</h2>
+<p>The following training comparisons were generated using the current config (<code>hidden_size=384</code>, <code>6 layers</code>, <code>6 heads</code>, <code>batch_size=8</code>, <code>400 epochs</code>):</p>
+<p><img alt="Attention Mechanism Comparison" loading="lazy" decoding="async" fetchpriority="auto" width="3570" height="1466" src="/_astro/attention_comparison.BKxddJuG_Z2i4N2I.webp" ></p>
+<p><img alt="MLM and CLM Training Curves" loading="lazy" decoding="async" fetchpriority="auto" width="3570" height="2365" src="/_astro/mlm_clm_comparison.BdsVuPe7_Z2gXc22.webp" ></p>
+<h3 id="91-training-configuration-summary">9.1 Training Configuration Summary</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Parameter</th><th>Value</th></tr></thead><tbody><tr><td>Hidden size</td><td>384</td></tr><tr><td>Layers</td><td>6</td></tr><tr><td>Attention heads</td><td>6</td></tr><tr><td>Head dimension</td><td>64</td></tr><tr><td>Max sequence length</td><td>256</td></tr><tr><td>Batch size</td><td>8</td></tr><tr><td>Learning rate</td><td>1e-4</td></tr><tr><td>Optimizer</td><td>AdamW</td></tr><tr><td>Scheduler</td><td>Cosine</td></tr><tr><td>Epochs</td><td>400</td></tr><tr><td>GPU</td><td>RTX 4070 8GB</td></tr></tbody></table>
+<hr>
+<h2 id="10-conclusion">10. Conclusion</h2>
+<h3 id="summary-of-innovations">Summary of Innovations</h3>
+<p>This implementation provides a <strong>comparative playground</strong> for studying how positional encoding affects transformer learning. The key innovations beyond the standard BERT baseline are:</p>
+<ol>
+<li>
+<p><strong>RoPE</strong> eliminates position parameters entirely while achieving superior relative-position modeling — the mathematical guarantee that <code>Q_m · K_n</code> depends only on <code>(m-n)</code> is more principled than hoping learned embeddings discover this pattern.</p>
+</li>
+<li>
+<p><strong>ExpoSB</strong> recognizes that not all frequencies and distances are equally informative. By adding explicit locality bias and frequency filtering, it guides the model toward patterns that are empirically important in NLP.</p>
+</li>
+<li>
+<p><strong>RSE</strong> introduces a fundamentally different attention allocation strategy. While softmax distributes a probability distribution, stick-breaking distributes a <em>finite resource</em>. This prevents the attention dilution problem where, as sequences grow, each token gets diminishing attention mass.</p>
+</li>
+<li>
+<p>The <strong>Triton kernel fusion</strong> across all methods ensures that the theoretical advantages of advanced encodings don’t come at the cost of practical runtime performance — rotations and decay computations happen inside the attention kernel without extra memory round-trips.</p>
+</li>
+</ol>
+<h3 id="code-organization">Code Organization</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>src/attention/</span></span>
+<span class="line"><span>├── __init__.py              # Registry + imports</span></span>
+<span class="line"><span>├── absolute_attention.py    # Sinusoidal PE + Triton Flash Attention</span></span>
+<span class="line"><span>├── standard_attention.py    # Learned PE + Triton Flash Attention</span></span>
+<span class="line"><span>├── rope_attention.py        # RoPE + Triton fused rotation + fwd/bwd kernels</span></span>
+<span class="line"><span>├── exposb_attention.py      # ExpoSB + Triton fused rotation + decay + band-pass</span></span>
+<span class="line"><span>├── rse_attention.py         # RSE + Triton stick-breaking + RoPE cache</span></span>
+<span class="line"><span>└── simple_attention.py      # Pure PyTorch fallbacks for debugging</span></span></code></pre>
+<hr>
+<blockquote>
+<p><em>Report generated for the <code>integrated_implementation</code> project — BERT attention mechanism comparison framework.</em></p>
+</blockquote>  </div>  </div> </article> </main> <footer class="blog-footer" data-astro-cid-bvzihdzo> <div class="container" data-astro-cid-bvzihdzo> <a href="/blog" class="back-link" data-astro-cid-bvzihdzo>← Back to Blog</a> </div> </footer> <script>(function(){const tags = ["GPU & Compilers","research"];
+
+  tags.forEach(tag => {
+    if (tag.includes('/')) {
+      console.warn(`[Tag Warning] The tag "${tag}" contains a slash, which may cause issues with URL routing. Please consider using a different separator like a hyphen (-).`);
+    }
+  });
+})();</script> <script type="module">if(document.querySelector(".mermaid")){const e=document.createElement("script");e.src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js",e.onload=()=>{window.mermaid.initialize({startOnLoad:!1,theme:"neutral",themeVariables:{primaryColor:"#39647c",primaryTextColor:"#2E3A59",lineColor:"#8A9A7E",background:"#F4E9D8"}}),window.mermaid.run({querySelector:".mermaid"})},document.head.appendChild(e)}</script>  </main> <footer class="site-footer" data-astro-cid-37fxchfa> <div class="footer-content" data-astro-cid-37fxchfa> <p data-astro-cid-37fxchfa>&copy; 2025 Xiaoyou Wu. All rights reserved.</p> <p data-astro-cid-37fxchfa>I create this website myself.</p> <div class="footer-links" data-astro-cid-37fxchfa> <a href="https://github.com/Laurence-Wu" target="_blank" rel="noopener noreferrer" data-astro-cid-37fxchfa>GitHub</a> <a href="https://linkedin.com/in/xiaoyou-wu" target="_blank" rel="noopener noreferrer" data-astro-cid-37fxchfa>LinkedIn</a> <a href="https://x.com/BluishZima" target="_blank" rel="noopener noreferrer" data-astro-cid-37fxchfa>𝕏</a> <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" data-astro-cid-37fxchfa>Resume</a> </div> </div> </footer> </body></html> 
